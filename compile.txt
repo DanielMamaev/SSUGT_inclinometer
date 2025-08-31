@@ -1,1 +1,2 @@
 pyinstaller --noconsole --onefile run.py
+pyinstaller --onefile run.py
