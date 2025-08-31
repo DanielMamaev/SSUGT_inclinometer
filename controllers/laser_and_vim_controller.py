@@ -131,7 +131,7 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         self.stop_stream()
 
     def start_stream(self, cap_vim, cap_laser):
-        self.segmentation = StreamController(cap_vim, cap_laser, self.label_value,
+        self.segmentation = StreamController(cap_vim, cap_laser, self.label_value,self.label_laser_xy,
                                              self.signal_send_frame_graphics_view_vim, self.signal_send_frame_graphics_view_laser)
         self.segmentation.start_stream()
 

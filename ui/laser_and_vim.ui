@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>1290</width>
-    <height>602</height>
+    <height>702</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ВИМ менеджер</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resource.qrc">
+   <iconset>
     <normaloff>:/resource/resource/moncenter_logo.png</normaloff>:/resource/resource/moncenter_logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -59,10 +59,10 @@
     <item row="0" column="0">
      <widget class="QFrame" name="frame_static_1">
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="0" column="0">
@@ -76,7 +76,7 @@
           <string>Секундомер</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -91,7 +91,7 @@
           <string>00:00</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -107,10 +107,10 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
@@ -149,6 +149,18 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QLabel" name="label_laser_xy">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Laser (x,y)</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
@@ -167,10 +179,10 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="0" column="0">
@@ -184,7 +196,7 @@
           <string>Функционал режима статики</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
          </property>
         </widget>
        </item>
@@ -214,10 +226,10 @@
     <item row="1" column="1" rowspan="3">
      <widget class="QFrame" name="frame">
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
@@ -244,19 +256,19 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
         <widget class="QFrame" name="frame_5">
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="spacing">
@@ -371,19 +383,19 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="0" column="0">
         <widget class="QFrame" name="frame_7">
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <property name="spacing">
@@ -486,10 +498,10 @@
     <item row="3" column="2">
      <widget class="QFrame" name="frame_4">
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
        <property name="topMargin">
@@ -618,7 +630,7 @@
      <x>0</x>
      <y>0</y>
      <width>1290</width>
-     <height>18</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_tools">

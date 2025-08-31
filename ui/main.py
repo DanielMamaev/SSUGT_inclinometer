@@ -59,8 +59,8 @@ class Ui_MainWindow(object):
         self.frame_2 = QFrame(self.centralwidget)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setMaximumSize(QSize(16777215, 50))
-        self.frame_2.setFrameShape(QFrame.NoFrame)
-        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.frame_2.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_2.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout = QHBoxLayout(self.frame_2)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.label_nivel = QLabel(self.frame_2)
@@ -90,14 +90,14 @@ class Ui_MainWindow(object):
         self.frame_3.setObjectName(u"frame_3")
         self.frame_3.setMinimumSize(QSize(400, 160))
         self.frame_3.setMaximumSize(QSize(16777215, 160))
-        self.frame_3.setFrameShape(QFrame.NoFrame)
-        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.frame_3.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_3.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout_3 = QGridLayout(self.frame_3)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.frame_5 = QFrame(self.frame_3)
         self.frame_5.setObjectName(u"frame_5")
-        self.frame_5.setFrameShape(QFrame.NoFrame)
-        self.frame_5.setFrameShadow(QFrame.Raised)
+        self.frame_5.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_5.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout_2 = QHBoxLayout(self.frame_5)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
@@ -163,11 +163,16 @@ class Ui_MainWindow(object):
 
         self.frame_4 = QFrame(self.centralwidget)
         self.frame_4.setObjectName(u"frame_4")
-        self.frame_4.setFrameShape(QFrame.NoFrame)
-        self.frame_4.setFrameShadow(QFrame.Raised)
+        self.frame_4.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_4.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout_4 = QGridLayout(self.frame_4)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setContentsMargins(-1, 1, -1, -1)
+        self.checkBox_start_position = QCheckBox(self.frame_4)
+        self.checkBox_start_position.setObjectName(u"checkBox_start_position")
+
+        self.gridLayout_4.addWidget(self.checkBox_start_position, 1, 0, 1, 2)
+
         self.comboBox_speed_frame = QComboBox(self.frame_4)
         self.comboBox_speed_frame.addItem("")
         self.comboBox_speed_frame.addItem("")
@@ -175,63 +180,64 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addWidget(self.comboBox_speed_frame, 0, 1, 1, 1)
 
+        self.label_2 = QLabel(self.frame_4)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setMaximumSize(QSize(16777215, 20))
+
+        self.gridLayout_4.addWidget(self.label_2, 6, 0, 1, 2)
+
         self.lineEdit_speed_frame = QLineEdit(self.frame_4)
         self.lineEdit_speed_frame.setObjectName(u"lineEdit_speed_frame")
         self.lineEdit_speed_frame.setClearButtonEnabled(True)
 
         self.gridLayout_4.addWidget(self.lineEdit_speed_frame, 0, 0, 1, 1)
 
-        self.checkBox_start_position = QCheckBox(self.frame_4)
-        self.checkBox_start_position.setObjectName(u"checkBox_start_position")
-
-        self.gridLayout_4.addWidget(self.checkBox_start_position, 1, 0, 1, 2)
-
-        self.checkBox_segmentaion_show = QCheckBox(self.frame_4)
-        self.checkBox_segmentaion_show.setObjectName(u"checkBox_segmentaion_show")
-
-        self.gridLayout_4.addWidget(self.checkBox_segmentaion_show, 9, 0, 1, 2)
-
-        self.checkBox_rectangle_show = QCheckBox(self.frame_4)
-        self.checkBox_rectangle_show.setObjectName(u"checkBox_rectangle_show")
-
-        self.gridLayout_4.addWidget(self.checkBox_rectangle_show, 8, 0, 1, 2)
-
-        self.checkBox_view_points = QCheckBox(self.frame_4)
-        self.checkBox_view_points.setObjectName(u"checkBox_view_points")
-
-        self.gridLayout_4.addWidget(self.checkBox_view_points, 7, 0, 1, 2)
-
         self.spinBox_points = QSpinBox(self.frame_4)
         self.spinBox_points.setObjectName(u"spinBox_points")
         self.spinBox_points.setMinimum(1)
 
-        self.gridLayout_4.addWidget(self.spinBox_points, 6, 0, 1, 2)
+        self.gridLayout_4.addWidget(self.spinBox_points, 7, 0, 1, 2)
 
-        self.label_2 = QLabel(self.frame_4)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setMaximumSize(QSize(16777215, 20))
+        self.checkBox_rectangle_show = QCheckBox(self.frame_4)
+        self.checkBox_rectangle_show.setObjectName(u"checkBox_rectangle_show")
 
-        self.gridLayout_4.addWidget(self.label_2, 5, 0, 1, 2)
+        self.gridLayout_4.addWidget(self.checkBox_rectangle_show, 9, 0, 1, 2)
+
+        self.checkBox_view_points = QCheckBox(self.frame_4)
+        self.checkBox_view_points.setObjectName(u"checkBox_view_points")
+
+        self.gridLayout_4.addWidget(self.checkBox_view_points, 8, 0, 1, 2)
+
+        self.checkBox_segmentaion_show = QCheckBox(self.frame_4)
+        self.checkBox_segmentaion_show.setObjectName(u"checkBox_segmentaion_show")
+
+        self.gridLayout_4.addWidget(self.checkBox_segmentaion_show, 10, 0, 1, 2)
 
         self.checkBox_enable_record = QCheckBox(self.frame_4)
         self.checkBox_enable_record.setObjectName(u"checkBox_enable_record")
         self.checkBox_enable_record.setChecked(False)
         self.checkBox_enable_record.setAutoRepeat(False)
 
-        self.gridLayout_4.addWidget(self.checkBox_enable_record, 4, 0, 1, 2)
+        self.gridLayout_4.addWidget(self.checkBox_enable_record, 5, 0, 1, 2)
+
+        self.lineEdit_offset_value = QLineEdit(self.frame_4)
+        self.lineEdit_offset_value.setObjectName(u"lineEdit_offset_value")
+        self.lineEdit_offset_value.setClearButtonEnabled(True)
+
+        self.gridLayout_4.addWidget(self.lineEdit_offset_value, 2, 0, 1, 1)
 
         self.pushButton_start_position = QPushButton(self.frame_4)
         self.pushButton_start_position.setObjectName(u"pushButton_start_position")
 
-        self.gridLayout_4.addWidget(self.pushButton_start_position, 2, 0, 1, 2)
+        self.gridLayout_4.addWidget(self.pushButton_start_position, 2, 1, 1, 1)
 
 
         self.gridLayout.addWidget(self.frame_4, 2, 2, 1, 1)
 
         self.frame = QFrame(self.centralwidget)
         self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.NoFrame)
-        self.frame.setFrameShadow(QFrame.Raised)
+        self.frame.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout_2 = QGridLayout(self.frame)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.graphicsView = QGraphicsViewVideo(self.frame)
@@ -246,8 +252,8 @@ class Ui_MainWindow(object):
         self.frame_static_2.setObjectName(u"frame_static_2")
         self.frame_static_2.setMinimumSize(QSize(200, 0))
         self.frame_static_2.setMaximumSize(QSize(16777215, 16777215))
-        self.frame_static_2.setFrameShape(QFrame.NoFrame)
-        self.frame_static_2.setFrameShadow(QFrame.Raised)
+        self.frame_static_2.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_static_2.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout_6 = QGridLayout(self.frame_static_2)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
         self.label_3 = QLabel(self.frame_static_2)
@@ -255,7 +261,7 @@ class Ui_MainWindow(object):
         font2 = QFont()
         font2.setPointSize(14)
         self.label_3.setFont(font2)
-        self.label_3.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.label_3.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
 
         self.gridLayout_6.addWidget(self.label_3, 0, 0, 1, 1)
 
@@ -280,21 +286,21 @@ class Ui_MainWindow(object):
 
         self.frame_static_1 = QFrame(self.centralwidget)
         self.frame_static_1.setObjectName(u"frame_static_1")
-        self.frame_static_1.setFrameShape(QFrame.NoFrame)
-        self.frame_static_1.setFrameShadow(QFrame.Raised)
+        self.frame_static_1.setFrameShape(QFrame.Shape.NoFrame)
+        self.frame_static_1.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout_5 = QGridLayout(self.frame_static_1)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
         self.label_4 = QLabel(self.frame_static_1)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setFont(font)
-        self.label_4.setAlignment(Qt.AlignCenter)
+        self.label_4.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.gridLayout_5.addWidget(self.label_4, 0, 0, 1, 1)
 
         self.label_timer = QLabel(self.frame_static_1)
         self.label_timer.setObjectName(u"label_timer")
         self.label_timer.setFont(font2)
-        self.label_timer.setAlignment(Qt.AlignCenter)
+        self.label_timer.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.gridLayout_5.addWidget(self.label_timer, 1, 0, 1, 1)
 
@@ -304,7 +310,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1290, 18))
+        self.menubar.setGeometry(QRect(0, 0, 1290, 22))
         self.menu_tools = QMenu(self.menubar)
         self.menu_tools.setObjectName(u"menu_tools")
         self.menu_tools.setEnabled(True)
@@ -351,16 +357,17 @@ class Ui_MainWindow(object):
         self.pushButton_stop_stream.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u043f\u043e\u0442\u043e\u043a", None))
         self.pushButton_apply_source.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0440\u0438\u043c\u0435\u043d\u0438\u0442\u044c \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a", None))
         self.label_fps_counter.setText(QCoreApplication.translate("MainWindow", u"FPS = 0", None))
+        self.checkBox_start_position.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430", None))
         self.comboBox_speed_frame.setItemText(0, QCoreApplication.translate("MainWindow", u"\u0413\u0446", None))
         self.comboBox_speed_frame.setItemText(1, QCoreApplication.translate("MainWindow", u"1 \u043a\u0430\u0434\u0440 \u0437\u0430 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0441\u0435\u043a\u0443\u043d\u0434", None))
 
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0435\u0433\u0443\u043b\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0447\u0430\u0441\u0442\u043e\u0442\u0443 \u0437\u0430\u043f\u0438\u0441\u0438 \u0442\u043e\u0447\u0435\u043a", None))
         self.lineEdit_speed_frame.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043a\u043e\u043b-\u0432\u043e \u0413\u0446 \u0438\u043b\u0438 \u0441\u0435\u043a\u0443\u043d\u0434 \u0432 \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0438\u0432\u0430\u044e\u0449\u0435\u0433\u043e \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u0430 \u0441\u044a\u0435\u043c\u043a\u0438", None))
-        self.checkBox_start_position.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430", None))
-        self.checkBox_segmentaion_show.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u0435\u0433\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044e", None))
         self.checkBox_rectangle_show.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c \u043f\u0440\u044f\u043c\u043e\u0443\u0433\u043e\u043b\u044c\u043d\u0438\u043a", None))
         self.checkBox_view_points.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c \u0442\u043e\u0447\u043a\u0438", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0435\u0433\u0443\u043b\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0447\u0430\u0441\u0442\u043e\u0442\u0443 \u0437\u0430\u043f\u0438\u0441\u0438 \u0442\u043e\u0447\u0435\u043a", None))
+        self.checkBox_segmentaion_show.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u0435\u0433\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044e", None))
         self.checkBox_enable_record.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0430\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c", None))
+        self.lineEdit_offset_value.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u0421\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u0432 \u043f\u0438\u043a\u0441\u0435\u043b\u044f\u0445", None))
         self.pushButton_start_position.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0424\u0443\u043d\u043a\u0446\u0438\u043e\u043d\u0430\u043b \u0440\u0435\u0436\u0438\u043c\u0430 \u0441\u0442\u0430\u0442\u0438\u043a\u0438", None))
         self.pushButton_time_point_start.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0432\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e \u0442\u043e\u0447\u043a\u0443", None))

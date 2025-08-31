@@ -14,7 +14,7 @@
    <string>ВИМ менеджер</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resource.qrc">
+   <iconset>
     <normaloff>:/resource/resource/moncenter_logo.png</normaloff>:/resource/resource/moncenter_logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -65,10 +65,10 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
@@ -125,19 +125,19 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
         <widget class="QFrame" name="frame_5">
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="spacing">
@@ -254,15 +254,22 @@
     <item row="2" column="2">
      <widget class="QFrame" name="frame_4">
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
        <property name="topMargin">
         <number>1</number>
        </property>
+       <item row="1" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBox_start_position">
+         <property name="text">
+          <string>Показать начало отсчета</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="1">
         <widget class="QComboBox" name="comboBox_speed_frame">
          <item>
@@ -277,52 +284,7 @@
          </item>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLineEdit" name="lineEdit_speed_frame">
-         <property name="placeholderText">
-          <string>Введите кол-во Гц или секунд в зависимости от ограничивающего параметра съемки</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QCheckBox" name="checkBox_start_position">
-         <property name="text">
-          <string>Показать начало отсчета</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="0" colspan="2">
-        <widget class="QCheckBox" name="checkBox_segmentaion_show">
-         <property name="text">
-          <string>Показать сегментацию</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0" colspan="2">
-        <widget class="QCheckBox" name="checkBox_rectangle_show">
-         <property name="text">
-          <string>Отобразить прямоугольник</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0" colspan="2">
-        <widget class="QCheckBox" name="checkBox_view_points">
-         <property name="text">
-          <string>Отобразить точки</string>
-         </property>
-        </widget>
-       </item>
        <item row="6" column="0" colspan="2">
-        <widget class="QSpinBox" name="spinBox_points">
-         <property name="minimum">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0" colspan="2">
         <widget class="QLabel" name="label_2">
          <property name="maximumSize">
           <size>
@@ -335,7 +297,45 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item row="0" column="0">
+        <widget class="QLineEdit" name="lineEdit_speed_frame">
+         <property name="placeholderText">
+          <string>Введите кол-во Гц или секунд в зависимости от ограничивающего параметра съемки</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2">
+        <widget class="QSpinBox" name="spinBox_points">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBox_rectangle_show">
+         <property name="text">
+          <string>Отобразить прямоугольник</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBox_view_points">
+         <property name="text">
+          <string>Отобразить точки</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBox_segmentaion_show">
+         <property name="text">
+          <string>Показать сегментацию</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
         <widget class="QCheckBox" name="checkBox_enable_record">
          <property name="text">
           <string>Начать запись</string>
@@ -348,7 +348,17 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item row="2" column="0">
+        <widget class="QLineEdit" name="lineEdit_offset_value">
+         <property name="placeholderText">
+          <string>Смещение в пикселях</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
         <widget class="QPushButton" name="pushButton_start_position">
          <property name="text">
           <string>Сместить начало отсчета</string>
@@ -361,10 +371,10 @@
     <item row="1" column="1" rowspan="2">
      <widget class="QFrame" name="frame">
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
@@ -388,10 +398,10 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="0" column="0">
@@ -405,7 +415,7 @@
           <string>Функционал режима статики</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
          </property>
         </widget>
        </item>
@@ -435,10 +445,10 @@
     <item row="0" column="0">
      <widget class="QFrame" name="frame_static_1">
       <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="0" column="0">
@@ -452,7 +462,7 @@
           <string>Секундомер</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -467,7 +477,7 @@
           <string>00:00</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -482,7 +492,7 @@
      <x>0</x>
      <y>0</y>
      <width>1290</width>
-     <height>18</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_tools">

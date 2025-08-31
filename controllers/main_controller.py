@@ -43,6 +43,8 @@ class Ui_MainWindowController(QMainWindow, main.Ui_MainWindow, QObject):
         self.speed_frame_line_edit_changed()
         self.comboBox_speed_frame.currentIndexChanged.connect(self.combobox_speed_frame_changed)
 
+        self.lineEdit_offset_value.setText(str(CoordinateSystemOffset.get_start_position()))
+
     def combobox_speed_frame_changed(self):
         ShootingSpeed.set_mode_speed_frame(self.comboBox_speed_frame.currentIndex())
 
@@ -136,12 +138,18 @@ class Ui_MainWindowController(QMainWindow, main.Ui_MainWindow, QObject):
     def add_functions(self):
         self.pushButton_apply_source.clicked.connect(lambda: self.apply_source())
         self.pushButton_stop_stream.clicked.connect(lambda: self.stop_stream())
-        self.pushButton_start_position.clicked.connect(lambda: CoordinateSystemOffset.apply_start_position())
+        self.pushButton_start_position.clicked.connect(self.set_start_position)
         self.pushButton_time_point_start.clicked.connect(lambda: self.start_time_point())
         self.pushButton_time_point_end.clicked.connect(lambda: self.stop_time_point())
         self.lineEdit_indicator_value.textChanged.connect(self.update_indicator_value)
 
         self.add_actions()
+
+    def set_start_position(self):
+        value = self.lineEdit_offset_value.text()
+        value=float(value) if value.isdigit() else 0.0
+        CoordinateSystemOffset.apply_start_position(value)
+
 
     @staticmethod
     def open_directory():
