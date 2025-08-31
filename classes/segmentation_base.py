@@ -152,15 +152,26 @@ class SegmentationBase:
         # Получить ограничивающий прямоугольник
         x, y, w, h = cv2.boundingRect(max_contour)
         # Условие если новый прямоугольник отличается больше, чем на 10 процентов, тогда мы заменяем значения
-        if abs((x - self.crop_x) / (x + self.crop_x)) > 0.1 or abs((y - self.crop_y) / (y + self.crop_y)) > 0.1:
-            self.crop_x, self.crop_y, self.crop_w, self.crop_h = x, y, w, h
+        try:
+            if abs((x - self.crop_x) / (x + self.crop_x)) > 0.1 or abs((y - self.crop_y) / (y + self.crop_y)) > 0.1:
+                self.crop_x, self.crop_y, self.crop_w, self.crop_h = x, y, w, h
+            x, y, w, h = self.crop_x, self.crop_y, self.crop_w, self.crop_h
+        except ZeroDivisionError:
+            pass
+        except Exception as e:
+            print(e)
 
-        x, y, w, h = self.crop_x, self.crop_y, self.crop_w, self.crop_h
+        
         cropped = frame[y:y + h, x:x + w]
         mask = thresh[y:y + h, x:x + w]
         cropped[mask == 0] = 255
 
-        # Применить медианный фильтр с ядром размером 3x3
+        
+        if cropped is None or cropped.size == 0:
+            print("Ошибка: изображение пустое!")
+            return np.array([]), frame_result, 0.0
+        
+        # Применить медианный фильтр с ядром размером 3x3 
         cropped = cv2.medianBlur(cropped, 5)
 
         ret_th, thresh = cv2.threshold(cropped, 0, 255, cv2.THRESH_OTSU)
@@ -207,8 +218,8 @@ class SegmentationBase:
             try:
                 x, y, w, h = cv2.boundingRect(sorted_area_list[-1][1])
             except IndexError:
-                # print(IndexError)
-                return [], frame_original, 0
+                print(IndexError)
+                return np.array([]), frame_original, 0
         cv2.rectangle(cropped, (x, y), (x + w, y + h), (0, 0, 0), 1)
         # Создание графика с точками
         # Транспонирование массива

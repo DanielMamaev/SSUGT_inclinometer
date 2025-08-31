@@ -14,14 +14,7 @@ class CoordinateSystemOffset:
         cls._temp_start_position = value
 
     @classmethod
-    def apply_start_position(cls):
-        json_data = ConfigController("data/dialog_esp32.json").load()
-        json_data.update({'start_position': cls._temp_start_position})
-        ConfigController("data/dialog_esp32.json").save(json_data)
-        cls._start_position = cls._temp_start_position
-
-    @classmethod
-    def set_start_position(cls, value: float):
+    def apply_start_position(cls, value: float):
         json_data = ConfigController("data/dialog_esp32.json").load()
         json_data.update({'start_position': value})
         ConfigController("data/dialog_esp32.json").save(json_data)
@@ -35,7 +28,8 @@ class CoordinateSystemOffset:
         return cls._start_position
 
     @classmethod
-    def get_new_image_coords(cls, points: np.ndarray, image: np.ndarray, center_bubble: float, is_draw_start_position: bool = False) -> tuple[np.ndarray, list, float]:
+    def get_new_image_coords(cls, points: np.ndarray, image: np.ndarray,
+                             center_bubble: float, is_draw_start_position: bool = False) -> np.ndarray | list | float:
         x = int(cls.get_start_position())
         y1 = 0
         y2 = int(image.shape[0])
