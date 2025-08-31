@@ -85,7 +85,13 @@ class APIController:
                 logging.critical(f"Произошла в запросе на получение кадра esp32: {e}")
 
             image_array = np.asarray(bytearray(response.content), dtype=np.uint8)
-            frame = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+
+            # если придет пустое изображение, то image_array = 0.
+            # Если в cv2.imdecode подать пустой массив, он ломается
+            if len(image_array) == 0:
+                frame = np.zeros((10, 10, 3), dtype=np.uint8)
+            else:
+                frame = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
 
             time_get_frame = time.time() - timer
             fps = 1 / time_get_frame
@@ -150,3 +156,18 @@ class APIController:
         h, s, v = hsv_color
         logging.info(f"Отправлен запрос на изменение цвета esp32\nurl: {self._ip}/led?brig={v}&h={h}&s={s}")
         requests.get(f"{self._ip}/led?brig={v}&h={h}&s={s}")
+
+    def get_state_leds(self):
+        logging.info("Отправлен запрос на получение состояния ленты")
+        if self._is_video_capture:
+            return
+
+        state = None
+        try:
+            state = requests.get(
+                f"http://{self._ip}/get_state_leds", timeout=2)
+            state = json.loads(state.content).get('state', None)
+        except Exception as e:
+            logging.error("Сбой в получении значении состояния ленты. %s", e)
+
+        return state

@@ -8,7 +8,6 @@ import time
 import numpy as np
 from PySide6.QtGui import QIcon
 
-from classes.APIController import APIController
 from classes.DevicesController import DevicesController
 from classes.GlobalController import GlobalController
 from classes.consts import ProcessVIM, TypeDevices
@@ -227,22 +226,28 @@ class ModuleESP32:
                 sync_data = sync_conn.recv()
             if sync_data == "Done":
                 frame_original, fps, is_camera = DevicesController.get_vim_api_class().get_frame()
+                
+                # # Добавлено условие. Если мы получили пустое изображение (=0). Иначе дальше все ломается
+                # if len(frame_original) != 0:
+                    
                 if frame_original is None:
                     conn.send((False, ProcessVIM.VIDEO_IS_OVER))
                     break
                 if type_device == TypeDevices.ESP32_VIM:
                     points, frame, center_bubbles_px = segmentation.vim_frame_processing(frame_original.copy(),
-                                                                                         is_segmentation,
-                                                                                         is_draw_rectangle, is_draw_point,
-                                                                                         count_draw_points)
+                                                                                        is_segmentation,
+                                                                                        is_draw_rectangle, is_draw_point,
+                                                                                        count_draw_points)
                     if len(points) <= 0:
+                        conn.send(
+                        ((points, center_bubbles_px, frame, frame_original, fps, is_camera), ProcessVIM.DATA_FRAME_VIM))
                         continue
+                    
                     CoordinateSystemOffset.set_temp_start_position(center_bubbles_px)
-                    points, frame, center_bubbles_px = CoordinateSystemOffset.get_new_image_coords(points, frame,
-                                                                                                   center_bubbles_px,
-                                                                                                   is_draw_start_position)
+                    points, frame, center_bubbles_px = CoordinateSystemOffset.get_new_image_coords(points, frame, center_bubbles_px, is_draw_start_position)
                     conn.send(
                         ((points, center_bubbles_px, frame, frame_original, fps, is_camera), ProcessVIM.DATA_FRAME_VIM))
+                
                 elif type_device == TypeDevices.ESP32_LASER:
                     frame, x, y, points_contour = segmentation.laser_frame_processing(frame_original.copy())
                     conn.send(((frame, frame_original, fps, is_camera, x, y, points_contour), ProcessVIM.DATA_FRAME_LASER))
