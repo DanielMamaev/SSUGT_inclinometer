@@ -126,8 +126,12 @@ class Ui_MainWindowController(QMainWindow, main.Ui_MainWindow, QObject):
         self.stop_stream()
 
     def start_stream(self, cap):
-        self.segmentation = StreamController(cap, None, self.label_value,
-                                             self.signal_send_frame_graphics_view)
+        self.segmentation = StreamController(
+            cap=cap, cap_laser=None,
+            label_value=self.label_value, label_laser_xy=None,
+            signal_send_frame_graphics_view_vim=self.signal_send_frame_graphics_view,
+            signal_send_frame_graphics_view_laser=None)
+        
         self.segmentation.start_stream()
 
     def stop_stream(self):
