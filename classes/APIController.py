@@ -6,6 +6,7 @@ import numpy as np
 import requests
 import colorsys
 import logging
+import http.client
 
 
 class APIController:
@@ -81,10 +82,16 @@ class APIController:
                 response = requests.get(self._cap, timeout=20)
             except requests.exceptions.Timeout:
                 logging.critical("Запрос на получение кадра esp32 превысил время ожидания")
+            except http.client.IncompleteRead as e:
+                logging.critical(f"Несовпадение ожидаемого количества байт с фактическим. Ошибка: {e}")
             except requests.exceptions.RequestException as e:
                 logging.critical(f"Произошла в запросе на получение кадра esp32: {e}")
-
-            image_array = np.asarray(bytearray(response.content), dtype=np.uint8)
+            
+            image_array = []
+            try:
+                image_array = np.asarray(bytearray(response.content), dtype=np.uint8)
+            except UnboundLocalError as e:
+                logging.critical(f"Не создана переменная response. Ошибка {e}")
 
             # если придет пустое изображение, то image_array = 0.
             # Если в cv2.imdecode подать пустой массив, он ломается
