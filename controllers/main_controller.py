@@ -105,6 +105,7 @@ class Ui_MainWindowController(QMainWindow, main.Ui_MainWindow, QObject):
         self.pushButton_time_point_end.setEnabled(True)
         self.pushButton_time_point_start.setEnabled(False)
         GlobalVariables.set_indicator_value(self.lineEdit_indicator_value.text())
+        GlobalVariables.set_comment_value(self.lineEdit_comment_value.text())
         # GlobalVariables.set_indicator_value(False)
 
     def stop_time_point(self):
@@ -113,12 +114,16 @@ class Ui_MainWindowController(QMainWindow, main.Ui_MainWindow, QObject):
         self.pushButton_time_point_end.setEnabled(False)
         self.pushButton_time_point_start.setEnabled(True)
         # GlobalVariables.set_indicator_value(self.lineEdit_indicator_value.text())
-        GlobalVariables.set_indicator_value(False)
+        GlobalVariables.set_indicator_value(None)
+        GlobalVariables.set_comment_value(None)
 
     def update_indicator_value(self):
         pass
         # if self.pushButton_time_point_start.isEnabled():
         #     GlobalVariables.set_indicator_value(self.lineEdit_indicator_value.text())
+    
+    def update_comment_value(self):
+        pass
 
     def closeEvent(self, event):
         # Здесь можно выполнить необходимые действия перед закрытием
@@ -146,6 +151,7 @@ class Ui_MainWindowController(QMainWindow, main.Ui_MainWindow, QObject):
         self.pushButton_time_point_start.clicked.connect(lambda: self.start_time_point())
         self.pushButton_time_point_end.clicked.connect(lambda: self.stop_time_point())
         self.lineEdit_indicator_value.textChanged.connect(self.update_indicator_value)
+        self.lineEdit_comment_value.textChanged.connect(self.update_comment_value)
 
         self.add_actions()
 

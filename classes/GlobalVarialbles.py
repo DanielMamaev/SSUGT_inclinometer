@@ -4,6 +4,7 @@ from datetime import timedelta
 class GlobalVariables:
     _time_static = 0
     _indicator_value = None
+    _comment_value = None
 
     @classmethod
     def set_indicator_value(cls, value):
@@ -12,6 +13,14 @@ class GlobalVariables:
     @classmethod
     def get_indicator_value(cls):
         return cls._indicator_value
+
+    @classmethod
+    def set_comment_value(cls, value):
+        cls._comment_value = value
+
+    @classmethod
+    def get_comment_value(cls):
+        return cls._comment_value
 
     @classmethod
     def add_time_static(cls, seconds):

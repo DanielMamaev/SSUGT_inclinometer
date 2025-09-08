@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1290, 702)
+        MainWindow.resize(1290, 729)
         icon = QIcon()
         icon.addFile(u":/resource/resource/moncenter_logo.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         MainWindow.setWindowIcon(icon)
@@ -125,6 +125,11 @@ class Ui_MainWindow(object):
         self.frame_static_2.setFrameShadow(QFrame.Shadow.Raised)
         self.gridLayout_6 = QGridLayout(self.frame_static_2)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
+        self.pushButton_time_point_start = QPushButton(self.frame_static_2)
+        self.pushButton_time_point_start.setObjectName(u"pushButton_time_point_start")
+
+        self.gridLayout_6.addWidget(self.pushButton_time_point_start, 1, 0, 1, 1)
+
         self.label_3 = QLabel(self.frame_static_2)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setFont(font1)
@@ -132,21 +137,41 @@ class Ui_MainWindow(object):
 
         self.gridLayout_6.addWidget(self.label_3, 0, 0, 1, 1)
 
-        self.pushButton_time_point_start = QPushButton(self.frame_static_2)
-        self.pushButton_time_point_start.setObjectName(u"pushButton_time_point_start")
-
-        self.gridLayout_6.addWidget(self.pushButton_time_point_start, 1, 0, 1, 1)
-
         self.pushButton_time_point_end = QPushButton(self.frame_static_2)
         self.pushButton_time_point_end.setObjectName(u"pushButton_time_point_end")
         self.pushButton_time_point_end.setEnabled(False)
 
         self.gridLayout_6.addWidget(self.pushButton_time_point_end, 2, 0, 1, 1)
 
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.label_5 = QLabel(self.frame_static_2)
+        self.label_5.setObjectName(u"label_5")
+
+        self.horizontalLayout_4.addWidget(self.label_5)
+
         self.lineEdit_indicator_value = QLineEdit(self.frame_static_2)
         self.lineEdit_indicator_value.setObjectName(u"lineEdit_indicator_value")
 
-        self.gridLayout_6.addWidget(self.lineEdit_indicator_value, 3, 0, 1, 1)
+        self.horizontalLayout_4.addWidget(self.lineEdit_indicator_value)
+
+
+        self.gridLayout_6.addLayout(self.horizontalLayout_4, 6, 0, 1, 1)
+
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.label_6 = QLabel(self.frame_static_2)
+        self.label_6.setObjectName(u"label_6")
+
+        self.horizontalLayout_5.addWidget(self.label_6)
+
+        self.lineEdit_comment_value = QLineEdit(self.frame_static_2)
+        self.lineEdit_comment_value.setObjectName(u"lineEdit_comment_value")
+
+        self.horizontalLayout_5.addWidget(self.lineEdit_comment_value)
+
+
+        self.gridLayout_6.addLayout(self.horizontalLayout_5, 7, 0, 1, 1)
 
 
         self.gridLayout.addWidget(self.frame_static_2, 1, 0, 1, 1)
@@ -421,9 +446,11 @@ class Ui_MainWindow(object):
         self.label_vim_temp.setText(QCoreApplication.translate("MainWindow", u"\u0422\u0435\u043c\u043f\u0435\u0440\u0430\u0442\u0443\u0440\u0430 \u0412\u0418\u041c", None))
         self.label_value.setText(QCoreApplication.translate("MainWindow", u"\u0412\u0418\u041c", None))
         self.label_laser_xy.setText(QCoreApplication.translate("MainWindow", u"Laser (x,y)", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0424\u0443\u043d\u043a\u0446\u0438\u043e\u043d\u0430\u043b \u0440\u0435\u0436\u0438\u043c\u0430 \u0441\u0442\u0430\u0442\u0438\u043a\u0438", None))
         self.pushButton_time_point_start.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0432\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e \u0442\u043e\u0447\u043a\u0443", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0424\u0443\u043d\u043a\u0446\u0438\u043e\u043d\u0430\u043b \u0440\u0435\u0436\u0438\u043c\u0430 \u0441\u0442\u0430\u0442\u0438\u043a\u0438", None))
         self.pushButton_time_point_end.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u044c \u0432\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e \u0442\u043e\u0447\u043a\u0443", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"\u0418\u043d\u0434\u0438\u043a\u0430\u0442\u043e\u0440", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439", None))
         self.label_status_esp_icon.setText("")
         self.label_status_esp_connect.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u043f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u043a \u0412\u0418\u041c", None))
         self.label_fps_counter.setText(QCoreApplication.translate("MainWindow", u"FPS = 0", None))

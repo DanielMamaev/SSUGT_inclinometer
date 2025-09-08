@@ -40,7 +40,7 @@ class StreamController(QObject):
         self.file_saver.initialize(
             headers=['time', 'center_bubbles_px', 'nivel_x', 'nivel_y', 'nivel_t', 'temperature',
                      'watch_indicator', 'laser_x', 'laser_y', 'laser_points_x', 'laser_points_y', 'vim_points_x',
-                     'vim_points_y', "state_leds"],
+                     'vim_points_y', "state_leds", "Comment"],
             sep=';')
         self.signal_send_frame_graphics_view_vim = signal_send_frame_graphics_view_vim
         self.signal_send_frame_graphics_view_laser = signal_send_frame_graphics_view_laser
@@ -179,8 +179,8 @@ class StreamController(QObject):
                 current_time = datetime.now()
                 formatted_time = current_time.strftime("%H:%M:%S.%f")
                 indicator = GlobalVariables.get_indicator_value()
-                
-                output_data = []
+                comment = GlobalVariables.get_comment_value()
+
                 vim_points_x, vim_points_y = None, None
                 laser_points_x, laser_points_y = None, None
 
@@ -200,7 +200,7 @@ class StreamController(QObject):
                         NivelTool.current_x, NivelTool.current_y, NivelTool.current_t,
                         str(temperature), str(indicator),
                         x_laser, y_laser, laser_points_x, laser_points_y, 
-                        vim_points_x, vim_points_y, state_leds])
+                        vim_points_x, vim_points_y, state_leds, comment])
                 logging.info(
                     f"Проведена запись в файл:\n{[formatted_time, center_vim_bubbles_px, NivelTool.current_x, NivelTool.current_y, NivelTool.current_t, str(temperature), str(indicator), laser_points_x, laser_points_y, vim_points_x, vim_points_y]}")
             else:
