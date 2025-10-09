@@ -1,3 +1,4 @@
+import time
 import cv2
 import numpy as np
 import logging
@@ -128,9 +129,274 @@ class SegmentationBase:
 
         return output_image, min_contour_center_x, min_contour_center_y, points_contour
 
-    def vim_frame_processing(self, frame_original: np.ndarray, is_segmentaion_show: bool = False,
-                             is_draw_rectangle: bool = False,
-                             is_draw_points: bool = False, count_draw_points: int = 1):
+    def vim_frame_processing(
+            self,
+            frame_original: np.ndarray,
+            is_segmentaion_show: bool = False,
+            is_draw_rectangle: bool = False,
+            is_draw_points: bool = False,
+            count_draw_points: int = 1,
+            param: dict = dict()
+            ):
+        
+        results = tuple() # (Массив точек контура, фрейм, центр бабл в пикселях)
+        match param["method"]:
+            case 0: 
+                results = self._vim_frame_processing_method_1(
+                    frame_original,
+                    is_segmentaion_show,
+                    is_draw_rectangle,
+                    is_draw_points,
+                    count_draw_points
+                    )
+            case 1:
+                results = self._vim_frame_processing_method_2(
+                    frame_original,
+                    is_segmentaion_show,
+                    is_draw_points,
+                    param
+                    )
+         
+        
+        return results
+    
+    # ============ METHOD 2 ============
+
+    # Функция для удаления мелких объектов
+    @staticmethod
+    def _remove_small_objects(binary_img, min_area=100):
+        """
+        Удаляет мелкие шумы и возвращает очищенное бинарное изображение
+        """
+        # Находим все контуры
+        contours, hierarchy = cv2.findContours(binary_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        # Создаем маску для "хороших" контуров
+        mask = np.zeros_like(binary_img)
+
+        for contour in contours:
+            area = cv2.contourArea(contour)
+            if area > min_area:  # сохраняем только большие контуры
+                cv2.fillPoly(mask, [contour], 255)
+
+        return mask, contours
+    
+    # Функция для фильтрации контуров по форме и положению
+    @staticmethod
+    def _filter_contours_by_shape(
+        contours,
+        prev_center=None,
+        min_area=1000,
+        max_area=5000,
+        min_aspect_ratio=0.3,
+        max_aspect_ratio=3.0,
+        min_compactness=0.3,
+        max_distance=150
+        ):
+        """
+        Фильтрует контуры по форме, размеру и положению
+        """
+        if not contours:
+            return (0,0,0,0), (0,0), 0.0
+
+        valid_contours = []
+        contour_info = []
+
+        for contour in contours:
+            area = cv2.contourArea(contour)
+
+            # Фильтр по площади
+            if area < min_area or area > max_area:
+                continue
+
+            # Получаем bounding rectangle для анализа формы
+            x, y, w, h = cv2.boundingRect(contour)
+
+            # Фильтр по отношению сторон
+            aspect_ratio = w / h if h > 0 else 0
+            if aspect_ratio < min_aspect_ratio or aspect_ratio > max_aspect_ratio:
+                continue
+
+            # Фильтр по компактности (отношение площади контура к площади bounding box)
+            bbox_area = w * h
+            compactness = area / bbox_area if bbox_area > 0 else 0
+            if compactness < min_compactness:
+                continue
+
+            # Вычисляем центр контура
+            M = cv2.moments(contour)
+            if M["m00"] != 0:
+                center_x = int(M["m10"] / M["m00"])
+                center_y = int(M["m01"] / M["m00"])
+            else:
+                center_x = x + w // 2
+                center_y = y + h // 2
+
+            valid_contours.append(contour)
+            contour_info.append({
+                'contour': contour,
+                'bbox': (x, y, w, h),
+                'center': (center_x, center_y),
+                'area': area,
+                'aspect_ratio': aspect_ratio,
+                'compactness': compactness
+            })
+
+        if not valid_contours:
+            return (0,0,0,0), (0,0), 0.0
+
+        # Выбираем лучший контур
+        best_contour = None
+        best_score = -1
+
+        for info in contour_info:
+            score = 0
+
+            # Предпочтение контурам ближе к предыдущей позиции
+            if prev_center is not None:
+                distance = np.sqrt((info['center'][0] - prev_center[0]) ** 2 +
+                                (info['center'][1] - prev_center[1]) ** 2)
+                if distance < max_distance:
+                    score += (max_distance - distance) / max_distance * 100
+                else:
+                    continue  # Пропускаем слишком далекие контуры
+            else:
+                # Первый кадр - предпочтение большим контурам
+                score = info['area'] / 100
+
+            # Предпочтение контурам с хорошей компактностью
+            score += info['compactness'] * 50
+
+            # Предпочтение контурам с нормальным отношением сторон
+            if 0.5 <= info['aspect_ratio'] <= 2.0:
+                score += 25
+
+            if score > best_score:
+                best_score = score
+                best_contour = info
+
+        if best_contour is None:
+            return (0,0,0,0), (0,0), 0.0
+
+        return best_contour['bbox'], best_contour['center'], best_contour['area']
+     
+    # Функция для получения bounding box и центра объекта (оригинальная)
+    @staticmethod
+    def _get_object_info(contours, min_area=100):
+        """
+        Возвращает координаты bounding box и центра самого большого объекта
+        """
+        if not contours:
+            return (0,0,0,0), (0,0), 0.0
+
+        # Находим контур с максимальной площадью
+        largest_contour = max(contours, key=cv2.contourArea)
+        area = cv2.contourArea(largest_contour)
+
+        if area < min_area:
+            return (0,0,0,0), (0,0), 0.0
+
+        # Получаем bounding rectangle
+        x, y, w, h = cv2.boundingRect(largest_contour)
+
+        # Вычисляем центр объекта
+        center_x = x + w // 2
+        center_y = y + h // 2
+
+        return (x, y, w, h), (center_x, center_y), area
+    
+    def _vim_frame_processing_method_2(
+            self,
+            frame_original: np.ndarray,
+            is_segmentaion_show: bool = False,
+            is_draw_points: bool = False,
+            param: dict = dict()
+            ):
+        """
+        Метод разработан Валентином Янгалышевым
+        param = {
+            "thresh": 180,
+            "maxval": 255,
+            "method_find_contour": "large_obj" or "shape",
+            "min_area_filter": 500,
+            "points_mode": "all" or "contour"
+
+        }
+        """
+        center_bubble = (0, 0)
+        bubble_points, frame_result = np.array([]), frame_original.copy()
+        
+        # Конвертируем в grayscale и применяем пороговую обработку
+        gray = cv2.cvtColor(frame_result, cv2.COLOR_BGR2GRAY)
+        _, binary = cv2.threshold(gray, param["thresh"], param["maxval"], cv2.THRESH_BINARY) # 180, 255
+
+        # Удаляем мелкие объекты и получаем контуры
+        cleaned_binary, contours = self._remove_small_objects(binary, min_area=param["min_area_filter"])
+
+        # Получаем информацию об объекте в зависимости от выбранного метода
+        if param["method_find_contour"] == "shape":
+            _, center_bubble, _ = self._filter_contours_by_shape(
+                contours,
+                # prev_center=prev_center,
+                min_area=param["min_area_filter"],
+                max_area=5000,
+                min_aspect_ratio=0.3,
+                max_aspect_ratio=3.0,
+                min_compactness=0.3,
+                max_distance=150
+            )
+        elif param["method_find_contour"] == "large_obj":
+            _, center_bubble, _ = self._get_object_info(contours, min_area=param["min_area_filter"])
+        
+        for i, contour in enumerate(contours):
+            color = (0, 255, 0)  # Зеленый по умолчанию
+            # ВЫВОД КООРДИНАТ ТОЧЕК ДЕТЕКТИРУЕМОЙ ОБЛАСТИ
+            if len(contour) > 0:
+                # Получаем bounding rect для этого контура
+                x_cnt, y_cnt, w_cnt, h_cnt = cv2.boundingRect(contour)
+                area_cnt = cv2.contourArea(contour)
+
+                # Выводим координаты в консоль для каждого значимого контура
+                if area_cnt > param["min_area_filter"]:
+                    bubble_points_temp = []
+                    
+                    if param["points_mode"] == "all":
+                        contour_mask = np.zeros(gray.shape, dtype=np.uint8)
+                        cv2.fillPoly(contour_mask, [contour], 255)
+                        y_pts, x_pts = np.where(contour_mask == 255)
+                        brig = gray[y_pts, x_pts]
+                        bubble_points_temp = np.column_stack((x_pts, y_pts, brig))
+                    elif param["points_mode"] == "contour":
+                        re_contour = contour.reshape(-1, 2)  # убираем лишнее измерение
+                        x = re_contour[:, 0]
+                        y = re_contour[:, 1]
+                        brig = gray[y, x]
+                        bubble_points_temp = np.column_stack((x, y, brig))
+                    
+                    bubble_points = bubble_points_temp
+
+
+        if is_segmentaion_show:
+            frame_result = cv2.cvtColor(cleaned_binary, cv2.COLOR_GRAY2BGR)
+        if is_draw_points:
+            for x, y, _ in bubble_points:
+                frame_result = cv2.circle(frame_result, (x, y), 2, (0, 0, 255), -1)  # (цвет BGR: красный)
+        
+        # if frame_result == []:
+        #     frame_result = frame
+        return bubble_points, frame_result, center_bubble[0]
+        
+
+    def _vim_frame_processing_method_1(
+            self,
+            frame_original: np.ndarray,
+            is_segmentaion_show: bool = False,
+            is_draw_rectangle: bool = False,
+            is_draw_points: bool = False,
+            count_draw_points: int = 1
+            ):
+        """Метод разработан Максимом Попковым"""
+
         frame_result = frame_original.copy()
         frame = cv2.cvtColor(frame_original, cv2.COLOR_BGR2GRAY)
         ret_th, thresh = cv2.threshold(frame, 0, 255, cv2.THRESH_OTSU)
@@ -406,8 +672,28 @@ class SegmentationBase:
 if __name__ == "__main__":
     segm = SegmentationBase()
 
-    vid = cv2.VideoCapture("C:\\Users\\26549\\PycharmProjects\\SSUGT_inclinometer\\1.mkv")
+    vid = cv2.VideoCapture(r"D:\SSUGT_inclinometer\Valentin\video\laser-2025_10_04 12_58_20 — копия.avi")
 
-    ret, frame = vid.read()
+    
+    while True:
+        ret, frame = vid.read()
+        if not ret:
+            print("Видео закончено или не читается.")
+            break
 
-    segm.vim_frame_processing(frame)
+        param = {
+                "thresh": 180,
+                "maxval": 255,
+                "method_filter": "large_obj",
+                "min_area_filter": 500,
+                "points_mode": "all"
+
+            }
+        bubbles_points, frame_upd, center_bubble = segm.vim_frame_processing(frame, method=2, param=param, is_segmentaion_show=True, is_draw_points=True)
+        print(len(bubbles_points), center_bubble)
+        cv2.imshow("Frame", frame_upd)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+        time.sleep(0.05)
+    vid.release()
+    cv2.destroyAllWindows()

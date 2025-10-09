@@ -9,7 +9,7 @@ from PySide6.QtCore import QTimer, Signal, QObject
 from PySide6.QtWidgets import QMainWindow
 
 from classes.GlobalController import GlobalController
-from classes.GlobalVarialbles import GlobalVariables
+from classes.GlobalVariables import GlobalVariables
 from classes.NivelTool import NivelTool
 from classes.ShootingSpeed import ShootingSpeed
 from classes.coordinate_system_offset import CoordinateSystemOffset

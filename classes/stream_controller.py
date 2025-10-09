@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QLabel
 
 from classes.DevicesController import DevicesController
 from classes.GlobalController import GlobalController
-from classes.GlobalVarialbles import GlobalVariables
+from classes.GlobalVariables import GlobalVariables
 from classes.NivelTool import NivelTool
 from classes.ShootingSpeed import ShootingSpeed
 from classes.config_controller import ConfigController
@@ -38,14 +38,21 @@ class StreamController(QObject):
         self.video_saver_laser = VideoSaver('laser')
         self.file_saver = FileSaver()
         self.file_saver.initialize(
-            headers=['time', 'center_bubbles_px', 'nivel_x', 'nivel_y', 'nivel_t', 'temperature',
-                     'watch_indicator', 'laser_x', 'laser_y', 'laser_points_x', 'laser_points_y', 'vim_points_x',
-                     'vim_points_y', "state_leds", "Comment"],
+            headers=['time',
+                     'center_bubbles_px', 
+                     'nivel_x', 'nivel_y', 'nivel_t',
+                     'temperature',
+                     'watch_indicator', 
+                     'laser_x', 'laser_y', 'laser_points_x', 'laser_points_y',
+                     'vim_points_x', 'vim_points_y',
+                     "state_leds",
+                     "Comment"],
             sep=';')
         self.signal_send_frame_graphics_view_vim = signal_send_frame_graphics_view_vim
         self.signal_send_frame_graphics_view_laser = signal_send_frame_graphics_view_laser
         self.module_esp32_vim = ModuleESP32(type_device=TypeDevices.ESP32_VIM)
         self.module_esp32_laser = ModuleESP32(type_device=TypeDevices.ESP32_LASER)
+        print("Stream", id(GlobalVariables))
 
     def stop_stream(self):
         self.video_is_started = False

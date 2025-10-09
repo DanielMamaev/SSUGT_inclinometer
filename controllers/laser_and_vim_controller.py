@@ -9,7 +9,7 @@ from PySide6.QtCore import QTimer, Signal, QObject
 from PySide6.QtWidgets import QMainWindow
 
 from classes.GlobalController import GlobalController
-from classes.GlobalVarialbles import GlobalVariables
+from classes.GlobalVariables import GlobalVariables
 from classes.NivelTool import NivelTool
 from classes.ShootingSpeed import ShootingSpeed
 from classes.coordinate_system_offset import CoordinateSystemOffset
@@ -18,7 +18,6 @@ from controllers import start_menu_controller
 from dialogs.dialog_esp32 import Esp32Dialog
 from dialogs.dialog_linear_reg import InputDialog
 from ui import laser_and_vim
-
 
 class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     signal_send_frame_graphics_view_vim = Signal(np.ndarray)
@@ -45,6 +44,12 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         self.signal_send_frame_graphics_view_laser.connect(self.send_frame_in_graphics_view_laser)
         self.speed_frame_line_edit_changed()
         self.comboBox_speed_frame.currentIndexChanged.connect(self.combobox_speed_frame_changed)
+
+        self.add_buttons()
+
+    def add_buttons(self):
+        self.pushButton_save_settings_vim.clicked.connect(lambda: self.save_param_vim())
+        self.pushButton_save_settings_laser.clicked.connect(self.save_param_laser)
 
     def combobox_speed_frame_changed(self):
         ShootingSpeed.set_mode_speed_frame(self.comboBox_speed_frame.currentIndex())
@@ -111,6 +116,7 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         self.pushButton_time_point_start.setEnabled(False)
         GlobalVariables.set_indicator_value(self.lineEdit_indicator_value.text())
         GlobalVariables.set_comment_value(self.lineEdit_comment_value.text())
+        print(id(GlobalVariables))
         # GlobalVariables.set_indicator_value(False)
 
     def stop_time_point(self):
@@ -196,3 +202,44 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
             source_video_laser = self.lineEdit_source_video_laser.text()
             process = threading.Thread(target=lambda: self.start_stream(source_video_vim, source_video_laser))
             process.start()
+    
+    # ====== SAVE PARAM VIM and Laser ======
+    def save_param_vim(self):
+        method_find_contour = {
+            0: "shape",
+            1: "large_obj"
+        }
+        points_mode = {
+            0: "contour",
+            1: "all"
+        }
+        param = {}
+        param["method"] = self.comboBox_detect_method_vim.currentIndex()
+        param["thresh"] = int(self.lineEdit_thresh_vim.text())
+        param["maxval"] = int(self.lineEdit_maxval_vim.text())
+        param["method_find_contour"] = method_find_contour[self.comboBox_method_find_contour_vim.currentIndex()]
+        param["min_area_filter"] = int(self.lineEdit_min_area_figure_vim.text())
+        param["points_mode"] = points_mode[self.comboBox_points_mode_vim.currentIndex()]
+
+        GlobalVariables.set_param_vim(param)
+        print(GlobalVariables.get_param_vim())
+        print(id(GlobalVariables))
+
+    def save_param_laser(self):
+        method_find_contour = {
+            0: "shape",
+            1: "large_obj"
+        }
+        points_mode = {
+            0: "contour",
+            1: "all"
+        }
+        param = {}
+        param["method"] = self.comboBox_detect_method_laser.currentIndex()
+        param["thresh"] = int(self.lineEdit_thresh_laser.text())
+        param["maxval"] = int(self.lineEdit_maxval_laser.text())
+        param["method_find_contour"] = method_find_contour[self.comboBox_method_find_contour_laser.currentIndex()]
+        param["min_area_filter"] = int(self.lineEdit_min_area_figure_laser.text())
+        param["points_mode"] = points_mode[self.comboBox_points_mode_laser.currentIndex()]
+
+        print(param)
