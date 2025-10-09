@@ -30,7 +30,7 @@ class ModuleESP32:
         self.esp32_process_id = None
         self._esp32_name = ''
         self._points = np.array([])
-        self._center_bubbles_px = 0
+        self._center_bubbles_px = (0.0,0.0)
         self._fps = 0
         self._frame: np.ndarray = None
         self._frame_original: np.ndarray = None
@@ -113,7 +113,7 @@ class ModuleESP32:
         return self._points
 
     @property
-    def center_bubbles_px(self) -> float:
+    def center_bubbles_px(self) -> tuple[float, float]:
         return self._center_bubbles_px
 
     @property
@@ -151,14 +151,25 @@ class ModuleESP32:
         self._source = None
 
     def start_stream(self):
-        param_vim = GlobalVariables.get_param_vim()
         self._is_streaming = True
 
         data_api_controller = DevicesController.get_vim_api_class().get_all_data()
         self._thread.start()
+
+        param_vim = GlobalVariables.get_param_vim()
+        param_laser = GlobalVariables.get_param_laser()
+
         self.esp32_process = multiprocessing.Process(target=self.processing_vim, args=(
-            self.module_child_conn, self.module_child_sync_conn, self.segmentation, data_api_controller,
-            self._source, self._type_device, param_vim))
+            self.module_child_conn,
+            self.module_child_sync_conn,
+            self.segmentation,
+            data_api_controller,
+            self._source,
+            self._type_device,
+            param_vim,
+            param_laser
+            )
+        )
         self.esp32_process.start()
 
     def stop_stream(self):
@@ -212,7 +223,17 @@ class ModuleESP32:
                     self.esp32_process_id = value
 
     @staticmethod
-    def processing_vim(conn, sync_conn, segmentation: SegmentationBase, data_api_controller, source, type_device: TypeDevices, param_vim):
+    def processing_vim(
+        conn,
+        sync_conn, 
+        segmentation: SegmentationBase,
+        data_api_controller,
+        source,
+        type_device: TypeDevices,
+        param_vim,
+        param_laser
+        ):
+
         vim_process_id = -1
         DevicesController.get_vim_api_class().set_all_data(data_api_controller)
         DevicesController.get_vim_api_class().check_is_video_capture(source)
@@ -222,6 +243,8 @@ class ModuleESP32:
         is_draw_point = False
         is_draw_start_position = False
         count_draw_points = 1
+        prev_center_bubble = None
+        prev_center_laser = None
         while vim_process_id is not None:
             time.sleep(0.00001)
             if sync_conn.poll(0.00001):
@@ -239,17 +262,27 @@ class ModuleESP32:
                     points, frame, center_bubbles_px = segmentation.vim_frame_processing(frame_original,
                                                                                         is_segmentation,
                                                                                         is_draw_rectangle, is_draw_point,
-                                                                                        count_draw_points, param_vim)
+                                                                                        count_draw_points, param_vim, prev_center_bubble)
                     if len(points) <= 0:
                         conn.send(((points, center_bubbles_px, frame, frame_original, fps, is_camera), ProcessVIM.DATA_FRAME_VIM))
                         continue
+
+                    prev_center_bubble = center_bubbles_px
                     
-                    CoordinateSystemOffset.set_temp_start_position(center_bubbles_px)
-                    points, frame, center_bubbles_px = CoordinateSystemOffset.get_new_image_coords(points, frame, center_bubbles_px, is_draw_start_position)
+                    CoordinateSystemOffset.set_temp_start_position(center_bubbles_px[0])
+                    points, frame, center_bubbles_px_update = CoordinateSystemOffset.get_new_image_coords(points, frame, center_bubbles_px[0], is_draw_start_position)
+                    center_bubbles_px = (center_bubbles_px_update, center_bubbles_px[1])
                     conn.send(((points, center_bubbles_px, frame, frame_original, fps, is_camera), ProcessVIM.DATA_FRAME_VIM))
                 
                 elif type_device == TypeDevices.ESP32_LASER:
-                    frame, x, y, points_contour = segmentation.laser_frame_processing(frame_original.copy())
+                    frame, x, y, points_contour = segmentation.laser_frame_processing(
+                        frame_original=frame_original,
+                        is_segmentaion_show=is_segmentation,
+                        is_draw_points=is_draw_point,
+                        param=param_laser,
+                        prev_center_laser=prev_center_laser
+                        )
+                    prev_center_laser = (x, y)
                     conn.send(((frame, frame_original, fps, is_camera, x, y, points_contour), ProcessVIM.DATA_FRAME_LASER))
 
                 sync_data = None

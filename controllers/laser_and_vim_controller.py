@@ -12,6 +12,7 @@ from classes.GlobalController import GlobalController
 from classes.GlobalVariables import GlobalVariables
 from classes.NivelTool import NivelTool
 from classes.ShootingSpeed import ShootingSpeed
+from classes.config_controller import ConfigController
 from classes.coordinate_system_offset import CoordinateSystemOffset
 from classes.stream_controller import StreamController
 from controllers import start_menu_controller
@@ -26,6 +27,17 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     def __init__(self):
         super(UiVIMLaserController, self).__init__()
         self.segmentation: StreamController | None = None
+
+        self.path_param_vim = "data/vim_param.json"
+        self.path_param_laser = "data/laser_param.json"
+        self.method_find_contour = {
+            0: "shape",
+            1: "large_obj"
+        }
+        self.points_mode = {
+            0: "contour",
+            1: "all"
+        }
 
     def setupUi(self, MainWindow):
         self.MainWindow = MainWindow
@@ -46,6 +58,48 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         self.comboBox_speed_frame.currentIndexChanged.connect(self.combobox_speed_frame_changed)
 
         self.add_buttons()
+        self.set_params_ui()
+
+    def set_params_ui(self):
+        print("set_params_ui")
+        conf_vim = ConfigController(self.path_param_vim)
+        param_vim: dict = conf_vim.load()
+        
+        conf_laser = ConfigController(self.path_param_laser)
+        param_laser: dict = conf_laser.load()
+
+        if param_vim != {}:
+            self.comboBox_detect_method_vim.setCurrentIndex(param_vim["method"])
+            self.lineEdit_thresh_vim.setText(str(param_vim["thresh"]))
+            self.lineEdit_maxval_vim.setText(str(param_vim["maxval"]))
+            self.comboBox_method_find_contour_vim.setCurrentIndex(param_vim["method_find_contour"])
+            self.lineEdit_min_area_figure_vim.setText(str(param_vim["min_area_filter"]))
+            self.comboBox_points_mode_vim.setCurrentIndex(param_vim["points_mode"])
+
+            param_vim["method_find_contour"] = self.method_find_contour[param_vim["method_find_contour"]]
+            param_vim["points_mode"] = self.points_mode[param_vim["points_mode"]]
+            GlobalVariables.set_param_vim(param_vim)
+        else:
+            self.save_param_vim() # Первый запуск программы
+
+        if param_laser != {}:
+            self.comboBox_detect_method_laser.setCurrentIndex(param_laser["method"])
+            self.lineEdit_thresh_laser.setText(str(param_laser["thresh"]))
+            self.lineEdit_maxval_laser.setText(str(param_laser["maxval"]))
+            self.comboBox_method_find_contour_laser.setCurrentIndex(param_laser["method_find_contour"])
+            self.lineEdit_min_area_figure_laser.setText(str(param_laser["min_area_filter"]))
+            self.comboBox_points_mode_laser.setCurrentIndex(param_laser["points_mode"])
+
+            param_laser["method_find_contour"] = self.method_find_contour[param_laser["method_find_contour"]]
+            param_laser["points_mode"] = self.points_mode[param_laser["points_mode"]]
+            GlobalVariables.set_param_laser(param_laser)
+        else:
+            self.save_param_laser() # Первый запуск программы
+        
+        
+        
+        
+
 
     def add_buttons(self):
         self.pushButton_save_settings_vim.clicked.connect(lambda: self.save_param_vim())
@@ -205,41 +259,35 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     
     # ====== SAVE PARAM VIM and Laser ======
     def save_param_vim(self):
-        method_find_contour = {
-            0: "shape",
-            1: "large_obj"
-        }
-        points_mode = {
-            0: "contour",
-            1: "all"
-        }
+        
         param = {}
         param["method"] = self.comboBox_detect_method_vim.currentIndex()
         param["thresh"] = int(self.lineEdit_thresh_vim.text())
         param["maxval"] = int(self.lineEdit_maxval_vim.text())
-        param["method_find_contour"] = method_find_contour[self.comboBox_method_find_contour_vim.currentIndex()]
+        param["method_find_contour"] = self.method_find_contour[self.comboBox_method_find_contour_vim.currentIndex()]
         param["min_area_filter"] = int(self.lineEdit_min_area_figure_vim.text())
-        param["points_mode"] = points_mode[self.comboBox_points_mode_vim.currentIndex()]
+        param["points_mode"] = self.points_mode[self.comboBox_points_mode_vim.currentIndex()]
 
         GlobalVariables.set_param_vim(param)
-        print(GlobalVariables.get_param_vim())
-        print(id(GlobalVariables))
+
+        conf = ConfigController(self.path_param_vim)
+        param["method_find_contour"] = self.comboBox_method_find_contour_vim.currentIndex()
+        param["points_mode"] = self.comboBox_points_mode_vim.currentIndex()
+        conf.save(param)
+        
 
     def save_param_laser(self):
-        method_find_contour = {
-            0: "shape",
-            1: "large_obj"
-        }
-        points_mode = {
-            0: "contour",
-            1: "all"
-        }
         param = {}
         param["method"] = self.comboBox_detect_method_laser.currentIndex()
         param["thresh"] = int(self.lineEdit_thresh_laser.text())
         param["maxval"] = int(self.lineEdit_maxval_laser.text())
-        param["method_find_contour"] = method_find_contour[self.comboBox_method_find_contour_laser.currentIndex()]
+        param["method_find_contour"] = self.method_find_contour[self.comboBox_method_find_contour_laser.currentIndex()]
         param["min_area_filter"] = int(self.lineEdit_min_area_figure_laser.text())
-        param["points_mode"] = points_mode[self.comboBox_points_mode_laser.currentIndex()]
+        param["points_mode"] = self.points_mode[self.comboBox_points_mode_laser.currentIndex()]
 
-        print(param)
+        GlobalVariables.set_param_laser(param)
+
+        conf = ConfigController(self.path_param_laser)
+        param["method_find_contour"] = self.comboBox_method_find_contour_laser.currentIndex()
+        param["points_mode"] = self.comboBox_points_mode_laser.currentIndex()
+        conf.save(param)

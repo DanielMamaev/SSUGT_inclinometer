@@ -39,12 +39,11 @@ class StreamController(QObject):
         self.file_saver = FileSaver()
         self.file_saver.initialize(
             headers=['time',
-                     'center_bubbles_px', 
+                     'center_vim_bubble_X', 'center_vim_bubble_Y', 'vim_points_x', 'vim_points_y', "vim_points_brig", 'method_vim',
+                     'watch_indicator', 
                      'nivel_x', 'nivel_y', 'nivel_t',
                      'temperature',
-                     'watch_indicator', 
-                     'laser_x', 'laser_y', 'laser_points_x', 'laser_points_y',
-                     'vim_points_x', 'vim_points_y',
+                     'laser_x', 'laser_y', 'laser_points_x', 'laser_points_y', "laser_points_brig", 'method_laser',
                      "state_leds",
                      "Comment"],
             sep=';')
@@ -52,7 +51,6 @@ class StreamController(QObject):
         self.signal_send_frame_graphics_view_laser = signal_send_frame_graphics_view_laser
         self.module_esp32_vim = ModuleESP32(type_device=TypeDevices.ESP32_VIM)
         self.module_esp32_laser = ModuleESP32(type_device=TypeDevices.ESP32_LASER)
-        print("Stream", id(GlobalVariables))
 
     def stop_stream(self):
         self.video_is_started = False
@@ -99,14 +97,15 @@ class StreamController(QObject):
             
             frame_vim, frame_original_vim = None, None
             fps_vim, esp32_vim_name = None, None
-            center_vim_bubbles_px, points_vim, is_camera_vim = None, None, None
+            center_vim_bubble_px, points_vim, is_camera_vim = None, None, None
 
             if self.cap is not None:
-                frame_vim, frame_original_vim, fps_vim, esp32_vim_name, center_vim_bubbles_px, points_vim, is_camera_vim = (
+                frame_vim, frame_original_vim, fps_vim, esp32_vim_name, center_vim_bubble_px, points_vim, is_camera_vim = (
                     self.module_esp32_vim.frame, self.module_esp32_vim.frame_original, self.module_esp32_vim.fps,
                     self.module_esp32_vim.esp32_name,
                     self.module_esp32_vim.center_bubbles_px,
                     self.module_esp32_vim.points, self.module_esp32_vim.is_camera)
+                center_vim_bubble_X, center_vim_bubble_Y = center_vim_bubble_px 
             
             frame_laser, frame_original_laser = None, None
             fps_laser, is_camera_laser = None, None
@@ -132,7 +131,7 @@ class StreamController(QObject):
                 self.video_is_started = False
                 self.connection_is_missing(esp32_vim_name)
                 break
-
+            
             GlobalController.get_label_fps_counter().setText(f"FPS = {round(fps_vim)}")
             # frame_original = frame.copy()
             height_vim, width_vim = frame_vim.shape[:2]
@@ -149,9 +148,9 @@ class StreamController(QObject):
                 value_a = data_json.get('a', 0)
                 value_b = data_json.get('b', 0)
                 units = data_json.get('units', "''")
-                self.label_value.setText(f"ВИМ: {(center_vim_bubbles_px * value_a) + value_b}{units}")
+                self.label_value.setText(f"ВИМ: {(center_vim_bubble_X * value_a) + value_b}{units}")
             except:
-                self.label_value.setText(f"ВИМ: {center_vim_bubbles_px}пикс.")
+                self.label_value.setText(f"ВИМ: X={center_vim_bubble_X}, Y={center_vim_bubble_Y}пикс.")
             logging.info("Определение пузырька успешное")
             # self.label_status.setText("Пузырек не удалось обнаружить")
 
@@ -193,23 +192,32 @@ class StreamController(QObject):
 
                 if self.video_saver_vim.get_out() is not None:
                     self.video_saver_vim.write_frame(frame_original_vim)
-                    # vim_points_x, vim_points_y = get_new_points(points_vim if isinstance(points_vim, np.ndarray) else np.array(points_vim))
-                    vim_points_x, vim_points_y = get_new_points(points_vim)
+                    vim_points_x, vim_points_y, vim_points_brig = get_new_points(points_vim)
                 
                 if self.video_saver_laser.get_out() is not None:
                     self.video_saver_laser.write_frame(frame_original_laser)
-                    laser_points_x, laser_points_y = get_new_points(points_laser)
+                    laser_points_x, laser_points_y, laser_points_brig = get_new_points(points_laser)
+
+                index_name_method = {
+                    0: "MAX",
+                    1: "VALEN"
+                }
+                method_vim = index_name_method[GlobalVariables.get_param_vim()["method"]]
+                method_laser = index_name_method[GlobalVariables.get_param_laser()["method"]]
 
                 self.file_saver.write_data(
                     [
                         formatted_time,
-                        center_vim_bubbles_px,
+                        center_vim_bubble_X, center_vim_bubble_Y, vim_points_x, vim_points_y, vim_points_brig, method_vim,
+                        str(indicator),
                         NivelTool.current_x, NivelTool.current_y, NivelTool.current_t,
-                        str(temperature), str(indicator),
-                        x_laser, y_laser, laser_points_x, laser_points_y, 
-                        vim_points_x, vim_points_y, state_leds, comment])
-                logging.info(
-                    f"Проведена запись в файл:\n{[formatted_time, center_vim_bubbles_px, NivelTool.current_x, NivelTool.current_y, NivelTool.current_t, str(temperature), str(indicator), laser_points_x, laser_points_y, vim_points_x, vim_points_y]}")
+                        str(temperature), 
+                        x_laser, y_laser, laser_points_x, laser_points_y, laser_points_brig, method_laser,
+                        state_leds, comment
+                    ]
+                )
+                # logging.info(
+                #     f"Проведена запись в файл:\n{[formatted_time, center_vim_bubbles_px, NivelTool.current_x, NivelTool.current_y, NivelTool.current_t, str(temperature), str(indicator), laser_points_x, laser_points_y, vim_points_x, vim_points_y]}")
             else:
                 self.video_saver_vim.release()
                 self.video_saver_laser.release()

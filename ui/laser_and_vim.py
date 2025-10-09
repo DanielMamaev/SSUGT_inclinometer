@@ -539,6 +539,7 @@ class Ui_MainWindow(object):
 
         self.pushButton_save_settings_vim = QPushButton(self.gridLayoutWidget)
         self.pushButton_save_settings_vim.setObjectName(u"pushButton_save_settings_vim")
+        self.pushButton_save_settings_vim.setAutoFillBackground(False)
 
         self.gridLayout_8.addWidget(self.pushButton_save_settings_vim, 12, 0, 1, 1)
 
@@ -737,7 +738,9 @@ class Ui_MainWindow(object):
         self.pushButton_stop_stream.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0441\u0442\u0440\u0438\u043c", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_connect), QCoreApplication.translate("MainWindow", u"\u041f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u0435", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u043e\u0440 \u043c\u0435\u0442\u043e\u0434\u0430 \u0434\u0435\u0442\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u043e\u0431\u044a\u0435\u043a\u0442\u0430", None))
+        self.lineEdit_thresh_vim.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.lineEdit_thresh_vim.setPlaceholderText(QCoreApplication.translate("MainWindow", u"180", None))
+        self.lineEdit_min_area_figure_vim.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.lineEdit_min_area_figure_vim.setPlaceholderText(QCoreApplication.translate("MainWindow", u"500", None))
         self.comboBox_detect_method_vim.setItemText(0, QCoreApplication.translate("MainWindow", u"\u041c\u0435\u0442\u043e\u0434 \u041c\u0430\u043a\u0441\u0430", None))
         self.comboBox_detect_method_vim.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041c\u0435\u0442\u043e\u0434 \u0412\u0430\u043b\u0435\u043d\u0442\u0438\u043d\u0430", None))
@@ -754,11 +757,14 @@ class Ui_MainWindow(object):
         self.comboBox_points_mode_vim.setItemText(0, QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043d\u0442\u0443\u0440", None))
         self.comboBox_points_mode_vim.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043d\u0442\u0443\u0440 + \u0432\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u044f\u044f \u0447\u0430\u0441\u0442\u044c \u0444\u0438\u0433\u0443\u0440\u044b", None))
 
+        self.lineEdit_maxval_vim.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.lineEdit_maxval_vim.setPlaceholderText(QCoreApplication.translate("MainWindow", u"255", None))
         self.pushButton_save_settings_vim.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_settings), QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0412\u0418\u041c", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u043e\u0440 \u043c\u0435\u0442\u043e\u0434\u0430 \u0434\u0435\u0442\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u043e\u0431\u044a\u0435\u043a\u0442\u0430", None))
+        self.lineEdit_thresh_laser.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.lineEdit_thresh_laser.setPlaceholderText(QCoreApplication.translate("MainWindow", u"180", None))
+        self.lineEdit_min_area_figure_laser.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.lineEdit_min_area_figure_laser.setPlaceholderText(QCoreApplication.translate("MainWindow", u"500", None))
         self.comboBox_detect_method_laser.setItemText(0, QCoreApplication.translate("MainWindow", u"\u041c\u0435\u0442\u043e\u0434 \u041c\u0430\u043a\u0441\u0430", None))
         self.comboBox_detect_method_laser.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041c\u0435\u0442\u043e\u0434 \u0412\u0430\u043b\u0435\u043d\u0442\u0438\u043d\u0430", None))
@@ -775,6 +781,7 @@ class Ui_MainWindow(object):
         self.comboBox_points_mode_laser.setItemText(0, QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043d\u0442\u0443\u0440", None))
         self.comboBox_points_mode_laser.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043d\u0442\u0443\u0440 + \u0432\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u044f\u044f \u0447\u0430\u0441\u0442\u044c \u0444\u0438\u0433\u0443\u0440\u044b", None))
 
+        self.lineEdit_maxval_laser.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.lineEdit_maxval_laser.setPlaceholderText(QCoreApplication.translate("MainWindow", u"255", None))
         self.pushButton_save_settings_laser.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_settings_laser), QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u043b\u0430\u0437\u0435\u0440\u0430", None))

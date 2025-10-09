@@ -763,6 +763,9 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="text">
+               <string>0</string>
+              </property>
               <property name="placeholderText">
                <string>180</string>
               </property>
@@ -770,6 +773,9 @@
             </item>
             <item row="9" column="0">
              <widget class="QLineEdit" name="lineEdit_min_area_figure_vim">
+              <property name="text">
+               <string>0</string>
+              </property>
               <property name="placeholderText">
                <string>500</string>
               </property>
@@ -909,6 +915,9 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="text">
+               <string>0</string>
+              </property>
               <property name="placeholderText">
                <string>255</string>
               </property>
@@ -916,6 +925,9 @@
             </item>
             <item row="12" column="0">
              <widget class="QPushButton" name="pushButton_save_settings_vim">
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Сохранить</string>
               </property>
@@ -962,6 +974,9 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="text">
+               <string>0</string>
+              </property>
               <property name="placeholderText">
                <string>180</string>
               </property>
@@ -969,6 +984,9 @@
             </item>
             <item row="9" column="0">
              <widget class="QLineEdit" name="lineEdit_min_area_figure_laser">
+              <property name="text">
+               <string>0</string>
+              </property>
               <property name="placeholderText">
                <string>500</string>
               </property>
@@ -1107,6 +1125,9 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="text">
+               <string>0</string>
               </property>
               <property name="placeholderText">
                <string>255</string>

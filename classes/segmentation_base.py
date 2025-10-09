@@ -71,9 +71,39 @@ class SegmentationBase:
 
         return [], thresh, 0
 
-    def laser_frame_processing(self, frame_original: np.ndarray, is_segmentaion_show: bool = False,
+    # ====== LASER PROCESSING ======
+    def laser_frame_processing(
+            self,
+            frame_original: np.ndarray,
+            is_segmentaion_show: bool = False,
+            is_draw_rectangle: bool = False,
+            is_draw_points: bool = False,
+            param: dict = dict(),
+            prev_center_laser = None
+            ):
+        
+        results = None # (output_image, min_contour_center_x, min_contour_center_y, points_contour)
+
+        match param["method"]:
+            case 0:
+                results = self.laser_frame_processing_1(frame_original)
+            case 1:
+                laser_points, frame_result, center_laser = self._vim_frame_processing_method_2(
+                    frame_original,
+                    is_segmentaion_show,
+                    is_draw_points,
+                    param,
+                    prev_center_laser
+                    )
+                results = (frame_result, center_laser[0], center_laser[1], laser_points)
+                
+        return results
+    
+    
+    def laser_frame_processing_1(self, frame_original: np.ndarray, is_segmentaion_show: bool = False,
                                is_draw_rectangle: bool = False,
                                is_draw_points: bool = False):
+        """Метод Максима Попкова"""
         frame_result = frame_original.copy()
         # Извлечение R канала (индекс 2 в BGR)
         red_channel = frame_result[:, :, 2]
@@ -136,7 +166,8 @@ class SegmentationBase:
             is_draw_rectangle: bool = False,
             is_draw_points: bool = False,
             count_draw_points: int = 1,
-            param: dict = dict()
+            param: dict = dict(),
+            prev_center_bubble = None
             ):
         
         results = tuple() # (Массив точек контура, фрейм, центр бабл в пикселях)
@@ -154,7 +185,8 @@ class SegmentationBase:
                     frame_original,
                     is_segmentaion_show,
                     is_draw_points,
-                    param
+                    param,
+                    prev_center_bubble
                     )
          
         
@@ -191,7 +223,7 @@ class SegmentationBase:
         min_aspect_ratio=0.3,
         max_aspect_ratio=3.0,
         min_compactness=0.3,
-        max_distance=150
+        max_distance=1600
         ):
         """
         Фильтрует контуры по форме, размеру и положению
@@ -310,7 +342,8 @@ class SegmentationBase:
             frame_original: np.ndarray,
             is_segmentaion_show: bool = False,
             is_draw_points: bool = False,
-            param: dict = dict()
+            param: dict = dict(),
+            prev_center_bubble = None
             ):
         """
         Метод разработан Валентином Янгалышевым
@@ -337,7 +370,7 @@ class SegmentationBase:
         if param["method_find_contour"] == "shape":
             _, center_bubble, _ = self._filter_contours_by_shape(
                 contours,
-                # prev_center=prev_center,
+                prev_center=prev_center_bubble,
                 min_area=param["min_area_filter"],
                 max_area=5000,
                 min_aspect_ratio=0.3,
@@ -380,13 +413,12 @@ class SegmentationBase:
             frame_result = cv2.cvtColor(cleaned_binary, cv2.COLOR_GRAY2BGR)
         if is_draw_points:
             for x, y, _ in bubble_points:
-                frame_result = cv2.circle(frame_result, (x, y), 2, (0, 0, 255), -1)  # (цвет BGR: красный)
+                frame_result = cv2.circle(frame_result, (x, y), 2, (255, 0, 0), -1)  # (цвет BGR: красный)
         
         # if frame_result == []:
         #     frame_result = frame
-        return bubble_points, frame_result, center_bubble[0]
+        return bubble_points, frame_result, center_bubble
         
-
     def _vim_frame_processing_method_1(
             self,
             frame_original: np.ndarray,
@@ -435,7 +467,7 @@ class SegmentationBase:
         
         if cropped is None or cropped.size == 0:
             print("Ошибка: изображение пустое!")
-            return np.array([]), frame_result, 0.0
+            return np.array([]), frame_result, (0.0, 0,0)
         
         # Применить медианный фильтр с ядром размером 3x3 
         cropped = cv2.medianBlur(cropped, 5)
@@ -485,7 +517,7 @@ class SegmentationBase:
                 x, y, w, h = cv2.boundingRect(sorted_area_list[-1][1])
             except IndexError:
                 print(IndexError)
-                return np.array([]), frame_original, 0
+                return np.array([]), frame_original, (0, 0)
         cv2.rectangle(cropped, (x, y), (x + w, y + h), (0, 0, 0), 1)
         # Создание графика с точками
         # Транспонирование массива
@@ -536,7 +568,7 @@ class SegmentationBase:
         if new_frame is not None:
             frame_result = new_frame
 
-        center_bubbles_px = (x + (x + w)) / 2
+        center_bubbles_px = (((x + (x + w)) / 2), ((y + (y + h)) / 2))
 
         return sorted_merged_array, frame_result, center_bubbles_px
 

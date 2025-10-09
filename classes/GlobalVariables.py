@@ -44,16 +44,16 @@ class GlobalVariables:
     
     @classmethod
     def set_param_vim(cls, param: dict):
-        cls._param_vim = param
+        cls._param_vim = param.copy()
 
     @classmethod
     def get_param_vim(cls) -> dict:
         return cls._param_vim
     
     @classmethod
-    def set_param_laser(cls, param):
-        cls._param_laser = param
+    def set_param_laser(cls, param: dict):
+        cls._param_laser = param.copy()
 
     @classmethod
-    def get_param_laser(cls):
+    def get_param_laser(cls) -> dict:
         return cls._param_laser
