@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1409, 791)
+        MainWindow.resize(1409, 833)
         icon = QIcon()
         icon.addFile(u":/resource/resource/moncenter_logo.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         MainWindow.setWindowIcon(icon)
@@ -266,60 +266,17 @@ class Ui_MainWindow(object):
         self.gridLayout_4 = QGridLayout(self.frame_4)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setContentsMargins(-1, 1, -1, -1)
-        self.pushButton_start_stream = QPushButton(self.frame_4)
-        self.pushButton_start_stream.setObjectName(u"pushButton_start_stream")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.pushButton_start_stream.sizePolicy().hasHeightForWidth())
-        self.pushButton_start_stream.setSizePolicy(sizePolicy3)
+        self.lineEdit_speed_frame = QLineEdit(self.frame_4)
+        self.lineEdit_speed_frame.setObjectName(u"lineEdit_speed_frame")
+        self.lineEdit_speed_frame.setClearButtonEnabled(True)
 
-        self.gridLayout_4.addWidget(self.pushButton_start_stream, 1, 0, 1, 2)
+        self.gridLayout_4.addWidget(self.lineEdit_speed_frame, 0, 0, 1, 1)
 
-        self.checkBox_view_points = QCheckBox(self.frame_4)
-        self.checkBox_view_points.setObjectName(u"checkBox_view_points")
+        self.label_2 = QLabel(self.frame_4)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setMaximumSize(QSize(16777215, 20))
 
-        self.gridLayout_4.addWidget(self.checkBox_view_points, 11, 0, 1, 2)
-
-        self.spinBox_points = QSpinBox(self.frame_4)
-        self.spinBox_points.setObjectName(u"spinBox_points")
-        self.spinBox_points.setMinimum(1)
-
-        self.gridLayout_4.addWidget(self.spinBox_points, 9, 0, 1, 2)
-
-        self.checkBox_rectangle_show = QCheckBox(self.frame_4)
-        self.checkBox_rectangle_show.setObjectName(u"checkBox_rectangle_show")
-
-        self.gridLayout_4.addWidget(self.checkBox_rectangle_show, 12, 0, 1, 2)
-
-        self.checkBox_enable_record = QCheckBox(self.frame_4)
-        self.checkBox_enable_record.setObjectName(u"checkBox_enable_record")
-        self.checkBox_enable_record.setChecked(False)
-        self.checkBox_enable_record.setAutoRepeat(False)
-
-        self.gridLayout_4.addWidget(self.checkBox_enable_record, 7, 0, 1, 2)
-
-        self.pushButton_start_position = QPushButton(self.frame_4)
-        self.pushButton_start_position.setObjectName(u"pushButton_start_position")
-
-        self.gridLayout_4.addWidget(self.pushButton_start_position, 5, 0, 1, 2)
-
-        self.checkBox_segmentaion_show = QCheckBox(self.frame_4)
-        self.checkBox_segmentaion_show.setObjectName(u"checkBox_segmentaion_show")
-
-        self.gridLayout_4.addWidget(self.checkBox_segmentaion_show, 13, 0, 1, 2)
-
-        self.line = QFrame(self.frame_4)
-        self.line.setObjectName(u"line")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.line.sizePolicy().hasHeightForWidth())
-        self.line.setSizePolicy(sizePolicy4)
-        self.line.setFrameShape(QFrame.Shape.HLine)
-        self.line.setFrameShadow(QFrame.Shadow.Sunken)
-
-        self.gridLayout_4.addWidget(self.line, 10, 0, 1, 2)
+        self.gridLayout_4.addWidget(self.label_2, 12, 0, 1, 2)
 
         self.line_2 = QFrame(self.frame_4)
         self.line_2.setObjectName(u"line_2")
@@ -330,6 +287,55 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addWidget(self.line_2, 3, 0, 1, 2)
 
+        self.checkBox_segmentaion_show = QCheckBox(self.frame_4)
+        self.checkBox_segmentaion_show.setObjectName(u"checkBox_segmentaion_show")
+
+        self.gridLayout_4.addWidget(self.checkBox_segmentaion_show, 17, 0, 1, 2)
+
+        self.checkBox_view_points = QCheckBox(self.frame_4)
+        self.checkBox_view_points.setObjectName(u"checkBox_view_points")
+
+        self.gridLayout_4.addWidget(self.checkBox_view_points, 15, 0, 1, 2)
+
+        self.pushButton_stop_stream = QPushButton(self.frame_4)
+        self.pushButton_stop_stream.setObjectName(u"pushButton_stop_stream")
+
+        self.gridLayout_4.addWidget(self.pushButton_stop_stream, 2, 0, 1, 2)
+
+        self.checkBox_rectangle_show = QCheckBox(self.frame_4)
+        self.checkBox_rectangle_show.setObjectName(u"checkBox_rectangle_show")
+
+        self.gridLayout_4.addWidget(self.checkBox_rectangle_show, 16, 0, 1, 2)
+
+        self.line = QFrame(self.frame_4)
+        self.line.setObjectName(u"line")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.line.sizePolicy().hasHeightForWidth())
+        self.line.setSizePolicy(sizePolicy3)
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.gridLayout_4.addWidget(self.line, 14, 0, 1, 2)
+
+        self.pushButton_start_stream = QPushButton(self.frame_4)
+        self.pushButton_start_stream.setObjectName(u"pushButton_start_stream")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.pushButton_start_stream.sizePolicy().hasHeightForWidth())
+        self.pushButton_start_stream.setSizePolicy(sizePolicy4)
+
+        self.gridLayout_4.addWidget(self.pushButton_start_stream, 1, 0, 1, 2)
+
+        self.checkBox_enable_record = QCheckBox(self.frame_4)
+        self.checkBox_enable_record.setObjectName(u"checkBox_enable_record")
+        self.checkBox_enable_record.setChecked(False)
+        self.checkBox_enable_record.setAutoRepeat(False)
+
+        self.gridLayout_4.addWidget(self.checkBox_enable_record, 11, 0, 1, 2)
+
         self.comboBox_speed_frame = QComboBox(self.frame_4)
         self.comboBox_speed_frame.addItem("")
         self.comboBox_speed_frame.addItem("")
@@ -337,27 +343,41 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addWidget(self.comboBox_speed_frame, 0, 1, 1, 1)
 
-        self.lineEdit_speed_frame = QLineEdit(self.frame_4)
-        self.lineEdit_speed_frame.setObjectName(u"lineEdit_speed_frame")
-        self.lineEdit_speed_frame.setClearButtonEnabled(True)
-
-        self.gridLayout_4.addWidget(self.lineEdit_speed_frame, 0, 0, 1, 1)
-
         self.checkBox_start_position = QCheckBox(self.frame_4)
         self.checkBox_start_position.setObjectName(u"checkBox_start_position")
 
         self.gridLayout_4.addWidget(self.checkBox_start_position, 4, 0, 1, 2)
 
-        self.label_2 = QLabel(self.frame_4)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setMaximumSize(QSize(16777215, 20))
+        self.spinBox_points = QSpinBox(self.frame_4)
+        self.spinBox_points.setObjectName(u"spinBox_points")
+        self.spinBox_points.setMinimum(1)
 
-        self.gridLayout_4.addWidget(self.label_2, 8, 0, 1, 2)
+        self.gridLayout_4.addWidget(self.spinBox_points, 13, 0, 1, 2)
 
-        self.pushButton_stop_stream = QPushButton(self.frame_4)
-        self.pushButton_stop_stream.setObjectName(u"pushButton_stop_stream")
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setSpacing(6)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(-1, 0, -1, -1)
+        self.lineEdit_offset_rt = QLineEdit(self.frame_4)
+        self.lineEdit_offset_rt.setObjectName(u"lineEdit_offset_rt")
+        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.lineEdit_offset_rt.sizePolicy().hasHeightForWidth())
+        self.lineEdit_offset_rt.setSizePolicy(sizePolicy5)
+        self.lineEdit_offset_rt.setClearButtonEnabled(True)
 
-        self.gridLayout_4.addWidget(self.pushButton_stop_stream, 2, 0, 1, 2)
+        self.horizontalLayout_6.addWidget(self.lineEdit_offset_rt)
+
+        self.pushButton_start_position = QPushButton(self.frame_4)
+        self.pushButton_start_position.setObjectName(u"pushButton_start_position")
+        sizePolicy5.setHeightForWidth(self.pushButton_start_position.sizePolicy().hasHeightForWidth())
+        self.pushButton_start_position.setSizePolicy(sizePolicy5)
+
+        self.horizontalLayout_6.addWidget(self.pushButton_start_position)
+
+
+        self.gridLayout_4.addLayout(self.horizontalLayout_6, 7, 0, 2, 2)
 
         self.tabWidget.addTab(self.tab_connect, "")
         self.tab_postprocessing = QWidget()
@@ -370,26 +390,26 @@ class Ui_MainWindow(object):
         self.gridLayout_10.setContentsMargins(0, 0, 0, 0)
         self.pushButton_start_processing = QPushButton(self.gridLayoutWidget_3)
         self.pushButton_start_processing.setObjectName(u"pushButton_start_processing")
-        sizePolicy4.setHeightForWidth(self.pushButton_start_processing.sizePolicy().hasHeightForWidth())
-        self.pushButton_start_processing.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.pushButton_start_processing.sizePolicy().hasHeightForWidth())
+        self.pushButton_start_processing.setSizePolicy(sizePolicy3)
 
         self.gridLayout_10.addWidget(self.pushButton_start_processing, 9, 0, 1, 1)
 
         self.progressBar = QProgressBar(self.gridLayoutWidget_3)
         self.progressBar.setObjectName(u"progressBar")
-        sizePolicy4.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
-        self.progressBar.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
+        self.progressBar.setSizePolicy(sizePolicy3)
         self.progressBar.setValue(0)
 
         self.gridLayout_10.addWidget(self.progressBar, 8, 0, 1, 1)
 
         self.label_21 = QLabel(self.gridLayoutWidget_3)
         self.label_21.setObjectName(u"label_21")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
-        self.label_21.setSizePolicy(sizePolicy5)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
+        self.label_21.setSizePolicy(sizePolicy6)
         self.label_21.setAlignment(Qt.AlignmentFlag.AlignBottom|Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft)
 
         self.gridLayout_10.addWidget(self.label_21, 6, 0, 1, 1)
@@ -398,64 +418,64 @@ class Ui_MainWindow(object):
         self.comboBox_postprocessing_mode.addItem("")
         self.comboBox_postprocessing_mode.addItem("")
         self.comboBox_postprocessing_mode.setObjectName(u"comboBox_postprocessing_mode")
-        sizePolicy4.setHeightForWidth(self.comboBox_postprocessing_mode.sizePolicy().hasHeightForWidth())
-        self.comboBox_postprocessing_mode.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.comboBox_postprocessing_mode.sizePolicy().hasHeightForWidth())
+        self.comboBox_postprocessing_mode.setSizePolicy(sizePolicy3)
 
         self.gridLayout_10.addWidget(self.comboBox_postprocessing_mode, 1, 0, 1, 1)
 
         self.lineEdit = QLineEdit(self.gridLayoutWidget_3)
         self.lineEdit.setObjectName(u"lineEdit")
-        sizePolicy3.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
-        self.lineEdit.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
+        self.lineEdit.setSizePolicy(sizePolicy4)
 
         self.gridLayout_10.addWidget(self.lineEdit, 7, 0, 1, 1)
 
         self.label_23 = QLabel(self.gridLayoutWidget_3)
         self.label_23.setObjectName(u"label_23")
-        sizePolicy3.setHeightForWidth(self.label_23.sizePolicy().hasHeightForWidth())
-        self.label_23.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.label_23.sizePolicy().hasHeightForWidth())
+        self.label_23.setSizePolicy(sizePolicy4)
 
         self.gridLayout_10.addWidget(self.label_23, 2, 0, 1, 1)
 
         self.lineEdit_postprocessing_offset = QLineEdit(self.gridLayoutWidget_3)
         self.lineEdit_postprocessing_offset.setObjectName(u"lineEdit_postprocessing_offset")
-        sizePolicy4.setHeightForWidth(self.lineEdit_postprocessing_offset.sizePolicy().hasHeightForWidth())
-        self.lineEdit_postprocessing_offset.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.lineEdit_postprocessing_offset.sizePolicy().hasHeightForWidth())
+        self.lineEdit_postprocessing_offset.setSizePolicy(sizePolicy3)
 
         self.gridLayout_10.addWidget(self.lineEdit_postprocessing_offset, 3, 0, 1, 1)
 
         self.label_22 = QLabel(self.gridLayoutWidget_3)
         self.label_22.setObjectName(u"label_22")
-        sizePolicy3.setHeightForWidth(self.label_22.sizePolicy().hasHeightForWidth())
-        self.label_22.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.label_22.sizePolicy().hasHeightForWidth())
+        self.label_22.setSizePolicy(sizePolicy4)
 
         self.gridLayout_10.addWidget(self.label_22, 0, 0, 1, 1)
 
         self.label_24 = QLabel(self.gridLayoutWidget_3)
         self.label_24.setObjectName(u"label_24")
-        sizePolicy3.setHeightForWidth(self.label_24.sizePolicy().hasHeightForWidth())
-        self.label_24.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.label_24.sizePolicy().hasHeightForWidth())
+        self.label_24.setSizePolicy(sizePolicy4)
 
         self.gridLayout_10.addWidget(self.label_24, 4, 0, 1, 1)
 
         self.label_time = QLabel(self.gridLayoutWidget_3)
         self.label_time.setObjectName(u"label_time")
-        sizePolicy3.setHeightForWidth(self.label_time.sizePolicy().hasHeightForWidth())
-        self.label_time.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.label_time.sizePolicy().hasHeightForWidth())
+        self.label_time.setSizePolicy(sizePolicy4)
 
         self.gridLayout_10.addWidget(self.label_time, 8, 1, 1, 1)
 
         self.pushButton_select_path = QPushButton(self.gridLayoutWidget_3)
         self.pushButton_select_path.setObjectName(u"pushButton_select_path")
-        sizePolicy4.setHeightForWidth(self.pushButton_select_path.sizePolicy().hasHeightForWidth())
-        self.pushButton_select_path.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.pushButton_select_path.sizePolicy().hasHeightForWidth())
+        self.pushButton_select_path.setSizePolicy(sizePolicy3)
 
         self.gridLayout_10.addWidget(self.pushButton_select_path, 7, 1, 1, 1)
 
         self.lineEdit_postprocessing_comment = QLineEdit(self.gridLayoutWidget_3)
         self.lineEdit_postprocessing_comment.setObjectName(u"lineEdit_postprocessing_comment")
-        sizePolicy4.setHeightForWidth(self.lineEdit_postprocessing_comment.sizePolicy().hasHeightForWidth())
-        self.lineEdit_postprocessing_comment.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.lineEdit_postprocessing_comment.sizePolicy().hasHeightForWidth())
+        self.lineEdit_postprocessing_comment.setSizePolicy(sizePolicy3)
 
         self.gridLayout_10.addWidget(self.lineEdit_postprocessing_comment, 5, 0, 1, 1)
 
@@ -478,11 +498,11 @@ class Ui_MainWindow(object):
 
         self.label_8 = QLabel(self.gridLayoutWidget)
         self.label_8.setObjectName(u"label_8")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
-        self.label_8.setSizePolicy(sizePolicy6)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
+        self.label_8.setSizePolicy(sizePolicy7)
         font2 = QFont()
         font2.setBold(True)
         self.label_8.setFont(font2)
@@ -491,8 +511,8 @@ class Ui_MainWindow(object):
 
         self.line_3 = QFrame(self.gridLayoutWidget)
         self.line_3.setObjectName(u"line_3")
-        sizePolicy3.setHeightForWidth(self.line_3.sizePolicy().hasHeightForWidth())
-        self.line_3.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.line_3.sizePolicy().hasHeightForWidth())
+        self.line_3.setSizePolicy(sizePolicy4)
         self.line_3.setFrameShape(QFrame.Shape.HLine)
         self.line_3.setFrameShadow(QFrame.Shadow.Sunken)
 
@@ -500,8 +520,8 @@ class Ui_MainWindow(object):
 
         self.label_7 = QLabel(self.gridLayoutWidget)
         self.label_7.setObjectName(u"label_7")
-        sizePolicy6.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
-        self.label_7.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
+        self.label_7.setSizePolicy(sizePolicy7)
 
         self.gridLayout_8.addWidget(self.label_7, 0, 0, 1, 1)
 
@@ -536,15 +556,15 @@ class Ui_MainWindow(object):
 
         self.label_9 = QLabel(self.gridLayoutWidget)
         self.label_9.setObjectName(u"label_9")
-        sizePolicy6.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
-        self.label_9.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
+        self.label_9.setSizePolicy(sizePolicy7)
 
         self.gridLayout_8.addWidget(self.label_9, 4, 1, 1, 1)
 
         self.label_10 = QLabel(self.gridLayoutWidget)
         self.label_10.setObjectName(u"label_10")
-        sizePolicy6.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
-        self.label_10.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
+        self.label_10.setSizePolicy(sizePolicy7)
 
         self.gridLayout_8.addWidget(self.label_10, 4, 0, 1, 1)
 
@@ -552,8 +572,8 @@ class Ui_MainWindow(object):
         self.comboBox_detect_method_vim.addItem("")
         self.comboBox_detect_method_vim.addItem("")
         self.comboBox_detect_method_vim.setObjectName(u"comboBox_detect_method_vim")
-        sizePolicy6.setHeightForWidth(self.comboBox_detect_method_vim.sizePolicy().hasHeightForWidth())
-        self.comboBox_detect_method_vim.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHeightForWidth(self.comboBox_detect_method_vim.sizePolicy().hasHeightForWidth())
+        self.comboBox_detect_method_vim.setSizePolicy(sizePolicy7)
 
         self.gridLayout_8.addWidget(self.comboBox_detect_method_vim, 1, 0, 1, 1)
 
@@ -581,8 +601,8 @@ class Ui_MainWindow(object):
         self.gridLayout_9.setContentsMargins(0, 0, 0, 0)
         self.line_4 = QFrame(self.gridLayoutWidget_2)
         self.line_4.setObjectName(u"line_4")
-        sizePolicy3.setHeightForWidth(self.line_4.sizePolicy().hasHeightForWidth())
-        self.line_4.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.line_4.sizePolicy().hasHeightForWidth())
+        self.line_4.setSizePolicy(sizePolicy4)
         self.line_4.setFrameShape(QFrame.Shape.HLine)
         self.line_4.setFrameShadow(QFrame.Shadow.Sunken)
 
@@ -614,15 +634,15 @@ class Ui_MainWindow(object):
 
         self.label_15 = QLabel(self.gridLayoutWidget_2)
         self.label_15.setObjectName(u"label_15")
-        sizePolicy6.setHeightForWidth(self.label_15.sizePolicy().hasHeightForWidth())
-        self.label_15.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHeightForWidth(self.label_15.sizePolicy().hasHeightForWidth())
+        self.label_15.setSizePolicy(sizePolicy7)
 
         self.gridLayout_9.addWidget(self.label_15, 4, 0, 1, 1)
 
         self.label_19 = QLabel(self.gridLayoutWidget_2)
         self.label_19.setObjectName(u"label_19")
-        sizePolicy6.setHeightForWidth(self.label_19.sizePolicy().hasHeightForWidth())
-        self.label_19.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHeightForWidth(self.label_19.sizePolicy().hasHeightForWidth())
+        self.label_19.setSizePolicy(sizePolicy7)
         self.label_19.setFont(font2)
 
         self.gridLayout_9.addWidget(self.label_19, 3, 0, 1, 1)
@@ -641,8 +661,8 @@ class Ui_MainWindow(object):
 
         self.label_16 = QLabel(self.gridLayoutWidget_2)
         self.label_16.setObjectName(u"label_16")
-        sizePolicy6.setHeightForWidth(self.label_16.sizePolicy().hasHeightForWidth())
-        self.label_16.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHeightForWidth(self.label_16.sizePolicy().hasHeightForWidth())
+        self.label_16.setSizePolicy(sizePolicy7)
 
         self.gridLayout_9.addWidget(self.label_16, 4, 1, 1, 1)
 
@@ -655,8 +675,8 @@ class Ui_MainWindow(object):
         self.comboBox_detect_method_laser.addItem("")
         self.comboBox_detect_method_laser.addItem("")
         self.comboBox_detect_method_laser.setObjectName(u"comboBox_detect_method_laser")
-        sizePolicy6.setHeightForWidth(self.comboBox_detect_method_laser.sizePolicy().hasHeightForWidth())
-        self.comboBox_detect_method_laser.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHeightForWidth(self.comboBox_detect_method_laser.sizePolicy().hasHeightForWidth())
+        self.comboBox_detect_method_laser.setSizePolicy(sizePolicy7)
 
         self.gridLayout_9.addWidget(self.comboBox_detect_method_laser, 1, 0, 1, 1)
 
@@ -669,8 +689,8 @@ class Ui_MainWindow(object):
 
         self.label_14 = QLabel(self.gridLayoutWidget_2)
         self.label_14.setObjectName(u"label_14")
-        sizePolicy6.setHeightForWidth(self.label_14.sizePolicy().hasHeightForWidth())
-        self.label_14.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHeightForWidth(self.label_14.sizePolicy().hasHeightForWidth())
+        self.label_14.setSizePolicy(sizePolicy7)
 
         self.gridLayout_9.addWidget(self.label_14, 0, 0, 1, 1)
 
@@ -811,26 +831,27 @@ class Ui_MainWindow(object):
         self.label_status_esp_connect.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u043f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u043a \u0412\u0418\u041c", None))
         self.label_fps_counter.setText(QCoreApplication.translate("MainWindow", u"FPS = 0", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"\u0418\u0441\u0442\u043e\u0447\u043d\u0438\u043a \u0432\u0438\u0434\u0435\u043e\u043f\u043e\u0442\u043e\u043a\u0430", None))
-        self.pushButton_start_stream.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c \u0441\u0442\u0440\u0438\u043c", None))
-        self.checkBox_view_points.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c \u0442\u043e\u0447\u043a\u0438", None))
-        self.checkBox_rectangle_show.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c \u043f\u0440\u044f\u043c\u043e\u0443\u0433\u043e\u043b\u044c\u043d\u0438\u043a", None))
-        self.checkBox_enable_record.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0430\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c", None))
-        self.pushButton_start_position.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430", None))
+        self.lineEdit_speed_frame.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043a\u043e\u043b-\u0432\u043e \u0413\u0446 \u0438\u043b\u0438 \u0441\u0435\u043a\u0443\u043d\u0434 \u0432 \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0438\u0432\u0430\u044e\u0449\u0435\u0433\u043e \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u0430 \u0441\u044a\u0435\u043c\u043a\u0438", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0435\u0433\u0443\u043b\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0447\u0430\u0441\u0442\u043e\u0442\u0443 \u0437\u0430\u043f\u0438\u0441\u0438 \u0442\u043e\u0447\u0435\u043a", None))
         self.checkBox_segmentaion_show.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u0435\u0433\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044e", None))
+        self.checkBox_view_points.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c \u0442\u043e\u0447\u043a\u0438", None))
+        self.pushButton_stop_stream.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0441\u0442\u0440\u0438\u043c", None))
+        self.checkBox_rectangle_show.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c \u043f\u0440\u044f\u043c\u043e\u0443\u0433\u043e\u043b\u044c\u043d\u0438\u043a", None))
+        self.pushButton_start_stream.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c \u0441\u0442\u0440\u0438\u043c", None))
+        self.checkBox_enable_record.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0430\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c", None))
         self.comboBox_speed_frame.setItemText(0, QCoreApplication.translate("MainWindow", u"\u0413\u0446", None))
         self.comboBox_speed_frame.setItemText(1, QCoreApplication.translate("MainWindow", u"1 \u043a\u0430\u0434\u0440 \u0437\u0430 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0441\u0435\u043a\u0443\u043d\u0434", None))
 
-        self.lineEdit_speed_frame.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043a\u043e\u043b-\u0432\u043e \u0413\u0446 \u0438\u043b\u0438 \u0441\u0435\u043a\u0443\u043d\u0434 \u0432 \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0438\u0432\u0430\u044e\u0449\u0435\u0433\u043e \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u0430 \u0441\u044a\u0435\u043c\u043a\u0438", None))
         self.checkBox_start_position.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0435\u0433\u0443\u043b\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0447\u0430\u0441\u0442\u043e\u0442\u0443 \u0437\u0430\u043f\u0438\u0441\u0438 \u0442\u043e\u0447\u0435\u043a", None))
-        self.pushButton_stop_stream.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0441\u0442\u0440\u0438\u043c", None))
+        self.lineEdit_offset_rt.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u0421\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u0432 \u043f\u0438\u043a\u0441\u0435\u043b\u044f\u0445", None))
+        self.pushButton_start_position.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_connect), QCoreApplication.translate("MainWindow", u"\u041f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u0435", None))
         self.pushButton_start_processing.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0430\u0442\u044c \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0443", None))
         self.label_21.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0443\u0442\u044c \u043a \u0432\u0438\u0434\u0435\u043e\u0444\u0430\u0439\u043b\u0443", None))
         self.comboBox_postprocessing_mode.setItemText(0, QCoreApplication.translate("MainWindow", u"\u0412\u0418\u041c", None))
         self.comboBox_postprocessing_mode.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041b\u0430\u0437\u0435\u0440", None))
 
-        self.label_23.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430", None))
+        self.label_23.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430 \u043f\u043e X (\u0412\u0418\u041c)", None))
         self.lineEdit_postprocessing_offset.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.label_22.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u043e", None))
         self.label_24.setText(QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439", None))

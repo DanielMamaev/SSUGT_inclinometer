@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1409</width>
-    <height>791</height>
+    <height>833</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -458,77 +458,26 @@
             <property name="topMargin">
              <number>1</number>
             </property>
-            <item row="1" column="0" colspan="2">
-             <widget class="QPushButton" name="pushButton_start_stream">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+            <item row="0" column="0">
+             <widget class="QLineEdit" name="lineEdit_speed_frame">
+              <property name="placeholderText">
+               <string>Введите кол-во Гц или секунд в зависимости от ограничивающего параметра съемки</string>
               </property>
-              <property name="text">
-               <string>Запустить стрим</string>
-              </property>
-             </widget>
-            </item>
-            <item row="11" column="0" colspan="2">
-             <widget class="QCheckBox" name="checkBox_view_points">
-              <property name="text">
-               <string>Отобразить точки</string>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="0" colspan="2">
-             <widget class="QSpinBox" name="spinBox_points">
-              <property name="minimum">
-               <number>1</number>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
             <item row="12" column="0" colspan="2">
-             <widget class="QCheckBox" name="checkBox_rectangle_show">
+             <widget class="QLabel" name="label_2">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>20</height>
+               </size>
+              </property>
               <property name="text">
-               <string>Отобразить прямоугольник</string>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="0" colspan="2">
-             <widget class="QCheckBox" name="checkBox_enable_record">
-              <property name="text">
-               <string>Начать запись</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-              <property name="autoRepeat">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0" colspan="2">
-             <widget class="QPushButton" name="pushButton_start_position">
-              <property name="text">
-               <string>Сместить начало отсчета</string>
-              </property>
-             </widget>
-            </item>
-            <item row="13" column="0" colspan="2">
-             <widget class="QCheckBox" name="checkBox_segmentaion_show">
-              <property name="text">
-               <string>Показать сегментацию</string>
-              </property>
-             </widget>
-            </item>
-            <item row="10" column="0" colspan="2">
-             <widget class="Line" name="line">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
+               <string>Регулировать частоту записи точек</string>
               </property>
              </widget>
             </item>
@@ -548,6 +497,73 @@
               </property>
              </widget>
             </item>
+            <item row="17" column="0" colspan="2">
+             <widget class="QCheckBox" name="checkBox_segmentaion_show">
+              <property name="text">
+               <string>Показать сегментацию</string>
+              </property>
+             </widget>
+            </item>
+            <item row="15" column="0" colspan="2">
+             <widget class="QCheckBox" name="checkBox_view_points">
+              <property name="text">
+               <string>Отобразить точки</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="QPushButton" name="pushButton_stop_stream">
+              <property name="text">
+               <string>Выключить стрим</string>
+              </property>
+             </widget>
+            </item>
+            <item row="16" column="0" colspan="2">
+             <widget class="QCheckBox" name="checkBox_rectangle_show">
+              <property name="text">
+               <string>Отобразить прямоугольник</string>
+              </property>
+             </widget>
+            </item>
+            <item row="14" column="0" colspan="2">
+             <widget class="Line" name="line">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QPushButton" name="pushButton_start_stream">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Запустить стрим</string>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="0" colspan="2">
+             <widget class="QCheckBox" name="checkBox_enable_record">
+              <property name="text">
+               <string>Начать запись</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+              <property name="autoRepeat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="1">
              <widget class="QComboBox" name="comboBox_speed_frame">
               <item>
@@ -562,16 +578,6 @@
               </item>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QLineEdit" name="lineEdit_speed_frame">
-              <property name="placeholderText">
-               <string>Введите кол-во Гц или секунд в зависимости от ограничивающего параметра съемки</string>
-              </property>
-              <property name="clearButtonEnabled">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
             <item row="4" column="0" colspan="2">
              <widget class="QCheckBox" name="checkBox_start_position">
               <property name="text">
@@ -579,25 +585,51 @@
               </property>
              </widget>
             </item>
-            <item row="8" column="0" colspan="2">
-             <widget class="QLabel" name="label_2">
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Регулировать частоту записи точек</string>
+            <item row="13" column="0" colspan="2">
+             <widget class="QSpinBox" name="spinBox_points">
+              <property name="minimum">
+               <number>1</number>
               </property>
              </widget>
             </item>
-            <item row="2" column="0" colspan="2">
-             <widget class="QPushButton" name="pushButton_stop_stream">
-              <property name="text">
-               <string>Выключить стрим</string>
+            <item row="7" column="0" rowspan="2" colspan="2">
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <property name="spacing">
+               <number>6</number>
               </property>
-             </widget>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_offset_rt">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="placeholderText">
+                 <string>Смещение в пикселях</string>
+                </property>
+                <property name="clearButtonEnabled">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_start_position">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Сместить начало отсчета</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -697,7 +729,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Смещение начало отсчета</string>
+               <string>Смещение начало отсчета по X (ВИМ)</string>
               </property>
              </widget>
             </item>

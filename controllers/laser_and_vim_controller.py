@@ -313,7 +313,7 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     def add_functions(self):
         self.pushButton_start_stream.clicked.connect(lambda: self.apply_source())
         self.pushButton_stop_stream.clicked.connect(lambda: self.stop_stream())
-        self.pushButton_start_position.clicked.connect(lambda: CoordinateSystemOffset.apply_start_position())
+        self.pushButton_start_position.clicked.connect(self.set_start_position)
         self.pushButton_time_point_start.clicked.connect(lambda: self.start_time_point())
         self.pushButton_time_point_end.clicked.connect(lambda: self.stop_time_point())
         self.lineEdit_indicator_value.textChanged.connect(self.update_indicator_value)
@@ -321,6 +321,11 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
 
         self.add_actions()
 
+    def set_start_position(self):
+        value = self.lineEdit_offset_rt.text()
+        value=float(value) if value.isdigit() else 0.0
+        CoordinateSystemOffset.apply_start_position(value)
+    
     @staticmethod
     def open_directory():
         path = os.getcwd() + '\\data'
@@ -357,7 +362,16 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     def apply_source(self):
         if self.segmentation is None or not self.segmentation.video_is_started:
             source_video_vim = self.lineEdit_source_video.text()
+            if source_video_vim == '':
+                source_video_vim = None
+            
             source_video_laser = self.lineEdit_source_video_laser.text()
+            if source_video_laser == '':
+                source_video_laser = None
+            
+            if source_video_vim is None and source_video_laser is None:
+                print("Выберите какой нибудь источник!!")
+            
             process = threading.Thread(target=lambda: self.start_stream(source_video_vim, source_video_laser))
             process.start()
     

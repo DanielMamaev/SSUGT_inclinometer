@@ -78,8 +78,11 @@ class StreamController(QObject):
         logging.info("Запущен стрим видеопотока")
         self.video_is_started = True
         esp32_vim_name = ''
-        self.module_esp32_vim.set_source(self.cap)
-        self.module_esp32_vim.start_stream()
+        
+        if self.cap is not None:
+            self.module_esp32_vim.set_source(self.cap)
+            self.module_esp32_vim.start_stream()
+        
         if self._cap_laser is not None:
             self.module_esp32_laser.set_source(self._cap_laser)
             self.module_esp32_laser.start_stream()
@@ -91,13 +94,17 @@ class StreamController(QObject):
             if not ShootingSpeed.get_is_ready_shoot():
                 time.sleep(0.00000001)
                 continue
-            self.module_esp32_vim.update_data()
+            
+            if self.cap is not None:
+                self.module_esp32_vim.update_data()
+            
             if self._cap_laser is not None:
                 self.module_esp32_laser.update_data()
             
             frame_vim, frame_original_vim = None, None
             fps_vim, esp32_vim_name = None, None
             center_vim_bubble_px, points_vim, is_camera_vim = None, None, None
+            center_vim_bubble_X, center_vim_bubble_Y = None, None
 
             if self.cap is not None:
                 frame_vim, frame_original_vim, fps_vim, esp32_vim_name, center_vim_bubble_px, points_vim, is_camera_vim = (
@@ -117,55 +124,57 @@ class StreamController(QObject):
                     self.module_esp32_laser.is_camera, self.module_esp32_laser.x, self.module_esp32_laser.y,
                     self.module_esp32_laser.points)
 
-            if self.module_esp32_vim.frame is None or self.module_esp32_vim.frame_original is None:
+            
+            if (self.module_esp32_vim.frame is None or self.module_esp32_vim.frame_original is None) and \
+                (self.module_esp32_laser.frame is None or self.module_esp32_laser.frame_original is None):
                 continue
 
-            if self._cap_laser is not None:
-                if self.module_esp32_laser.frame is None or self.module_esp32_laser.frame_original is None:
-                    continue
-                if frame_vim is None and frame_laser is None:
-                    self.video_is_started = False
-                    self.connection_is_missing(esp32_vim_name)
-                    break
-            if frame_vim is None:
-                self.video_is_started = False
-                self.connection_is_missing(esp32_vim_name)
-                break
+            # """TODO эти условия под вопросом"""
+            # if frame_vim is None and frame_laser is None:
+            #     self.video_is_started = False
+            #     self.connection_is_missing(esp32_vim_name)
+            #     break
             
-            GlobalController.get_label_fps_counter().setText(f"FPS = {round(fps_vim)}")
+            # if frame_vim is None:
+            #     self.video_is_started = False
+            #     self.connection_is_missing(esp32_vim_name)
+            #     break
+            if self.cap is not None:
+                GlobalController.get_label_fps_counter().setText(f"FPS = {round(fps_vim)}")
             # frame_original = frame.copy()
-            height_vim, width_vim = frame_vim.shape[:2]
-            if self._cap_laser is not None:
+            
+            if self.cap is not None and frame_vim is not None:
+                height_vim, width_vim = frame_vim.shape[:2]
+            
+            if self._cap_laser is not None and frame_laser is not None:
                 height_laser, width_laser = frame_laser.shape[:2]
             # fps = self.cap.get(cv2.CAP_PROP_FPS)
 
-            try:
-                data_json = ConfigController('data/params_linear_reg.json').load()
-                if not data_json:
-                    raise
-                # with open('data/params_linear_reg.json', 'r') as file:
-                #     data_json = json.loads(file.read())
-                value_a = data_json.get('a', 0)
-                value_b = data_json.get('b', 0)
-                units = data_json.get('units', "''")
-                self.label_value.setText(f"ВИМ: {(center_vim_bubble_X * value_a) + value_b}{units}")
-            except:
-                self.label_value.setText(f"ВИМ: X={center_vim_bubble_X}, Y={center_vim_bubble_Y}пикс.")
-            logging.info("Определение пузырька успешное")
-            # self.label_status.setText("Пузырек не удалось обнаружить")
+            if self.cap is not None:
+                try:
+                    data_json = ConfigController('data/params_linear_reg.json').load()
+                    if not data_json:
+                        raise
+                    # with open('data/params_linear_reg.json', 'r') as file:
+                    #     data_json = json.loads(file.read())
+                    value_a = data_json.get('a', 0)
+                    value_b = data_json.get('b', 0)
+                    units = data_json.get('units', "''")
+                    self.label_value.setText(f"ВИМ: {(center_vim_bubble_X * value_a) + value_b}{units}")
+                except:
+                    self.label_value.setText(f"ВИМ: X={center_vim_bubble_X}, Y={center_vim_bubble_Y}пикс.")
+                logging.info("Определение пузырька успешное")
+                # self.label_status.setText("Пузырек не удалось обнаружить")
+            if self._cap_laser is not None:
+                self.label_laser_xy.setText(f"Laser (x, y): ({x_laser}, {y_laser}) пикс.")
 
-            try:
-                if self._cap_laser is not None:
-                    self.label_laser_xy.setText(f"Laser (x, y): ({x_laser}, {y_laser}) пикс.")
-            except Exception as e:
-                print(e)
-
-            if self.video_saver_vim.get_out() is None and GlobalController.is_recording() and self.video_saver_vim.get_record_status() is False:
-                self.video_saver_vim.initialize(
-                    fps=fps_vim,
-                    width=width_vim,
-                    height=height_vim
-                )
+            if self.cap is not None:
+                if self.video_saver_vim.get_out() is None and GlobalController.is_recording() and self.video_saver_vim.get_record_status() is False:
+                    self.video_saver_vim.initialize(
+                        fps=fps_vim,
+                        width=width_vim,
+                        height=height_vim
+                    )
             if self._cap_laser is not None:
                 if self.video_saver_laser.get_out() is None and GlobalController.is_recording() and self.video_saver_laser.get_record_status() is False:
                     self.video_saver_laser.initialize(
@@ -191,8 +200,11 @@ class StreamController(QObject):
                 laser_points_x, laser_points_y, laser_points_brig = None, None, None
 
                 if not GlobalController.get_is_checked_action_static_mode() or GlobalVariables.get_flag_time_point():
-                    vim_points_x, vim_points_y, vim_points_brig = get_new_points(points_vim)
-                    laser_points_x, laser_points_y, laser_points_brig = get_new_points(points_laser)
+                    if points_vim is not None:
+                        vim_points_x, vim_points_y, vim_points_brig = get_new_points(points_vim)
+                    
+                    if points_laser is not None:
+                        laser_points_x, laser_points_y, laser_points_brig = get_new_points(points_laser)
 
                 if self.video_saver_vim.get_out() is not None:
                     self.video_saver_vim.write_frame(frame_original_vim)
@@ -226,13 +238,17 @@ class StreamController(QObject):
                 self.video_saver_vim.release()
                 self.video_saver_laser.release()
 
-            self.signal_send_frame_graphics_view_vim.emit(frame_vim)
+            if self.cap is not None:
+                self.signal_send_frame_graphics_view_vim.emit(frame_vim)
             if self._cap_laser is not None:
                 self.signal_send_frame_graphics_view_laser.emit(frame_laser)
 
             # except Exception as e:
             #     print(e)
-        self.module_esp32_vim.stop_stream()
+        if self.cap is not None:
+            self.module_esp32_vim.stop_stream()
+        if self._cap_laser is not None:
+            self.module_esp32_laser.stop_stream()
         logging.info(f"Стрим был остановлен")
         if DevicesController.get_vim_api_class().get_is_video_capture():
             DevicesController.get_vim_api_class().get_cap().release()
