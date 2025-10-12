@@ -186,17 +186,21 @@ class StreamController(QObject):
                 formatted_time = current_time.strftime("%H:%M:%S.%f")
                 indicator = GlobalVariables.get_indicator_value()
                 comment = GlobalVariables.get_comment_value()
+                
+                vim_points_x, vim_points_y, vim_points_brig = None, None, None
+                laser_points_x, laser_points_y, laser_points_brig = None, None, None
 
-                vim_points_x, vim_points_y = None, None
-                laser_points_x, laser_points_y = None, None
+                if not GlobalController.get_is_checked_action_static_mode() or GlobalVariables.get_flag_time_point():
+                    vim_points_x, vim_points_y, vim_points_brig = get_new_points(points_vim)
+                    laser_points_x, laser_points_y, laser_points_brig = get_new_points(points_laser)
 
                 if self.video_saver_vim.get_out() is not None:
                     self.video_saver_vim.write_frame(frame_original_vim)
-                    vim_points_x, vim_points_y, vim_points_brig = get_new_points(points_vim)
+                    
                 
                 if self.video_saver_laser.get_out() is not None:
                     self.video_saver_laser.write_frame(frame_original_laser)
-                    laser_points_x, laser_points_y, laser_points_brig = get_new_points(points_laser)
+                    
 
                 index_name_method = {
                     0: "MAX",

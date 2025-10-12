@@ -14,13 +14,16 @@
    <string>Главное меню ВИМ</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resource.qrc">
+   <iconset>
     <normaloff>:/resource/resource/moncenter_logo.png</normaloff>:/resource/resource/moncenter_logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QPushButton" name="pushButton_vim">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -31,7 +34,7 @@
        <string>Перейти в ВИМ менеджер</string>
       </property>
       <property name="icon">
-       <iconset resource="../resource.qrc">
+       <iconset>
         <normaloff>:/resource/resource/esp32.png</normaloff>:/resource/resource/esp32.png</iconset>
       </property>
       <property name="iconSize">
@@ -54,7 +57,7 @@
        <string>Перейти в ВИМ + Laser менеджер</string>
       </property>
       <property name="icon">
-       <iconset resource="../resource.qrc">
+       <iconset>
         <normaloff>:/resource/resource/esp32_esp32.png</normaloff>:/resource/resource/esp32_esp32.png</iconset>
       </property>
       <property name="iconSize">
@@ -67,6 +70,9 @@
     </item>
     <item>
      <widget class="QPushButton" name="pushButton_post_processing">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -77,7 +83,7 @@
        <string>Перейти в пост обработку ВИМ</string>
       </property>
       <property name="icon">
-       <iconset resource="../resource.qrc">
+       <iconset>
         <normaloff>:/resource/resource/post_processing.png</normaloff>:/resource/resource/post_processing.png</iconset>
       </property>
       <property name="iconSize">
@@ -115,7 +121,7 @@
      <x>0</x>
      <y>0</y>
      <width>465</width>
-     <height>18</height>
+     <height>33</height>
     </rect>
    </property>
   </widget>

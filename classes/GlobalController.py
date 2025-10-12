@@ -1,4 +1,6 @@
 from PySide6.QtWidgets import QCheckBox, QSpinBox, QLabel, QPushButton
+from PySide6.QtGui import QAction
+
 
 
 class GlobalController:
@@ -16,6 +18,15 @@ class GlobalController:
     _status_esp_icon: QLabel | None = None
     _label_fps_counter: QLabel | None = None
     _pushButton_start_stream: QPushButton | None = None
+    # _action_static_mode: None | QCheckBox = None
+
+    @classmethod
+    def set_action_static_mode(cls, action_static_mode: QAction):
+        cls._action_static_mode = action_static_mode
+    
+    @classmethod
+    def get_is_checked_action_static_mode(cls) -> bool:
+        return cls._action_static_mode.isChecked()
 
     @classmethod
     def get_push_button_start_stream(cls) -> QPushButton:

@@ -5,8 +5,9 @@ import cv2
 import threading
 
 import numpy as np
-from PySide6.QtCore import QTimer, Signal, QObject
-from PySide6.QtWidgets import QMainWindow
+from PySide6.QtCore import QTimer, Signal, QObject, Signal
+from PySide6.QtWidgets import QMainWindow, QFileDialog
+
 
 from classes.GlobalController import GlobalController
 from classes.GlobalVariables import GlobalVariables
@@ -19,10 +20,14 @@ from controllers import start_menu_controller
 from dialogs.dialog_esp32 import Esp32Dialog
 from dialogs.dialog_linear_reg import InputDialog
 from ui import laser_and_vim
+from classes.post_processing import start_processing
 
 class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     signal_send_frame_graphics_view_vim = Signal(np.ndarray)
     signal_send_frame_graphics_view_laser = Signal(np.ndarray)
+
+    signal_progressbar = Signal(int)
+    signal_time_label = Signal(float)
 
     def __init__(self):
         super(UiVIMLaserController, self).__init__()
@@ -42,6 +47,9 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     def setupUi(self, MainWindow):
         self.MainWindow = MainWindow
         super().setupUi(MainWindow)
+
+        self.set_params_ui()
+
         self.disable_mode_static()
         self.initialize_global_controller()
         self.timer = QTimer()
@@ -58,10 +66,73 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         self.comboBox_speed_frame.currentIndexChanged.connect(self.combobox_speed_frame_changed)
 
         self.add_buttons()
-        self.set_params_ui()
+        self.add_comboBox()
+
+        self.add_postprocessing()
+
+    # ====== POSTPROCESSING ======
+    def add_postprocessing(self):
+        self.signal_progressbar.connect(self.set_value_progress_bar)
+        self.signal_time_label.connect(self.set_time_label)
+        self.save_path = ""
+        self.progressBar.setVisible(False)
+        self.label_time.setVisible(False)
+
+        self.pushButton_select_path.clicked.connect(lambda: self.get_save_path())
+        self.pushButton_start_processing.clicked.connect(self.start_processing)
+        self.action_main_window.triggered.connect(self.open_start_window)
+
+        self.comboBox_postprocessing_mode.currentIndexChanged.connect(lambda: GlobalVariables.set_postprocessing_mode(self.comboBox_postprocessing_mode.currentIndex()))
+        # self.add_functions()
+    
+    def set_value_progress_bar(self, percent: int):
+        if percent == 400:
+            self.progressBar.setVisible(False)
+            self.label_time.setVisible(False)
+        else:
+            self.progressBar.setValue(percent)
+    
+    def set_time_label(self, seconds: float):
+        minutes, seconds = divmod(seconds, 60)
+        if minutes > 0:
+            self.label_time.setText(f"Осталось {round(minutes)} мин {round(seconds)} с")
+        else:
+            self.label_time.setText(f"Осталось {round(seconds)} с")
+    
+    def get_save_path(self):
+        """
+        Вставка пути где будет создан новый проект
+        """
+
+        self.save_path, _ = QFileDialog.getOpenFileNames(None, "Открытие видеофайла", str(os.getcwd()),
+                                                         "Все файлы (*.*)")
+        if len(self.save_path) == 0:
+            self.save_path = ""
+            return
+        self.save_path = self.save_path[0]
+
+        self.lineEdit.setText(str(self.save_path))
+    
+    def start_processing(self):
+        if not os.path.exists(self.save_path):
+            return
+        self.progressBar.setVisible(True)
+        self.label_time.setVisible(True)
+        
+        param = {
+            "comment": self.lineEdit_postprocessing_comment.text()
+        }
+        
+        offset = int(self.lineEdit_postprocessing_offset.text())
+        if offset != 0:
+            param["offset"] = offset
+        
+        t = threading.Thread(target=start_processing, args=(self.save_path, self.signal_progressbar, self.signal_time_label, param))
+        t.start()
+    # ====== ======
+        
 
     def set_params_ui(self):
-        print("set_params_ui")
         conf_vim = ConfigController(self.path_param_vim)
         param_vim: dict = conf_vim.load()
         
@@ -80,7 +151,7 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
             param_vim["points_mode"] = self.points_mode[param_vim["points_mode"]]
             GlobalVariables.set_param_vim(param_vim)
         else:
-            self.save_param_vim() # Первый запуск программы
+            self.save_param() # Первый запуск программы
 
         if param_laser != {}:
             self.comboBox_detect_method_laser.setCurrentIndex(param_laser["method"])
@@ -94,16 +165,47 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
             param_laser["points_mode"] = self.points_mode[param_laser["points_mode"]]
             GlobalVariables.set_param_laser(param_laser)
         else:
-            self.save_param_laser() # Первый запуск программы
+            self.save_param() # Первый запуск программы
         
-        
-        
-        
-
-
     def add_buttons(self):
-        self.pushButton_save_settings_vim.clicked.connect(lambda: self.save_param_vim())
-        self.pushButton_save_settings_laser.clicked.connect(self.save_param_laser)
+        self.pushButton_save_settings.clicked.connect(self.save_param)
+    
+    def add_comboBox(self):
+        self.on_combobox_changed_vim(GlobalVariables.get_param_vim()["method"])
+        self.on_combobox_changed_laser(GlobalVariables.get_param_laser()["method"])
+
+        self.comboBox_detect_method_vim.currentIndexChanged.connect(self.on_combobox_changed_vim)
+        self.comboBox_detect_method_laser.currentIndexChanged.connect(self.on_combobox_changed_laser)
+
+    def on_combobox_changed_vim(self, index):
+        if index == 1:
+            self.lineEdit_thresh_vim.setEnabled(True)
+            self.lineEdit_maxval_vim.setEnabled(True)
+            self.comboBox_method_find_contour_vim.setEnabled(True)
+            self.comboBox_points_mode_vim.setEnabled(True)
+            self.lineEdit_min_area_figure_vim.setEnabled(True)
+            return
+        
+        self.lineEdit_thresh_vim.setEnabled(False)
+        self.lineEdit_maxval_vim.setEnabled(False)
+        self.comboBox_method_find_contour_vim.setEnabled(False)
+        self.comboBox_points_mode_vim.setEnabled(False)
+        self.lineEdit_min_area_figure_vim.setEnabled(False)
+    
+    def on_combobox_changed_laser(self, index):
+        if index == 1:
+            self.lineEdit_thresh_laser.setEnabled(True)
+            self.lineEdit_maxval_laser.setEnabled(True)
+            self.comboBox_method_find_contour_laser.setEnabled(True)
+            self.comboBox_points_mode_laser.setEnabled(True)
+            self.lineEdit_min_area_figure_laser.setEnabled(True)
+            return
+        
+        self.lineEdit_thresh_laser.setEnabled(False)
+        self.lineEdit_maxval_laser.setEnabled(False)
+        self.comboBox_method_find_contour_laser.setEnabled(False)
+        self.comboBox_points_mode_laser.setEnabled(False)
+        self.lineEdit_min_area_figure_laser.setEnabled(False)
 
     def combobox_speed_frame_changed(self):
         ShootingSpeed.set_mode_speed_frame(self.comboBox_speed_frame.currentIndex())
@@ -117,6 +219,7 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
             self.pushButton_start_stream.setEnabled(True)
 
     def initialize_global_controller(self):
+        GlobalController.set_action_static_mode(self.action_static_mode)
         GlobalController.set_label_fps_counter(self.label_fps_counter)
         GlobalController.set_label_vim_temperature(self.label_vim_temp)
         GlobalController.set_label_status_esp_connect(self.label_status_esp_connect)
@@ -166,15 +269,16 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
 
     def start_time_point(self):
         self.start_timer()
+        GlobalVariables.set_flag_time_point(True)
         self.pushButton_time_point_end.setEnabled(True)
         self.pushButton_time_point_start.setEnabled(False)
         GlobalVariables.set_indicator_value(self.lineEdit_indicator_value.text())
         GlobalVariables.set_comment_value(self.lineEdit_comment_value.text())
-        print(id(GlobalVariables))
         # GlobalVariables.set_indicator_value(False)
 
     def stop_time_point(self):
         self.stop_timer()
+        GlobalVariables.set_flag_time_point(False)
         GlobalVariables.set_time_static(0)
         self.pushButton_time_point_end.setEnabled(False)
         self.pushButton_time_point_start.setEnabled(True)
@@ -258,7 +362,7 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
             process.start()
     
     # ====== SAVE PARAM VIM and Laser ======
-    def save_param_vim(self):
+    def save_param(self):
         
         param = {}
         param["method"] = self.comboBox_detect_method_vim.currentIndex()
@@ -274,10 +378,8 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         param["method_find_contour"] = self.comboBox_method_find_contour_vim.currentIndex()
         param["points_mode"] = self.comboBox_points_mode_vim.currentIndex()
         conf.save(param)
-        
 
-    def save_param_laser(self):
-        param = {}
+      
         param["method"] = self.comboBox_detect_method_laser.currentIndex()
         param["thresh"] = int(self.lineEdit_thresh_laser.text())
         param["maxval"] = int(self.lineEdit_maxval_laser.text())
@@ -291,3 +393,4 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         param["method_find_contour"] = self.comboBox_method_find_contour_laser.currentIndex()
         param["points_mode"] = self.comboBox_points_mode_laser.currentIndex()
         conf.save(param)
+        

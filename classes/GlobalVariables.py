@@ -7,6 +7,8 @@ class GlobalVariables:
     _comment_value = None
     _param_vim: dict = {}
     _param_laser: dict = {}
+    _flag_time_point = False
+    _postprocessing_mode = 0
 
     @classmethod
     def set_indicator_value(cls, value):
@@ -57,3 +59,19 @@ class GlobalVariables:
     @classmethod
     def get_param_laser(cls) -> dict:
         return cls._param_laser
+    
+    @classmethod
+    def set_flag_time_point(cls, flag: bool):
+        cls._flag_time_point = flag 
+
+    @classmethod
+    def get_flag_time_point(cls) -> bool:
+        return cls._flag_time_point
+    
+    @classmethod
+    def set_postprocessing_mode(cls, mode: int):
+        cls._postprocessing_mode = mode 
+
+    @classmethod
+    def get_postprocessing_mode(cls) -> int:
+        return cls._postprocessing_mode
