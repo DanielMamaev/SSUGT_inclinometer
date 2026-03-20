@@ -1,14 +1,15 @@
 from datetime import timedelta
-
+import copy
 
 class GlobalVariables:
     _time_static = 0
     _indicator_value = None
     _comment_value = None
-    _param_vim: dict = {}
-    _param_laser: dict = {}
+    _params_vim: dict = {}
+    _params_laser: dict = {}
     _flag_time_point = False
     _postprocessing_mode = 0
+    _roi_coords = ((0,0), (0,0))
 
     @classmethod
     def set_indicator_value(cls, value):
@@ -45,20 +46,50 @@ class GlobalVariables:
         return text_time
     
     @classmethod
-    def set_param_vim(cls, param: dict):
-        cls._param_vim = param.copy()
-
-    @classmethod
-    def get_param_vim(cls) -> dict:
-        return cls._param_vim
+    def get_default_params_vim(cls) -> dict:
+        params_vim = {
+            "method": 0,
+            "thresh": 0,
+            "maxval": 0,
+            "method_find_contour": 0,
+            "min_area_filter": 0,
+            "points_mode": 0,
+            
+            "params_roi": {
+                "coords": ((0,0), (0, 0)),
+                "visible": False,
+                "enable": False
+            },
+        }
+        return params_vim
     
     @classmethod
-    def set_param_laser(cls, param: dict):
-        cls._param_laser = param.copy()
+    def set_params_vim(cls, params: dict):
+        cls._params_vim = copy.deepcopy(params)
 
     @classmethod
-    def get_param_laser(cls) -> dict:
-        return cls._param_laser
+    def get_params_vim(cls) -> dict:
+        return copy.deepcopy(cls._params_vim)
+    
+    @classmethod
+    def get_default_params_laser(cls):
+        params_laser = {
+            "method": 0,
+            "thresh": 0,
+            "maxval": 0,
+            "method_find_contour": 0,
+            "min_area_filter": 0,
+            "points_mode": 0
+        }
+        return params_laser
+    
+    @classmethod
+    def set_params_laser(cls, params: dict):
+        cls._params_laser = copy.deepcopy(params)
+
+    @classmethod
+    def get_params_laser(cls) -> dict:
+        return copy.deepcopy(cls._params_laser)
     
     @classmethod
     def set_flag_time_point(cls, flag: bool):

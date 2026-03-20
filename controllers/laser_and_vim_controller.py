@@ -7,6 +7,8 @@ import threading
 import numpy as np
 from PySide6.QtCore import QTimer, Signal, QObject, Signal
 from PySide6.QtWidgets import QMainWindow, QFileDialog
+from PySide6.QtGui import QGuiApplication
+
 
 
 from classes.GlobalController import GlobalController
@@ -35,6 +37,8 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
 
         self.path_param_vim = "data/vim_param.json"
         self.path_param_laser = "data/laser_param.json"
+        self.path_settings = "data/settings.json"
+
         self.method_find_contour = {
             0: "shape",
             1: "large_obj"
@@ -47,6 +51,18 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     def setupUi(self, MainWindow):
         self.MainWindow = MainWindow
         super().setupUi(MainWindow)
+
+        screen = self.MainWindow.screen() or QGuiApplication.primaryScreen()
+        if screen:
+            available = screen.availableGeometry()
+
+            width = min(self.MainWindow.width(), available.width())
+            height = min(self.MainWindow.height(), available.height())
+            self.MainWindow.resize(width, height)
+
+            x = available.x() + (available.width() - width) // 2
+            y = available.y() + (available.height() - height) // 2
+            self.MainWindow.move(x, y)
 
         self.set_params_ui()
 
@@ -69,6 +85,12 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         self.add_comboBox()
 
         self.add_postprocessing()
+
+        self.get_start_positions()
+
+    def get_start_positions(self):
+        json_data = ConfigController("data/dialog_esp32.json").load()
+        self.lineEdit_offset_rt.setText(str(json_data.get("start_position", "")))
 
     # ====== POSTPROCESSING ======
     def add_postprocessing(self):
@@ -134,45 +156,65 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
 
     def set_params_ui(self):
         conf_vim = ConfigController(self.path_param_vim)
-        param_vim: dict = conf_vim.load()
+        params_vim: dict = conf_vim.load()
         
         conf_laser = ConfigController(self.path_param_laser)
-        param_laser: dict = conf_laser.load()
+        params_laser: dict = conf_laser.load()
 
-        if param_vim != {}:
-            self.comboBox_detect_method_vim.setCurrentIndex(param_vim["method"])
-            self.lineEdit_thresh_vim.setText(str(param_vim["thresh"]))
-            self.lineEdit_maxval_vim.setText(str(param_vim["maxval"]))
-            self.comboBox_method_find_contour_vim.setCurrentIndex(param_vim["method_find_contour"])
-            self.lineEdit_min_area_figure_vim.setText(str(param_vim["min_area_filter"]))
-            self.comboBox_points_mode_vim.setCurrentIndex(param_vim["points_mode"])
+        conf_settings = ConfigController(self.path_settings)
+        settings: dict = conf_settings.load()
 
-            param_vim["method_find_contour"] = self.method_find_contour[param_vim["method_find_contour"]]
-            param_vim["points_mode"] = self.points_mode[param_vim["points_mode"]]
-            GlobalVariables.set_param_vim(param_vim)
+        if settings != {}:
+            self.lineEdit_id_nivel.setText(settings["id_nivel"])
+        else:
+            self.save_param()
+
+        if params_vim != {}:
+            self.comboBox_detect_method_vim.setCurrentIndex(params_vim["method"])
+            self.lineEdit_thresh_vim.setText(str(params_vim["thresh"]))
+            self.lineEdit_maxval_vim.setText(str(params_vim["maxval"]))
+            self.comboBox_method_find_contour_vim.setCurrentIndex(params_vim["method_find_contour"])
+            self.lineEdit_min_area_figure_vim.setText(str(params_vim["min_area_filter"]))
+            self.comboBox_points_mode_vim.setCurrentIndex(params_vim["points_mode"])
+
+            params_vim["method_find_contour"] = self.method_find_contour[params_vim["method_find_contour"]]
+            params_vim["points_mode"] = self.points_mode[params_vim["points_mode"]]
+
+            p1, p2 = params_vim["params_roi"]["coords"]
+            self.lineEdit_roi_x1.setText(str(p1[0]))
+            self.lineEdit_roi_y1.setText(str(p1[1]))
+            self.lineEdit_roi_x2.setText(str(p2[0]))
+            self.lineEdit_roi_y2.setText(str(p2[1]))
+            self.checkBox_visible_roi_rect.setChecked(params_vim["params_roi"]["visible"])
+            self.checkBox_enable_roi_rect.setChecked(params_vim["params_roi"]["enable"])
+
+            GlobalVariables.set_params_vim(params_vim)
         else:
             self.save_param() # Первый запуск программы
 
-        if param_laser != {}:
-            self.comboBox_detect_method_laser.setCurrentIndex(param_laser["method"])
-            self.lineEdit_thresh_laser.setText(str(param_laser["thresh"]))
-            self.lineEdit_maxval_laser.setText(str(param_laser["maxval"]))
-            self.comboBox_method_find_contour_laser.setCurrentIndex(param_laser["method_find_contour"])
-            self.lineEdit_min_area_figure_laser.setText(str(param_laser["min_area_filter"]))
-            self.comboBox_points_mode_laser.setCurrentIndex(param_laser["points_mode"])
+        if params_laser != {}:
+            self.comboBox_detect_method_laser.setCurrentIndex(params_laser["method"])
+            self.lineEdit_thresh_laser.setText(str(params_laser["thresh"]))
+            self.lineEdit_maxval_laser.setText(str(params_laser["maxval"]))
+            self.comboBox_method_find_contour_laser.setCurrentIndex(params_laser["method_find_contour"])
+            self.lineEdit_min_area_figure_laser.setText(str(params_laser["min_area_filter"]))
+            self.comboBox_points_mode_laser.setCurrentIndex(params_laser["points_mode"])
 
-            param_laser["method_find_contour"] = self.method_find_contour[param_laser["method_find_contour"]]
-            param_laser["points_mode"] = self.points_mode[param_laser["points_mode"]]
-            GlobalVariables.set_param_laser(param_laser)
+            params_laser["method_find_contour"] = self.method_find_contour[params_laser["method_find_contour"]]
+            params_laser["points_mode"] = self.points_mode[params_laser["points_mode"]]
+            GlobalVariables.set_params_laser(params_laser)
         else:
             self.save_param() # Первый запуск программы
         
     def add_buttons(self):
         self.pushButton_save_settings.clicked.connect(self.save_param)
+
+        self.pushButton_set_roi_coords.clicked.connect(self.set_roi_coords)
+        self.pushButton_clear_roi_coords.clicked.connect(self.clear_roi_coords)
     
     def add_comboBox(self):
-        self.on_combobox_changed_vim(GlobalVariables.get_param_vim()["method"])
-        self.on_combobox_changed_laser(GlobalVariables.get_param_laser()["method"])
+        self.on_combobox_changed_vim(GlobalVariables.get_params_vim()["method"])
+        self.on_combobox_changed_laser(GlobalVariables.get_params_laser()["method"])
 
         self.comboBox_detect_method_vim.currentIndexChanged.connect(self.on_combobox_changed_vim)
         self.comboBox_detect_method_laser.currentIndexChanged.connect(self.on_combobox_changed_laser)
@@ -233,8 +275,10 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         GlobalController.set_lineEdit_source_video_laser(self.lineEdit_source_video_laser)
         GlobalController.set_checkBox_start_position(self.checkBox_start_position)
         GlobalController.set_push_button_start_stream(self.pushButton_start_stream)
+        GlobalController.set_checkBox_visible_roi_rect(self.checkBox_visible_roi_rect)
         ShootingSpeed.set_line_edit_speed_frame(self.lineEdit_speed_frame)
         ShootingSpeed.set_combobox_speed_frame(self.comboBox_speed_frame)
+
 
     def send_frame_in_graphics_view_vim(self, frame: np.ndarray):
         self.graphicsView_vim.image_cv(frame)
@@ -334,6 +378,7 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     def add_actions(self):
         NivelTool.set_action_nivel_220(self.menu_Nivel_220)
         NivelTool.set_label_nivel_220(self.label_nivel)
+        NivelTool.set_lineedit_id_nivel(self.lineEdit_id_nivel)
         self.menu_tools.aboutToShow.connect(self.update_list_com_ports)
         self.action_open_directory.triggered.connect(self.open_directory)
         self.action_dialog_regres.triggered.connect(self.open_dialog_parameters_reg)
@@ -361,11 +406,13 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
 
     def apply_source(self):
         if self.segmentation is None or not self.segmentation.video_is_started:
-            source_video_vim = self.lineEdit_source_video.text()
+            source_video_vim = self.lineEdit_source_video.text().strip("\"").strip("\'")
+            print(source_video_vim)
             if source_video_vim == '':
                 source_video_vim = None
             
-            source_video_laser = self.lineEdit_source_video_laser.text()
+            source_video_laser = self.lineEdit_source_video_laser.text().strip("\"").strip("\'")
+            print(source_video_laser)
             if source_video_laser == '':
                 source_video_laser = None
             
@@ -377,34 +424,74 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     
     # ====== SAVE PARAM VIM and Laser ======
     def save_param(self):
+        # VIM
+        params_vim = GlobalVariables.get_default_params_vim()
+        params_vim["method"] = self.comboBox_detect_method_vim.currentIndex()
+        params_vim["thresh"] = int(self.lineEdit_thresh_vim.text())
+        params_vim["maxval"] = int(self.lineEdit_maxval_vim.text())
+        params_vim["method_find_contour"] = self.method_find_contour[self.comboBox_method_find_contour_vim.currentIndex()]
+        params_vim["min_area_filter"] = int(self.lineEdit_min_area_figure_vim.text())
+        params_vim["points_mode"] = self.points_mode[self.comboBox_points_mode_vim.currentIndex()]
+        try:
+            p1 = (int(self.lineEdit_roi_x1.text()), int(self.lineEdit_roi_y1.text()))
+            p2 = (int(self.lineEdit_roi_x2.text()), int(self.lineEdit_roi_y2.text()))
+            params_vim["params_roi"] = {
+                "coords": (p1, p2),
+                "visible": self.checkBox_visible_roi_rect.isChecked(),
+                "enable": self.checkBox_enable_roi_rect.isChecked()
+            }
+        except Exception as e:
+            print(e)
         
-        param = {}
-        param["method"] = self.comboBox_detect_method_vim.currentIndex()
-        param["thresh"] = int(self.lineEdit_thresh_vim.text())
-        param["maxval"] = int(self.lineEdit_maxval_vim.text())
-        param["method_find_contour"] = self.method_find_contour[self.comboBox_method_find_contour_vim.currentIndex()]
-        param["min_area_filter"] = int(self.lineEdit_min_area_figure_vim.text())
-        param["points_mode"] = self.points_mode[self.comboBox_points_mode_vim.currentIndex()]
-
-        GlobalVariables.set_param_vim(param)
+        GlobalVariables.set_params_vim(params_vim)
 
         conf = ConfigController(self.path_param_vim)
-        param["method_find_contour"] = self.comboBox_method_find_contour_vim.currentIndex()
-        param["points_mode"] = self.comboBox_points_mode_vim.currentIndex()
-        conf.save(param)
+        params_vim["method_find_contour"] = self.comboBox_method_find_contour_vim.currentIndex()
+        params_vim["points_mode"] = self.comboBox_points_mode_vim.currentIndex()
+        conf.save(params_vim)
 
-      
-        param["method"] = self.comboBox_detect_method_laser.currentIndex()
-        param["thresh"] = int(self.lineEdit_thresh_laser.text())
-        param["maxval"] = int(self.lineEdit_maxval_laser.text())
-        param["method_find_contour"] = self.method_find_contour[self.comboBox_method_find_contour_laser.currentIndex()]
-        param["min_area_filter"] = int(self.lineEdit_min_area_figure_laser.text())
-        param["points_mode"] = self.points_mode[self.comboBox_points_mode_laser.currentIndex()]
+        # Laser
+        params_laser = GlobalVariables.get_default_params_laser()
+        params_laser["method"] = self.comboBox_detect_method_laser.currentIndex()
+        params_laser["thresh"] = int(self.lineEdit_thresh_laser.text())
+        params_laser["maxval"] = int(self.lineEdit_maxval_laser.text())
+        params_laser["method_find_contour"] = self.method_find_contour[self.comboBox_method_find_contour_laser.currentIndex()]
+        params_laser["min_area_filter"] = int(self.lineEdit_min_area_figure_laser.text())
+        params_laser["points_mode"] = self.points_mode[self.comboBox_points_mode_laser.currentIndex()]
 
-        GlobalVariables.set_param_laser(param)
+        GlobalVariables.set_params_laser(params_laser)
 
         conf = ConfigController(self.path_param_laser)
-        param["method_find_contour"] = self.comboBox_method_find_contour_laser.currentIndex()
-        param["points_mode"] = self.comboBox_points_mode_laser.currentIndex()
-        conf.save(param)
+        params_laser["method_find_contour"] = self.comboBox_method_find_contour_laser.currentIndex()
+        params_laser["points_mode"] = self.comboBox_points_mode_laser.currentIndex()
+        conf.save(params_laser)
+
+        # Settings
+        conf = ConfigController(self.path_settings)
+        settings = {}
+        settings["id_nivel"] = self.lineEdit_id_nivel.text()
+        conf.save(settings)
         
+
+
+    def set_roi_coords(self):
+        try:
+            p1 = (int(self.lineEdit_roi_x1.text()), int(self.lineEdit_roi_y1.text()))
+            p2 = (int(self.lineEdit_roi_x2.text()), int(self.lineEdit_roi_y2.text()))
+            params_vim = GlobalVariables.get_params_vim()
+            params_vim["params_roi"] = {
+                "coords": (p1, p2),
+                "visible": self.checkBox_visible_roi_rect.isChecked(),
+                "enable": self.checkBox_enable_roi_rect.isChecked()
+            }
+            GlobalVariables.set_params_vim(params_vim)
+        except Exception as e:
+            print(e)
+
+    def clear_roi_coords(self):
+        self.lineEdit_roi_x1.setText("0") 
+        self.lineEdit_roi_y1.setText("0")
+        self.lineEdit_roi_x2.setText("0")
+        self.lineEdit_roi_y2.setText("0")
+
+        self.set_roi_coords()

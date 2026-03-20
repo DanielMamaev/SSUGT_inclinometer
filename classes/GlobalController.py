@@ -18,7 +18,7 @@ class GlobalController:
     _status_esp_icon: QLabel | None = None
     _label_fps_counter: QLabel | None = None
     _pushButton_start_stream: QPushButton | None = None
-    # _action_static_mode: None | QCheckBox = None
+    _checkBox_visible_roi_rect: QCheckBox | None = None
 
     @classmethod
     def set_action_static_mode(cls, action_static_mode: QAction):
@@ -151,3 +151,13 @@ class GlobalController:
         if cls._checkBox_start_position is None:
             return False
         return cls._checkBox_start_position.isChecked()
+    
+    @classmethod
+    def set_checkBox_visible_roi_rect(cls, value):
+        cls._checkBox_visible_roi_rect = value
+    
+    @classmethod
+    def is_draw_roi_rect(cls):
+        if cls._checkBox_visible_roi_rect is None:
+            return False
+        return cls._checkBox_visible_roi_rect.isChecked()

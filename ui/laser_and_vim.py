@@ -19,8 +19,8 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
     QGridLayout, QHBoxLayout, QLabel, QLayout,
     QLineEdit, QMainWindow, QMenu, QMenuBar,
-    QProgressBar, QPushButton, QSizePolicy, QSpinBox,
-    QStatusBar, QTabWidget, QWidget)
+    QProgressBar, QPushButton, QSizePolicy, QSpacerItem,
+    QSpinBox, QStatusBar, QTabWidget, QWidget)
 
 from widgets.graphicsviewvideo import QGraphicsViewVideo
 import resource_rc
@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1409, 833)
+        MainWindow.resize(1531, 833)
         icon = QIcon()
         icon.addFile(u":/resource/resource/moncenter_logo.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         MainWindow.setWindowIcon(icon)
@@ -136,6 +136,16 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addWidget(self.graphicsView_vim, 1, 0, 1, 1)
 
+        self.pushButton_save_settings = QPushButton(self.frame)
+        self.pushButton_save_settings.setObjectName(u"pushButton_save_settings")
+
+        self.gridLayout_2.addWidget(self.pushButton_save_settings, 0, 1, 1, 1)
+
+        self.graphicsView_laser = QGraphicsViewVideo(self.frame)
+        self.graphicsView_laser.setObjectName(u"graphicsView_laser")
+
+        self.gridLayout_2.addWidget(self.graphicsView_laser, 2, 0, 1, 1)
+
         self.tabWidget = QTabWidget(self.frame)
         self.tabWidget.setObjectName(u"tabWidget")
         self.tab_connect = QWidget()
@@ -185,6 +195,12 @@ class Ui_MainWindow(object):
 
         self.gridLayout_7.addWidget(self.frame_7, 0, 0, 1, 1)
 
+        self.label_laser = QLabel(self.frame_6)
+        self.label_laser.setObjectName(u"label_laser")
+        self.label_laser.setMinimumSize(QSize(0, 0))
+
+        self.gridLayout_7.addWidget(self.label_laser, 2, 0, 1, 1)
+
         self.label_fps_counter_laser = QLabel(self.frame_6)
         self.label_fps_counter_laser.setObjectName(u"label_fps_counter_laser")
 
@@ -196,12 +212,6 @@ class Ui_MainWindow(object):
         self.lineEdit_source_video_laser.setMinimumSize(QSize(0, 30))
 
         self.gridLayout_7.addWidget(self.lineEdit_source_video_laser, 3, 0, 1, 1)
-
-        self.label_laser = QLabel(self.frame_6)
-        self.label_laser.setObjectName(u"label_laser")
-        self.label_laser.setMinimumSize(QSize(0, 0))
-
-        self.gridLayout_7.addWidget(self.label_laser, 2, 0, 1, 1)
 
         self.frame_3 = QFrame(self.tab_connect)
         self.frame_3.setObjectName(u"frame_3")
@@ -266,17 +276,71 @@ class Ui_MainWindow(object):
         self.gridLayout_4 = QGridLayout(self.frame_4)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setContentsMargins(-1, 1, -1, -1)
-        self.lineEdit_speed_frame = QLineEdit(self.frame_4)
-        self.lineEdit_speed_frame.setObjectName(u"lineEdit_speed_frame")
-        self.lineEdit_speed_frame.setClearButtonEnabled(True)
+        self.comboBox_speed_frame = QComboBox(self.frame_4)
+        self.comboBox_speed_frame.addItem("")
+        self.comboBox_speed_frame.addItem("")
+        self.comboBox_speed_frame.setObjectName(u"comboBox_speed_frame")
 
-        self.gridLayout_4.addWidget(self.lineEdit_speed_frame, 0, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.comboBox_speed_frame, 0, 1, 1, 1)
+
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setSpacing(6)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(-1, 0, -1, -1)
+        self.lineEdit_offset_rt = QLineEdit(self.frame_4)
+        self.lineEdit_offset_rt.setObjectName(u"lineEdit_offset_rt")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.lineEdit_offset_rt.sizePolicy().hasHeightForWidth())
+        self.lineEdit_offset_rt.setSizePolicy(sizePolicy3)
+        self.lineEdit_offset_rt.setClearButtonEnabled(True)
+
+        self.horizontalLayout_6.addWidget(self.lineEdit_offset_rt)
+
+        self.pushButton_start_position = QPushButton(self.frame_4)
+        self.pushButton_start_position.setObjectName(u"pushButton_start_position")
+        sizePolicy3.setHeightForWidth(self.pushButton_start_position.sizePolicy().hasHeightForWidth())
+        self.pushButton_start_position.setSizePolicy(sizePolicy3)
+
+        self.horizontalLayout_6.addWidget(self.pushButton_start_position)
+
+
+        self.gridLayout_4.addLayout(self.horizontalLayout_6, 7, 0, 2, 2)
 
         self.label_2 = QLabel(self.frame_4)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setMaximumSize(QSize(16777215, 20))
 
         self.gridLayout_4.addWidget(self.label_2, 12, 0, 1, 2)
+
+        self.checkBox_view_points = QCheckBox(self.frame_4)
+        self.checkBox_view_points.setObjectName(u"checkBox_view_points")
+
+        self.gridLayout_4.addWidget(self.checkBox_view_points, 15, 0, 1, 2)
+
+        self.pushButton_stop_stream = QPushButton(self.frame_4)
+        self.pushButton_stop_stream.setObjectName(u"pushButton_stop_stream")
+
+        self.gridLayout_4.addWidget(self.pushButton_stop_stream, 2, 0, 1, 2)
+
+        self.line = QFrame(self.frame_4)
+        self.line.setObjectName(u"line")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.line.sizePolicy().hasHeightForWidth())
+        self.line.setSizePolicy(sizePolicy4)
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.gridLayout_4.addWidget(self.line, 14, 0, 1, 2)
+
+        self.lineEdit_speed_frame = QLineEdit(self.frame_4)
+        self.lineEdit_speed_frame.setObjectName(u"lineEdit_speed_frame")
+        self.lineEdit_speed_frame.setClearButtonEnabled(True)
+
+        self.gridLayout_4.addWidget(self.lineEdit_speed_frame, 0, 0, 1, 1)
 
         self.line_2 = QFrame(self.frame_4)
         self.line_2.setObjectName(u"line_2")
@@ -292,40 +356,13 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addWidget(self.checkBox_segmentaion_show, 17, 0, 1, 2)
 
-        self.checkBox_view_points = QCheckBox(self.frame_4)
-        self.checkBox_view_points.setObjectName(u"checkBox_view_points")
-
-        self.gridLayout_4.addWidget(self.checkBox_view_points, 15, 0, 1, 2)
-
-        self.pushButton_stop_stream = QPushButton(self.frame_4)
-        self.pushButton_stop_stream.setObjectName(u"pushButton_stop_stream")
-
-        self.gridLayout_4.addWidget(self.pushButton_stop_stream, 2, 0, 1, 2)
-
-        self.checkBox_rectangle_show = QCheckBox(self.frame_4)
-        self.checkBox_rectangle_show.setObjectName(u"checkBox_rectangle_show")
-
-        self.gridLayout_4.addWidget(self.checkBox_rectangle_show, 16, 0, 1, 2)
-
-        self.line = QFrame(self.frame_4)
-        self.line.setObjectName(u"line")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.line.sizePolicy().hasHeightForWidth())
-        self.line.setSizePolicy(sizePolicy3)
-        self.line.setFrameShape(QFrame.Shape.HLine)
-        self.line.setFrameShadow(QFrame.Shadow.Sunken)
-
-        self.gridLayout_4.addWidget(self.line, 14, 0, 1, 2)
-
         self.pushButton_start_stream = QPushButton(self.frame_4)
         self.pushButton_start_stream.setObjectName(u"pushButton_start_stream")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.pushButton_start_stream.sizePolicy().hasHeightForWidth())
-        self.pushButton_start_stream.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.pushButton_start_stream.sizePolicy().hasHeightForWidth())
+        self.pushButton_start_stream.setSizePolicy(sizePolicy5)
 
         self.gridLayout_4.addWidget(self.pushButton_start_stream, 1, 0, 1, 2)
 
@@ -336,48 +373,21 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addWidget(self.checkBox_enable_record, 11, 0, 1, 2)
 
-        self.comboBox_speed_frame = QComboBox(self.frame_4)
-        self.comboBox_speed_frame.addItem("")
-        self.comboBox_speed_frame.addItem("")
-        self.comboBox_speed_frame.setObjectName(u"comboBox_speed_frame")
-
-        self.gridLayout_4.addWidget(self.comboBox_speed_frame, 0, 1, 1, 1)
-
         self.checkBox_start_position = QCheckBox(self.frame_4)
         self.checkBox_start_position.setObjectName(u"checkBox_start_position")
 
         self.gridLayout_4.addWidget(self.checkBox_start_position, 4, 0, 1, 2)
+
+        self.checkBox_rectangle_show = QCheckBox(self.frame_4)
+        self.checkBox_rectangle_show.setObjectName(u"checkBox_rectangle_show")
+
+        self.gridLayout_4.addWidget(self.checkBox_rectangle_show, 16, 0, 1, 2)
 
         self.spinBox_points = QSpinBox(self.frame_4)
         self.spinBox_points.setObjectName(u"spinBox_points")
         self.spinBox_points.setMinimum(1)
 
         self.gridLayout_4.addWidget(self.spinBox_points, 13, 0, 1, 2)
-
-        self.horizontalLayout_6 = QHBoxLayout()
-        self.horizontalLayout_6.setSpacing(6)
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.horizontalLayout_6.setContentsMargins(-1, 0, -1, -1)
-        self.lineEdit_offset_rt = QLineEdit(self.frame_4)
-        self.lineEdit_offset_rt.setObjectName(u"lineEdit_offset_rt")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.lineEdit_offset_rt.sizePolicy().hasHeightForWidth())
-        self.lineEdit_offset_rt.setSizePolicy(sizePolicy5)
-        self.lineEdit_offset_rt.setClearButtonEnabled(True)
-
-        self.horizontalLayout_6.addWidget(self.lineEdit_offset_rt)
-
-        self.pushButton_start_position = QPushButton(self.frame_4)
-        self.pushButton_start_position.setObjectName(u"pushButton_start_position")
-        sizePolicy5.setHeightForWidth(self.pushButton_start_position.sizePolicy().hasHeightForWidth())
-        self.pushButton_start_position.setSizePolicy(sizePolicy5)
-
-        self.horizontalLayout_6.addWidget(self.pushButton_start_position)
-
-
-        self.gridLayout_4.addLayout(self.horizontalLayout_6, 7, 0, 2, 2)
 
         self.tabWidget.addTab(self.tab_connect, "")
         self.tab_postprocessing = QWidget()
@@ -390,15 +400,15 @@ class Ui_MainWindow(object):
         self.gridLayout_10.setContentsMargins(0, 0, 0, 0)
         self.pushButton_start_processing = QPushButton(self.gridLayoutWidget_3)
         self.pushButton_start_processing.setObjectName(u"pushButton_start_processing")
-        sizePolicy3.setHeightForWidth(self.pushButton_start_processing.sizePolicy().hasHeightForWidth())
-        self.pushButton_start_processing.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.pushButton_start_processing.sizePolicy().hasHeightForWidth())
+        self.pushButton_start_processing.setSizePolicy(sizePolicy4)
 
         self.gridLayout_10.addWidget(self.pushButton_start_processing, 9, 0, 1, 1)
 
         self.progressBar = QProgressBar(self.gridLayoutWidget_3)
         self.progressBar.setObjectName(u"progressBar")
-        sizePolicy3.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
-        self.progressBar.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
+        self.progressBar.setSizePolicy(sizePolicy4)
         self.progressBar.setValue(0)
 
         self.gridLayout_10.addWidget(self.progressBar, 8, 0, 1, 1)
@@ -418,89 +428,134 @@ class Ui_MainWindow(object):
         self.comboBox_postprocessing_mode.addItem("")
         self.comboBox_postprocessing_mode.addItem("")
         self.comboBox_postprocessing_mode.setObjectName(u"comboBox_postprocessing_mode")
-        sizePolicy3.setHeightForWidth(self.comboBox_postprocessing_mode.sizePolicy().hasHeightForWidth())
-        self.comboBox_postprocessing_mode.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.comboBox_postprocessing_mode.sizePolicy().hasHeightForWidth())
+        self.comboBox_postprocessing_mode.setSizePolicy(sizePolicy4)
 
         self.gridLayout_10.addWidget(self.comboBox_postprocessing_mode, 1, 0, 1, 1)
 
         self.lineEdit = QLineEdit(self.gridLayoutWidget_3)
         self.lineEdit.setObjectName(u"lineEdit")
-        sizePolicy4.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
-        self.lineEdit.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
+        self.lineEdit.setSizePolicy(sizePolicy5)
 
         self.gridLayout_10.addWidget(self.lineEdit, 7, 0, 1, 1)
 
         self.label_23 = QLabel(self.gridLayoutWidget_3)
         self.label_23.setObjectName(u"label_23")
-        sizePolicy4.setHeightForWidth(self.label_23.sizePolicy().hasHeightForWidth())
-        self.label_23.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.label_23.sizePolicy().hasHeightForWidth())
+        self.label_23.setSizePolicy(sizePolicy5)
 
         self.gridLayout_10.addWidget(self.label_23, 2, 0, 1, 1)
 
         self.lineEdit_postprocessing_offset = QLineEdit(self.gridLayoutWidget_3)
         self.lineEdit_postprocessing_offset.setObjectName(u"lineEdit_postprocessing_offset")
-        sizePolicy3.setHeightForWidth(self.lineEdit_postprocessing_offset.sizePolicy().hasHeightForWidth())
-        self.lineEdit_postprocessing_offset.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.lineEdit_postprocessing_offset.sizePolicy().hasHeightForWidth())
+        self.lineEdit_postprocessing_offset.setSizePolicy(sizePolicy4)
 
         self.gridLayout_10.addWidget(self.lineEdit_postprocessing_offset, 3, 0, 1, 1)
 
         self.label_22 = QLabel(self.gridLayoutWidget_3)
         self.label_22.setObjectName(u"label_22")
-        sizePolicy4.setHeightForWidth(self.label_22.sizePolicy().hasHeightForWidth())
-        self.label_22.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.label_22.sizePolicy().hasHeightForWidth())
+        self.label_22.setSizePolicy(sizePolicy5)
 
         self.gridLayout_10.addWidget(self.label_22, 0, 0, 1, 1)
 
         self.label_24 = QLabel(self.gridLayoutWidget_3)
         self.label_24.setObjectName(u"label_24")
-        sizePolicy4.setHeightForWidth(self.label_24.sizePolicy().hasHeightForWidth())
-        self.label_24.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.label_24.sizePolicy().hasHeightForWidth())
+        self.label_24.setSizePolicy(sizePolicy5)
 
         self.gridLayout_10.addWidget(self.label_24, 4, 0, 1, 1)
 
         self.label_time = QLabel(self.gridLayoutWidget_3)
         self.label_time.setObjectName(u"label_time")
-        sizePolicy4.setHeightForWidth(self.label_time.sizePolicy().hasHeightForWidth())
-        self.label_time.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.label_time.sizePolicy().hasHeightForWidth())
+        self.label_time.setSizePolicy(sizePolicy5)
 
         self.gridLayout_10.addWidget(self.label_time, 8, 1, 1, 1)
 
         self.pushButton_select_path = QPushButton(self.gridLayoutWidget_3)
         self.pushButton_select_path.setObjectName(u"pushButton_select_path")
-        sizePolicy3.setHeightForWidth(self.pushButton_select_path.sizePolicy().hasHeightForWidth())
-        self.pushButton_select_path.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.pushButton_select_path.sizePolicy().hasHeightForWidth())
+        self.pushButton_select_path.setSizePolicy(sizePolicy4)
 
         self.gridLayout_10.addWidget(self.pushButton_select_path, 7, 1, 1, 1)
 
         self.lineEdit_postprocessing_comment = QLineEdit(self.gridLayoutWidget_3)
         self.lineEdit_postprocessing_comment.setObjectName(u"lineEdit_postprocessing_comment")
-        sizePolicy3.setHeightForWidth(self.lineEdit_postprocessing_comment.sizePolicy().hasHeightForWidth())
-        self.lineEdit_postprocessing_comment.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.lineEdit_postprocessing_comment.sizePolicy().hasHeightForWidth())
+        self.lineEdit_postprocessing_comment.setSizePolicy(sizePolicy4)
 
         self.gridLayout_10.addWidget(self.lineEdit_postprocessing_comment, 5, 0, 1, 1)
 
         self.tabWidget.addTab(self.tab_postprocessing, "")
-        self.tab_settings = QWidget()
-        self.tab_settings.setObjectName(u"tab_settings")
-        self.gridLayoutWidget = QWidget(self.tab_settings)
+        self.tab_settings_vim = QWidget()
+        self.tab_settings_vim.setObjectName(u"tab_settings_vim")
+        self.gridLayoutWidget = QWidget(self.tab_settings_vim)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(9, 9, 411, 411))
+        self.gridLayoutWidget.setGeometry(QRect(9, 9, 591, 411))
         self.gridLayout_8 = QGridLayout(self.gridLayoutWidget)
         self.gridLayout_8.setObjectName(u"gridLayout_8")
         self.gridLayout_8.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.gridLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.lineEdit_thresh_vim = QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_thresh_vim.setObjectName(u"lineEdit_thresh_vim")
-        sizePolicy2.setHeightForWidth(self.lineEdit_thresh_vim.sizePolicy().hasHeightForWidth())
-        self.lineEdit_thresh_vim.setSizePolicy(sizePolicy2)
+        self.lineEdit_min_area_figure_vim = QLineEdit(self.gridLayoutWidget)
+        self.lineEdit_min_area_figure_vim.setObjectName(u"lineEdit_min_area_figure_vim")
 
-        self.gridLayout_8.addWidget(self.lineEdit_thresh_vim, 5, 0, 1, 1)
+        self.gridLayout_8.addWidget(self.lineEdit_min_area_figure_vim, 9, 0, 1, 1)
 
-        self.label_8 = QLabel(self.gridLayoutWidget)
-        self.label_8.setObjectName(u"label_8")
+        self.label_10 = QLabel(self.gridLayoutWidget)
+        self.label_10.setObjectName(u"label_10")
         sizePolicy7 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy7.setHorizontalStretch(0)
         sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
+        self.label_10.setSizePolicy(sizePolicy7)
+
+        self.gridLayout_8.addWidget(self.label_10, 4, 0, 1, 1)
+
+        self.label_9 = QLabel(self.gridLayoutWidget)
+        self.label_9.setObjectName(u"label_9")
+        sizePolicy7.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
+        self.label_9.setSizePolicy(sizePolicy7)
+
+        self.gridLayout_8.addWidget(self.label_9, 4, 1, 1, 1)
+
+        self.label_12 = QLabel(self.gridLayoutWidget)
+        self.label_12.setObjectName(u"label_12")
+
+        self.gridLayout_8.addWidget(self.label_12, 8, 0, 1, 1)
+
+        self.label_26 = QLabel(self.gridLayoutWidget)
+        self.label_26.setObjectName(u"label_26")
+
+        self.gridLayout_8.addWidget(self.label_26, 13, 0, 1, 1)
+
+        self.comboBox_detect_method_vim = QComboBox(self.gridLayoutWidget)
+        self.comboBox_detect_method_vim.addItem("")
+        self.comboBox_detect_method_vim.addItem("")
+        self.comboBox_detect_method_vim.setObjectName(u"comboBox_detect_method_vim")
+        sizePolicy7.setHeightForWidth(self.comboBox_detect_method_vim.sizePolicy().hasHeightForWidth())
+        self.comboBox_detect_method_vim.setSizePolicy(sizePolicy7)
+
+        self.gridLayout_8.addWidget(self.comboBox_detect_method_vim, 1, 0, 1, 1)
+
+        self.line_5 = QFrame(self.gridLayoutWidget)
+        self.line_5.setObjectName(u"line_5")
+        sizePolicy5.setHeightForWidth(self.line_5.sizePolicy().hasHeightForWidth())
+        self.line_5.setSizePolicy(sizePolicy5)
+        self.line_5.setFrameShape(QFrame.Shape.HLine)
+        self.line_5.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.gridLayout_8.addWidget(self.line_5, 12, 0, 1, 2)
+
+        self.lineEdit_roi_x2 = QLineEdit(self.gridLayoutWidget)
+        self.lineEdit_roi_x2.setObjectName(u"lineEdit_roi_x2")
+
+        self.gridLayout_8.addWidget(self.lineEdit_roi_x2, 14, 3, 1, 1)
+
+        self.label_8 = QLabel(self.gridLayoutWidget)
+        self.label_8.setObjectName(u"label_8")
         sizePolicy7.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
         self.label_8.setSizePolicy(sizePolicy7)
         font2 = QFont()
@@ -509,14 +564,29 @@ class Ui_MainWindow(object):
 
         self.gridLayout_8.addWidget(self.label_8, 3, 0, 1, 1)
 
-        self.line_3 = QFrame(self.gridLayoutWidget)
-        self.line_3.setObjectName(u"line_3")
-        sizePolicy4.setHeightForWidth(self.line_3.sizePolicy().hasHeightForWidth())
-        self.line_3.setSizePolicy(sizePolicy4)
-        self.line_3.setFrameShape(QFrame.Shape.HLine)
-        self.line_3.setFrameShadow(QFrame.Shadow.Sunken)
+        self.label_25 = QLabel(self.gridLayoutWidget)
+        self.label_25.setObjectName(u"label_25")
 
-        self.gridLayout_8.addWidget(self.line_3, 2, 0, 1, 2)
+        self.gridLayout_8.addWidget(self.label_25, 14, 0, 1, 1)
+
+        self.lineEdit_roi_x1 = QLineEdit(self.gridLayoutWidget)
+        self.lineEdit_roi_x1.setObjectName(u"lineEdit_roi_x1")
+
+        self.gridLayout_8.addWidget(self.lineEdit_roi_x1, 14, 1, 1, 1)
+
+        self.lineEdit_maxval_vim = QLineEdit(self.gridLayoutWidget)
+        self.lineEdit_maxval_vim.setObjectName(u"lineEdit_maxval_vim")
+        sizePolicy2.setHeightForWidth(self.lineEdit_maxval_vim.sizePolicy().hasHeightForWidth())
+        self.lineEdit_maxval_vim.setSizePolicy(sizePolicy2)
+
+        self.gridLayout_8.addWidget(self.lineEdit_maxval_vim, 5, 1, 1, 1)
+
+        self.lineEdit_thresh_vim = QLineEdit(self.gridLayoutWidget)
+        self.lineEdit_thresh_vim.setObjectName(u"lineEdit_thresh_vim")
+        sizePolicy2.setHeightForWidth(self.lineEdit_thresh_vim.sizePolicy().hasHeightForWidth())
+        self.lineEdit_thresh_vim.setSizePolicy(sizePolicy2)
+
+        self.gridLayout_8.addWidget(self.lineEdit_thresh_vim, 5, 0, 1, 1)
 
         self.label_7 = QLabel(self.gridLayoutWidget)
         self.label_7.setObjectName(u"label_7")
@@ -525,12 +595,10 @@ class Ui_MainWindow(object):
 
         self.gridLayout_8.addWidget(self.label_7, 0, 0, 1, 1)
 
-        self.comboBox_method_find_contour_vim = QComboBox(self.gridLayoutWidget)
-        self.comboBox_method_find_contour_vim.addItem("")
-        self.comboBox_method_find_contour_vim.addItem("")
-        self.comboBox_method_find_contour_vim.setObjectName(u"comboBox_method_find_contour_vim")
+        self.lineEdit_roi_y2 = QLineEdit(self.gridLayoutWidget)
+        self.lineEdit_roi_y2.setObjectName(u"lineEdit_roi_y2")
 
-        self.gridLayout_8.addWidget(self.comboBox_method_find_contour_vim, 7, 0, 1, 1)
+        self.gridLayout_8.addWidget(self.lineEdit_roi_y2, 14, 4, 1, 1)
 
         self.comboBox_points_mode_vim = QComboBox(self.gridLayoutWidget)
         self.comboBox_points_mode_vim.addItem("")
@@ -539,10 +607,26 @@ class Ui_MainWindow(object):
 
         self.gridLayout_8.addWidget(self.comboBox_points_mode_vim, 11, 0, 1, 1)
 
-        self.lineEdit_min_area_figure_vim = QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_min_area_figure_vim.setObjectName(u"lineEdit_min_area_figure_vim")
+        self.comboBox_method_find_contour_vim = QComboBox(self.gridLayoutWidget)
+        self.comboBox_method_find_contour_vim.addItem("")
+        self.comboBox_method_find_contour_vim.addItem("")
+        self.comboBox_method_find_contour_vim.setObjectName(u"comboBox_method_find_contour_vim")
 
-        self.gridLayout_8.addWidget(self.lineEdit_min_area_figure_vim, 9, 0, 1, 1)
+        self.gridLayout_8.addWidget(self.comboBox_method_find_contour_vim, 7, 0, 1, 1)
+
+        self.lineEdit_roi_y1 = QLineEdit(self.gridLayoutWidget)
+        self.lineEdit_roi_y1.setObjectName(u"lineEdit_roi_y1")
+
+        self.gridLayout_8.addWidget(self.lineEdit_roi_y1, 14, 2, 1, 1)
+
+        self.line_3 = QFrame(self.gridLayoutWidget)
+        self.line_3.setObjectName(u"line_3")
+        sizePolicy5.setHeightForWidth(self.line_3.sizePolicy().hasHeightForWidth())
+        self.line_3.setSizePolicy(sizePolicy5)
+        self.line_3.setFrameShape(QFrame.Shape.HLine)
+        self.line_3.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.gridLayout_8.addWidget(self.line_3, 2, 0, 1, 2)
 
         self.label_13 = QLabel(self.gridLayoutWidget)
         self.label_13.setObjectName(u"label_13")
@@ -554,42 +638,27 @@ class Ui_MainWindow(object):
 
         self.gridLayout_8.addWidget(self.label_11, 6, 0, 1, 1)
 
-        self.label_9 = QLabel(self.gridLayoutWidget)
-        self.label_9.setObjectName(u"label_9")
-        sizePolicy7.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
-        self.label_9.setSizePolicy(sizePolicy7)
+        self.pushButton_set_roi_coords = QPushButton(self.gridLayoutWidget)
+        self.pushButton_set_roi_coords.setObjectName(u"pushButton_set_roi_coords")
 
-        self.gridLayout_8.addWidget(self.label_9, 4, 1, 1, 1)
+        self.gridLayout_8.addWidget(self.pushButton_set_roi_coords, 15, 1, 1, 1)
 
-        self.label_10 = QLabel(self.gridLayoutWidget)
-        self.label_10.setObjectName(u"label_10")
-        sizePolicy7.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
-        self.label_10.setSizePolicy(sizePolicy7)
+        self.pushButton_clear_roi_coords = QPushButton(self.gridLayoutWidget)
+        self.pushButton_clear_roi_coords.setObjectName(u"pushButton_clear_roi_coords")
 
-        self.gridLayout_8.addWidget(self.label_10, 4, 0, 1, 1)
+        self.gridLayout_8.addWidget(self.pushButton_clear_roi_coords, 15, 2, 1, 1)
 
-        self.comboBox_detect_method_vim = QComboBox(self.gridLayoutWidget)
-        self.comboBox_detect_method_vim.addItem("")
-        self.comboBox_detect_method_vim.addItem("")
-        self.comboBox_detect_method_vim.setObjectName(u"comboBox_detect_method_vim")
-        sizePolicy7.setHeightForWidth(self.comboBox_detect_method_vim.sizePolicy().hasHeightForWidth())
-        self.comboBox_detect_method_vim.setSizePolicy(sizePolicy7)
+        self.checkBox_visible_roi_rect = QCheckBox(self.gridLayoutWidget)
+        self.checkBox_visible_roi_rect.setObjectName(u"checkBox_visible_roi_rect")
 
-        self.gridLayout_8.addWidget(self.comboBox_detect_method_vim, 1, 0, 1, 1)
+        self.gridLayout_8.addWidget(self.checkBox_visible_roi_rect, 15, 3, 1, 1)
 
-        self.label_12 = QLabel(self.gridLayoutWidget)
-        self.label_12.setObjectName(u"label_12")
+        self.checkBox_enable_roi_rect = QCheckBox(self.gridLayoutWidget)
+        self.checkBox_enable_roi_rect.setObjectName(u"checkBox_enable_roi_rect")
 
-        self.gridLayout_8.addWidget(self.label_12, 8, 0, 1, 1)
+        self.gridLayout_8.addWidget(self.checkBox_enable_roi_rect, 15, 4, 1, 1)
 
-        self.lineEdit_maxval_vim = QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_maxval_vim.setObjectName(u"lineEdit_maxval_vim")
-        sizePolicy2.setHeightForWidth(self.lineEdit_maxval_vim.sizePolicy().hasHeightForWidth())
-        self.lineEdit_maxval_vim.setSizePolicy(sizePolicy2)
-
-        self.gridLayout_8.addWidget(self.lineEdit_maxval_vim, 5, 1, 1, 1)
-
-        self.tabWidget.addTab(self.tab_settings, "")
+        self.tabWidget.addTab(self.tab_settings_vim, "")
         self.tab_settings_laser = QWidget()
         self.tab_settings_laser.setObjectName(u"tab_settings_laser")
         self.gridLayoutWidget_2 = QWidget(self.tab_settings_laser)
@@ -601,8 +670,8 @@ class Ui_MainWindow(object):
         self.gridLayout_9.setContentsMargins(0, 0, 0, 0)
         self.line_4 = QFrame(self.gridLayoutWidget_2)
         self.line_4.setObjectName(u"line_4")
-        sizePolicy4.setHeightForWidth(self.line_4.sizePolicy().hasHeightForWidth())
-        self.line_4.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.line_4.sizePolicy().hasHeightForWidth())
+        self.line_4.setSizePolicy(sizePolicy5)
         self.line_4.setFrameShape(QFrame.Shape.HLine)
         self.line_4.setFrameShadow(QFrame.Shadow.Sunken)
 
@@ -695,18 +764,36 @@ class Ui_MainWindow(object):
         self.gridLayout_9.addWidget(self.label_14, 0, 0, 1, 1)
 
         self.tabWidget.addTab(self.tab_settings_laser, "")
+        self.tab_settings = QWidget()
+        self.tab_settings.setObjectName(u"tab_settings")
+        self.gridLayoutWidget_4 = QWidget(self.tab_settings)
+        self.gridLayoutWidget_4.setObjectName(u"gridLayoutWidget_4")
+        self.gridLayoutWidget_4.setGeometry(QRect(0, 10, 521, 51))
+        self.gridLayout_12 = QGridLayout(self.gridLayoutWidget_4)
+        self.gridLayout_12.setObjectName(u"gridLayout_12")
+        self.gridLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.label_27 = QLabel(self.gridLayoutWidget_4)
+        self.label_27.setObjectName(u"label_27")
+
+        self.horizontalLayout_8.addWidget(self.label_27)
+
+        self.lineEdit_id_nivel = QLineEdit(self.gridLayoutWidget_4)
+        self.lineEdit_id_nivel.setObjectName(u"lineEdit_id_nivel")
+
+        self.horizontalLayout_8.addWidget(self.lineEdit_id_nivel)
+
+
+        self.gridLayout_12.addLayout(self.horizontalLayout_8, 0, 0, 1, 1)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_12.addItem(self.horizontalSpacer, 0, 1, 1, 1)
+
+        self.tabWidget.addTab(self.tab_settings, "")
 
         self.gridLayout_2.addWidget(self.tabWidget, 1, 1, 2, 1)
-
-        self.graphicsView_laser = QGraphicsViewVideo(self.frame)
-        self.graphicsView_laser.setObjectName(u"graphicsView_laser")
-
-        self.gridLayout_2.addWidget(self.graphicsView_laser, 2, 0, 1, 1)
-
-        self.pushButton_save_settings = QPushButton(self.frame)
-        self.pushButton_save_settings.setObjectName(u"pushButton_save_settings")
-
-        self.gridLayout_2.addWidget(self.pushButton_save_settings, 0, 1, 1, 1)
 
 
         self.gridLayout.addWidget(self.frame, 1, 1, 2, 1)
@@ -777,7 +864,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1409, 33))
+        self.menubar.setGeometry(QRect(0, 0, 1531, 33))
         self.menu_tools = QMenu(self.menubar)
         self.menu_tools.setObjectName(u"menu_tools")
         self.menu_tools.setEnabled(True)
@@ -823,28 +910,31 @@ class Ui_MainWindow(object):
         self.pushButton_time_point_end.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u044c \u0432\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e \u0442\u043e\u0447\u043a\u0443", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"\u0418\u043d\u0434\u0438\u043a\u0430\u0442\u043e\u0440", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439", None))
+        self.pushButton_save_settings.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
         self.label_status_esp_laser_icon_2.setText("")
         self.label_status_esp_laser_connect_2.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u043f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u043a \u041b\u0430\u0437\u0435\u0440\u0443 (esp32)", None))
-        self.label_fps_counter_laser.setText(QCoreApplication.translate("MainWindow", u"FPS = 0", None))
         self.label_laser.setText(QCoreApplication.translate("MainWindow", u"\u0418\u0441\u0442\u043e\u0447\u043d\u0438\u043a \u0432\u0438\u0434\u0435\u043e\u043f\u043e\u0442\u043e\u043a\u0430", None))
+        self.label_fps_counter_laser.setText(QCoreApplication.translate("MainWindow", u"FPS = 0", None))
+        self.lineEdit_source_video_laser.setText(QCoreApplication.translate("MainWindow", u"\"D:\\General\\\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b\\SSUGT_inclinometer\\examples\\data\\laser.mp4\"", None))
         self.label_status_esp_icon.setText("")
         self.label_status_esp_connect.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u043f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u043a \u0412\u0418\u041c", None))
+        self.lineEdit_source_video.setText(QCoreApplication.translate("MainWindow", u"\"C:\\Users\\DanielMamaev\\Desktop\\vim-2026_03_19 11_58_47.avi\"", None))
         self.label_fps_counter.setText(QCoreApplication.translate("MainWindow", u"FPS = 0", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"\u0418\u0441\u0442\u043e\u0447\u043d\u0438\u043a \u0432\u0438\u0434\u0435\u043e\u043f\u043e\u0442\u043e\u043a\u0430", None))
-        self.lineEdit_speed_frame.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043a\u043e\u043b-\u0432\u043e \u0413\u0446 \u0438\u043b\u0438 \u0441\u0435\u043a\u0443\u043d\u0434 \u0432 \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0438\u0432\u0430\u044e\u0449\u0435\u0433\u043e \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u0430 \u0441\u044a\u0435\u043c\u043a\u0438", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0435\u0433\u0443\u043b\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0447\u0430\u0441\u0442\u043e\u0442\u0443 \u0437\u0430\u043f\u0438\u0441\u0438 \u0442\u043e\u0447\u0435\u043a", None))
-        self.checkBox_segmentaion_show.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u0435\u0433\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044e", None))
-        self.checkBox_view_points.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c \u0442\u043e\u0447\u043a\u0438", None))
-        self.pushButton_stop_stream.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0441\u0442\u0440\u0438\u043c", None))
-        self.checkBox_rectangle_show.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c \u043f\u0440\u044f\u043c\u043e\u0443\u0433\u043e\u043b\u044c\u043d\u0438\u043a", None))
-        self.pushButton_start_stream.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c \u0441\u0442\u0440\u0438\u043c", None))
-        self.checkBox_enable_record.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0430\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c", None))
         self.comboBox_speed_frame.setItemText(0, QCoreApplication.translate("MainWindow", u"\u0413\u0446", None))
         self.comboBox_speed_frame.setItemText(1, QCoreApplication.translate("MainWindow", u"1 \u043a\u0430\u0434\u0440 \u0437\u0430 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0441\u0435\u043a\u0443\u043d\u0434", None))
 
-        self.checkBox_start_position.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430", None))
         self.lineEdit_offset_rt.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u0421\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u0432 \u043f\u0438\u043a\u0441\u0435\u043b\u044f\u0445", None))
         self.pushButton_start_position.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0435\u0433\u0443\u043b\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0447\u0430\u0441\u0442\u043e\u0442\u0443 \u0437\u0430\u043f\u0438\u0441\u0438 \u0442\u043e\u0447\u0435\u043a", None))
+        self.checkBox_view_points.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c \u0442\u043e\u0447\u043a\u0438", None))
+        self.pushButton_stop_stream.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0441\u0442\u0440\u0438\u043c", None))
+        self.lineEdit_speed_frame.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043a\u043e\u043b-\u0432\u043e \u0413\u0446 \u0438\u043b\u0438 \u0441\u0435\u043a\u0443\u043d\u0434 \u0432 \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0438\u0432\u0430\u044e\u0449\u0435\u0433\u043e \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u0430 \u0441\u044a\u0435\u043c\u043a\u0438", None))
+        self.checkBox_segmentaion_show.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u0435\u0433\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044e", None))
+        self.pushButton_start_stream.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c \u0441\u0442\u0440\u0438\u043c", None))
+        self.checkBox_enable_record.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0430\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c", None))
+        self.checkBox_start_position.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u043d\u0430\u0447\u0430\u043b\u043e \u043e\u0442\u0441\u0447\u0435\u0442\u0430", None))
+        self.checkBox_rectangle_show.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c \u043f\u0440\u044f\u043c\u043e\u0443\u0433\u043e\u043b\u044c\u043d\u0438\u043a", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_connect), QCoreApplication.translate("MainWindow", u"\u041f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u0435", None))
         self.pushButton_start_processing.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0430\u0442\u044c \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0443", None))
         self.label_21.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0443\u0442\u044c \u043a \u0432\u0438\u0434\u0435\u043e\u0444\u0430\u0439\u043b\u0443", None))
@@ -858,29 +948,39 @@ class Ui_MainWindow(object):
         self.label_time.setText("")
         self.pushButton_select_path.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0431\u0437\u043e\u0440", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_postprocessing), QCoreApplication.translate("MainWindow", u"\u041f\u043e\u0441\u0442\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430", None))
-        self.lineEdit_thresh_vim.setText(QCoreApplication.translate("MainWindow", u"0", None))
-        self.lineEdit_thresh_vim.setPlaceholderText(QCoreApplication.translate("MainWindow", u"180", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u043c\u0435\u0442\u043e\u0434\u0430 \u0412\u0430\u043b\u0435\u043d\u0442\u0438\u043d\u0430", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u043e\u0440 \u043c\u0435\u0442\u043e\u0434\u0430 \u0434\u0435\u0442\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u043e\u0431\u044a\u0435\u043a\u0442\u0430", None))
-        self.comboBox_method_find_contour_vim.setItemText(0, QCoreApplication.translate("MainWindow", u"\u041f\u043b\u043e\u0449\u0430\u0434\u044c, \u0440\u0430\u0437\u043c\u0435\u0440, \u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0435", None))
-        self.comboBox_method_find_contour_vim.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u043f\u043b\u043e\u0449\u0430\u0434\u044c", None))
-
-        self.comboBox_points_mode_vim.setItemText(0, QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043d\u0442\u0443\u0440", None))
-        self.comboBox_points_mode_vim.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043d\u0442\u0443\u0440 + \u0432\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u044f\u044f \u0447\u0430\u0441\u0442\u044c \u0444\u0438\u0433\u0443\u0440\u044b", None))
-
         self.lineEdit_min_area_figure_vim.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.lineEdit_min_area_figure_vim.setPlaceholderText(QCoreApplication.translate("MainWindow", u"500", None))
-        self.label_13.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0435\u0436\u0438\u043c \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u044f \u0442\u043e\u0447\u0435\u043a \u0444\u0438\u0433\u0443\u0440\u044b", None))
-        self.label_11.setText(QCoreApplication.translate("MainWindow", u"\u041c\u0435\u0442\u043e\u0434 \u043d\u0430\u0445\u043e\u0436\u0434\u0435\u043d\u0438\u044f \u043a\u043e\u043d\u0442\u0443\u0440\u043e\u0432", None))
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"maxval", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"thresh", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"maxval", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"\u041c\u0438\u043d\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u043f\u043b\u043e\u0449\u0430\u0434\u044c \u043d\u0430\u0439\u0434\u0435\u043d\u043d\u043e\u0439 \u0444\u0438\u0433\u0443\u0440\u044b", None))
+        self.label_26.setText(QCoreApplication.translate("MainWindow", u"ROI", None))
         self.comboBox_detect_method_vim.setItemText(0, QCoreApplication.translate("MainWindow", u"\u041c\u0435\u0442\u043e\u0434 \u041c\u0430\u043a\u0441\u0430", None))
         self.comboBox_detect_method_vim.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041c\u0435\u0442\u043e\u0434 \u0412\u0430\u043b\u0435\u043d\u0442\u0438\u043d\u0430", None))
 
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u"\u041c\u0438\u043d\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u043f\u043b\u043e\u0449\u0430\u0434\u044c \u043d\u0430\u0439\u0434\u0435\u043d\u043d\u043e\u0439 \u0444\u0438\u0433\u0443\u0440\u044b", None))
+        self.lineEdit_roi_x2.setText(QCoreApplication.translate("MainWindow", u"0", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u043c\u0435\u0442\u043e\u0434\u0430 \u0412\u0430\u043b\u0435\u043d\u0442\u0438\u043d\u0430", None))
+        self.label_25.setText(QCoreApplication.translate("MainWindow", u"x1, y1, x2, y2", None))
+        self.lineEdit_roi_x1.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.lineEdit_maxval_vim.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.lineEdit_maxval_vim.setPlaceholderText(QCoreApplication.translate("MainWindow", u"255", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_settings), QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0412\u0418\u041c", None))
+        self.lineEdit_thresh_vim.setText(QCoreApplication.translate("MainWindow", u"0", None))
+        self.lineEdit_thresh_vim.setPlaceholderText(QCoreApplication.translate("MainWindow", u"180", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u043e\u0440 \u043c\u0435\u0442\u043e\u0434\u0430 \u0434\u0435\u0442\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u043e\u0431\u044a\u0435\u043a\u0442\u0430", None))
+        self.lineEdit_roi_y2.setText(QCoreApplication.translate("MainWindow", u"0", None))
+        self.comboBox_points_mode_vim.setItemText(0, QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043d\u0442\u0443\u0440", None))
+        self.comboBox_points_mode_vim.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043d\u0442\u0443\u0440 + \u0432\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u044f\u044f \u0447\u0430\u0441\u0442\u044c \u0444\u0438\u0433\u0443\u0440\u044b", None))
+
+        self.comboBox_method_find_contour_vim.setItemText(0, QCoreApplication.translate("MainWindow", u"\u041f\u043b\u043e\u0449\u0430\u0434\u044c, \u0440\u0430\u0437\u043c\u0435\u0440, \u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0435", None))
+        self.comboBox_method_find_contour_vim.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u043f\u043b\u043e\u0449\u0430\u0434\u044c", None))
+
+        self.lineEdit_roi_y1.setText(QCoreApplication.translate("MainWindow", u"0", None))
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0435\u0436\u0438\u043c \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u044f \u0442\u043e\u0447\u0435\u043a \u0444\u0438\u0433\u0443\u0440\u044b", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"\u041c\u0435\u0442\u043e\u0434 \u043d\u0430\u0445\u043e\u0436\u0434\u0435\u043d\u0438\u044f \u043a\u043e\u043d\u0442\u0443\u0440\u043e\u0432", None))
+        self.pushButton_set_roi_coords.setText(QCoreApplication.translate("MainWindow", u"\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c", None))
+        self.pushButton_clear_roi_coords.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0447\u0438\u0441\u0442\u0438\u0442\u044c", None))
+        self.checkBox_visible_roi_rect.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0442\u043e\u0431\u0440\u0430\u0437\u0438\u0442\u044c", None))
+        self.checkBox_enable_roi_rect.setText(QCoreApplication.translate("MainWindow", u"\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_settings_vim), QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0412\u0418\u041c", None))
         self.comboBox_points_mode_laser.setItemText(0, QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043d\u0442\u0443\u0440", None))
         self.comboBox_points_mode_laser.setItemText(1, QCoreApplication.translate("MainWindow", u"\u041a\u043e\u043d\u0442\u0443\u0440 + \u0432\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u044f\u044f \u0447\u0430\u0441\u0442\u044c \u0444\u0438\u0433\u0443\u0440\u044b", None))
 
@@ -904,7 +1004,9 @@ class Ui_MainWindow(object):
         self.lineEdit_thresh_laser.setPlaceholderText(QCoreApplication.translate("MainWindow", u"180", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u043e\u0440 \u043c\u0435\u0442\u043e\u0434\u0430 \u0434\u0435\u0442\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u043e\u0431\u044a\u0435\u043a\u0442\u0430", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_settings_laser), QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u043b\u0430\u0437\u0435\u0440\u0430", None))
-        self.pushButton_save_settings.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
+        self.label_27.setText(QCoreApplication.translate("MainWindow", u"ID Nivel", None))
+        self.lineEdit_id_nivel.setText(QCoreApplication.translate("MainWindow", u"N2", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_settings), QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
         self.label_nivel.setText(QCoreApplication.translate("MainWindow", u"Nivel", None))
         self.label_vim_temp.setText(QCoreApplication.translate("MainWindow", u"\u0422\u0435\u043c\u043f\u0435\u0440\u0430\u0442\u0443\u0440\u0430 \u0412\u0418\u041c", None))
         self.label_value.setText(QCoreApplication.translate("MainWindow", u"\u0412\u0418\u041c", None))

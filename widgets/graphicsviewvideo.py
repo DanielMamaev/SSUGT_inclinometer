@@ -17,7 +17,10 @@ class QGraphicsViewVideo(QtWidgets.QGraphicsView):
     @QtCore.Slot(np.ndarray)
     def image_cv(self, frame):
         """ Применение изображения из матрицы OpenCV """
-        height, width = frame.shape[:2]
+        try:
+            height, width = frame.shape[:2]
+        except:
+            return
 
         # print(height, width)
         # cv2.imshow("img_rgb", frame)

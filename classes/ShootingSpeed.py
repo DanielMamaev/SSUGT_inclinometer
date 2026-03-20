@@ -15,7 +15,7 @@ class ShootingSpeed:
 
     @classmethod
     def enable_sanctions(cls):
-        logging.info("Включены санкции для изменения герцовки")
+        # logging.info("Включены санкции для изменения герцовки")
         cls._lineEdit_speed_frame.setEnabled(False)
         cls._comboBox_speed_frame.setEnabled(False)
 

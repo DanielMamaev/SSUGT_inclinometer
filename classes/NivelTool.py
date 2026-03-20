@@ -4,7 +4,7 @@ from functools import partial
 import serial.tools.list_ports
 from PySide6.QtCore import QTimer
 from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QMenu, QLabel
+from PySide6.QtWidgets import QMenu, QLabel, QLineEdit
 from serial.serialutil import PortNotOpenError, SerialException
 from serial.tools.list_ports_common import ListPortInfo
 
@@ -26,6 +26,8 @@ class NivelTool:
     _current_x = 'NaN'
     _current_y = 'NaN'
     _current_t = 'NaN'
+    _id_nivel = ""
+    _lineEdit_id_nivel: QLineEdit | None = None
 
     @classmethod
     @property
@@ -50,6 +52,10 @@ class NivelTool:
     def set_label_nivel_220(cls, label_nivel):
         cls._label_nivel = label_nivel
 
+    @classmethod
+    def set_lineedit_id_nivel(cls, value):
+        cls._lineEdit_id_nivel = value
+    
     @classmethod
     def update_list_com_ports(cls):
         ports = serial.tools.list_ports.comports()
@@ -85,6 +91,7 @@ class NivelTool:
             cls._selected_port = port.device
         cls.destroy_nivel_220()
         if cls._selected_port != cls._port_disconnect:
+            cls._id_nivel = cls._lineEdit_id_nivel.text()
             cls.initialize_nivel_220()
 
     @classmethod
@@ -167,7 +174,8 @@ class NivelTool:
             cls._modem.close()
             cls._modem.open()
 
-            cls._cmd = "N4C1 G A"
+            print(f"ID NIVEL: {cls._id_nivel}")
+            cls._cmd = f"{cls._id_nivel}C1 G A"
             cls._modem.write(cls._cmd.encode())
             cls._answer = ""
             cls._read_timeout = 0.3  # задержка на чтение

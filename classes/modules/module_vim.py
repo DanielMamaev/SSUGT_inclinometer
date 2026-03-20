@@ -11,7 +11,7 @@ from PySide6.QtGui import QIcon
 from classes.DevicesController import DevicesController
 from classes.GlobalVariables import GlobalVariables
 from classes.GlobalController import GlobalController
-from classes.consts import ProcessVIM, TypeDevices
+from classes.consts import ProcessVIM, TypeDevices, ProcessLaser
 from classes.coordinate_system_offset import CoordinateSystemOffset
 from classes.segmentation_base import SegmentationBase
 
@@ -84,9 +84,9 @@ class ModuleESP32:
     def is_segmentation(self, is_segmentation):
         self._is_segmentation = is_segmentation
 
-    @is_draw_rectangle.setter
-    def is_draw_rectangle(self, is_draw_rectangle):
-        self._is_draw_rectangle = is_draw_rectangle
+    # @is_draw_rectangle.setter
+    # def is_draw_rectangle(self, is_draw_rectangle):
+    #     self._is_draw_rectangle = is_draw_rectangle
 
     @is_draw_point.setter
     def is_draw_point(self, is_draw_point):
@@ -143,6 +143,16 @@ class ModuleESP32:
     @is_streaming.setter
     def is_streaming(self, is_streaming):
         self._is_streaming = is_streaming
+    
+    def get_default_params_draw(self):
+        params_draw = {
+            "is_segmentation": False,
+            "is_draw_rectangle": False,
+            "is_draw_points": False,
+            "count_draw_points": 1,
+            "is_draw_start_position": False
+        }
+        return params_draw
 
     def set_source(self, source: str):
         self._source = source
@@ -156,8 +166,11 @@ class ModuleESP32:
         data_api_controller = DevicesController.get_vim_api_class().get_all_data()
         self._thread.start()
 
-        param_vim = GlobalVariables.get_param_vim()
-        param_laser = GlobalVariables.get_param_laser()
+        params_default = {
+            "params_vim": GlobalVariables.get_default_params_vim(),
+            "params_laser": GlobalVariables.get_default_params_laser(),
+            "params_draw": self.get_default_params_draw(),
+        }
 
         self.esp32_process = multiprocessing.Process(target=self.processing_vim, args=(
             self.module_child_conn,
@@ -166,8 +179,7 @@ class ModuleESP32:
             data_api_controller,
             self._source,
             self._type_device,
-            param_vim,
-            param_laser
+            params_default
             )
         )
         self.esp32_process.start()
@@ -177,35 +189,41 @@ class ModuleESP32:
         self.esp32_process.terminate()
 
     def _prepare_send_data(self):
-        is_segmentation = False
-        is_draw_rectangle = False
-        is_draw_point = False
-        count_draw_points = 1
-        is_draw_start_position = False
+        params_draw = self.get_default_params_draw()
+        params_vim = GlobalVariables.get_default_params_vim()
+        params_laser = GlobalVariables.get_default_params_laser()
+
         while self._is_streaming:
             time.sleep(0.00001)
-            new_is_segmentation = self.is_segmentation
-            new_is_draw_rectangle = self.is_draw_rectangle
-            new_is_draw_point = self.is_draw_point
-            new_count_draw_points = self.count_draw_points
-            new_is_draw_start_position = self.is_draw_start_position
-            if is_segmentation != new_is_segmentation or \
-                    is_draw_rectangle != new_is_draw_rectangle or \
-                    is_draw_point != new_is_draw_point or \
-                    count_draw_points != new_count_draw_points or \
-                    is_draw_start_position != new_is_draw_start_position:
-                is_segmentation = new_is_segmentation
-                is_draw_rectangle = new_is_draw_rectangle
-                is_draw_point = new_is_draw_point
-                count_draw_points = new_count_draw_points
-                is_draw_start_position = new_is_draw_start_position
-                self._send_data(is_segmentation, is_draw_rectangle, is_draw_point, count_draw_points,
-                                is_draw_start_position)
+            # params draw
+            new_params_draw = self.get_default_params_draw()
+            new_params_draw["is_segmentation"] = self.is_segmentation
+            new_params_draw["is_draw_rectangle"] = self.is_draw_rectangle
+            new_params_draw["is_draw_points"] = self.is_draw_point
+            new_params_draw["count_draw_points"] = self.count_draw_points
+            new_params_draw["is_draw_start_position"] = self.is_draw_start_position
+            if params_draw != new_params_draw:
+                params_draw.update(new_params_draw)
+                self.module_parent_conn.send((params_draw, ProcessVIM.DRAW_OPTIONS))
+            
+            # Params VIM
+            new_params_vim = GlobalVariables.get_default_params_vim()
+            
+            new_params_vim.update(GlobalVariables.get_params_vim())
+            if params_vim != new_params_vim:
+                params_vim.update(new_params_vim)
+                self.module_parent_conn.send((params_vim, ProcessVIM.PARAMS))
+            
+            # Params Laser
+            new_params_laser = GlobalVariables.get_default_params_laser()
+            new_params_laser.update(GlobalVariables.get_params_laser())
+            if params_laser != new_params_laser:
+                params_laser.update(new_params_laser)
+                self.module_parent_conn.send((params_laser, ProcessLaser.PARAMS))
+                
 
-    def _send_data(self, is_segmentation, is_draw_rectangle, is_draw_point, count_draw_points, is_draw_start_position):
-        self.module_parent_conn.send(
-            ((is_segmentation, is_draw_rectangle, is_draw_point, count_draw_points, is_draw_start_position),
-             ProcessVIM.DRAW_OPTIONS))
+
+
 
     def update_data(self):
         if self.module_parent_conn.poll():
@@ -230,21 +248,22 @@ class ModuleESP32:
         data_api_controller,
         source,
         type_device: TypeDevices,
-        param_vim,
-        param_laser
+        params_default: dict
         ):
 
         vim_process_id = -1
         DevicesController.get_vim_api_class().set_all_data(data_api_controller)
         DevicesController.get_vim_api_class().check_is_video_capture(source)
         sync_data = "Done"
-        is_segmentation = False
-        is_draw_rectangle = False
-        is_draw_point = False
-        is_draw_start_position = False
-        count_draw_points = 1
+        
+        params_vim = params_default["params_vim"]
+        params_laser = params_default["params_laser"]
+        params_draw = params_default["params_draw"]
+
+
         prev_center_bubble = None
         prev_center_laser = None
+
         while vim_process_id is not None:
             time.sleep(0.00001)
             if sync_conn.poll(0.00001):
@@ -259,10 +278,7 @@ class ModuleESP32:
                     conn.send((False, ProcessVIM.VIDEO_IS_OVER))
                     break
                 if type_device == TypeDevices.ESP32_VIM:
-                    points, frame, center_bubbles_px = segmentation.vim_frame_processing(frame_original,
-                                                                                        is_segmentation,
-                                                                                        is_draw_rectangle, is_draw_point,
-                                                                                        count_draw_points, param_vim, prev_center_bubble)
+                    points, frame, center_bubbles_px = segmentation.vim_frame_processing(frame_original, params_vim, params_draw, prev_center_bubble)
                     if len(points) <= 0:
                         conn.send(((points, center_bubbles_px, frame, frame_original, fps, is_camera), ProcessVIM.DATA_FRAME_VIM))
                         continue
@@ -270,17 +286,16 @@ class ModuleESP32:
                     prev_center_bubble = center_bubbles_px
                     
                     CoordinateSystemOffset.set_temp_start_position(center_bubbles_px[0])
-                    points, frame, center_bubbles_px_update = CoordinateSystemOffset.get_new_image_coords(points, frame, center_bubbles_px[0], is_draw_start_position)
+                    points, frame, center_bubbles_px_update = CoordinateSystemOffset.get_new_image_coords(points, frame, center_bubbles_px[0], params_draw["is_draw_start_position"])
                     center_bubbles_px = (center_bubbles_px_update, center_bubbles_px[1])
                     conn.send(((points, center_bubbles_px, frame, frame_original, fps, is_camera), ProcessVIM.DATA_FRAME_VIM))
                 
                 elif type_device == TypeDevices.ESP32_LASER:
                     frame, x, y, points_contour = segmentation.laser_frame_processing(
-                        frame_original=frame_original,
-                        is_segmentaion_show=is_segmentation,
-                        is_draw_points=is_draw_point,
-                        param=param_laser,
-                        prev_center_laser=prev_center_laser
+                        frame_original,
+                        params_laser,
+                        params_draw,
+                        prev_center_laser
                         )
                     prev_center_laser = (x, y)
                     conn.send(((frame, frame_original, fps, is_camera, x, y, points_contour), ProcessVIM.DATA_FRAME_LASER))
@@ -296,7 +311,11 @@ class ModuleESP32:
                         data_api_controller = value
                         DevicesController.get_vim_api_class().set_all_data(data_api_controller)
                     case ProcessVIM.DRAW_OPTIONS:
-                        is_segmentation, is_draw_rectangle, is_draw_point, count_draw_points, is_draw_start_position = value
+                        params_draw = value
+                    case ProcessVIM.PARAMS:
+                        params_vim = value
+                    case ProcessLaser.PARAMS:
+                        params_laser = value
                     case ProcessVIM.KILL_PROCESS:
                         return
 

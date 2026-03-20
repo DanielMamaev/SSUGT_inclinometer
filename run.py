@@ -44,8 +44,7 @@ if __name__ == "__main__":
         print(f"Папка '{folder_name}' уже существует.")
     # Получаем текущую дату и время в формате YYYY-MM-DD_HH-MM-SS
     current_datetime = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    logging.basicConfig(level=logging.INFO, filename=f"logs/py_log_{current_datetime}.log", filemode="w",
-                        format="%(asctime)s %(levelname)s %(message)s")
+    logging.basicConfig(level=logging.INFO, filename=f"logs/py_log_{current_datetime}.log", filemode="w", format="%(asctime)s %(levelname)s %(message)s")
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle('Fusion')
     MainWindow = Ui_MainWindow()  # Используйте ваш класс здесь

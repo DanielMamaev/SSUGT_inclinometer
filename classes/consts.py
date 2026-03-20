@@ -15,6 +15,10 @@ class ProcessVIM:
     IS_DRAW_POINTS = 'IS_DRAW_POINTS'
     COUNT_DRAW_POINTS = 'COUNT_DRAW_POINTS'
     DRAW_OPTIONS = 'DRAW_OPTIONS'
+    PARAMS = "VIM_PARAMS"
+
+class ProcessLaser:
+    PARAMS = "LASER_PARAMS"
 
 class TypeDevices:
     ESP32_VIM = 'ESP32_VIM'
