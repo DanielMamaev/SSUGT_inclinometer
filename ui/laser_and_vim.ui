@@ -313,7 +313,7 @@
                </size>
               </property>
               <property name="text">
-               <string>&quot;D:\General\Программы\SSUGT_inclinometer\examples\data\laser.mp4&quot;</string>
+               <string/>
               </property>
              </widget>
             </item>
@@ -429,7 +429,7 @@
                </size>
               </property>
               <property name="text">
-               <string>&quot;C:\Users\DanielMamaev\Desktop\vim-2026_03_19 11_58_47.avi&quot;</string>
+               <string/>
               </property>
              </widget>
             </item>
