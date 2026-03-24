@@ -161,9 +161,6 @@
        <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="0">
-        <widget class="QGraphicsViewVideo" name="graphicsView_vim"/>
-       </item>
        <item row="0" column="1">
         <widget class="QPushButton" name="pushButton_save_settings">
          <property name="text">
@@ -173,6 +170,9 @@
        </item>
        <item row="2" column="0">
         <widget class="QGraphicsViewVideo" name="graphicsView_laser"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGraphicsViewVideo" name="graphicsView_vim"/>
        </item>
        <item row="1" column="1" rowspan="2">
         <widget class="QTabWidget" name="tabWidget">
@@ -474,96 +474,23 @@
             <property name="topMargin">
              <number>1</number>
             </property>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="comboBox_speed_frame">
-              <item>
-               <property name="text">
-                <string>Гц</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>1 кадр за количество секунд</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item row="7" column="0" rowspan="2" colspan="2">
-             <layout class="QHBoxLayout" name="horizontalLayout_6">
-              <property name="spacing">
-               <number>6</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLineEdit" name="lineEdit_offset_rt">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="placeholderText">
-                 <string>Смещение в пикселях</string>
-                </property>
-                <property name="clearButtonEnabled">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pushButton_start_position">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>Сместить начало отсчета</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item row="12" column="0" colspan="2">
-             <widget class="QLabel" name="label_2">
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Регулировать частоту записи точек</string>
-              </property>
-             </widget>
-            </item>
             <item row="15" column="0" colspan="2">
-             <widget class="QCheckBox" name="checkBox_view_points">
+             <widget class="QCheckBox" name="checkBox_rectangle_show">
               <property name="text">
-               <string>Отобразить точки</string>
+               <string>Отобразить прямоугольник</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="0" colspan="2">
-             <widget class="QPushButton" name="pushButton_stop_stream">
+            <item row="9" column="0" colspan="2">
+             <widget class="QCheckBox" name="checkBox_enable_record">
               <property name="text">
-               <string>Выключить стрим</string>
+               <string>Начать запись</string>
               </property>
-             </widget>
-            </item>
-            <item row="14" column="0" colspan="2">
-             <widget class="Line" name="line">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+              <property name="checked">
+               <bool>false</bool>
               </property>
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
+              <property name="autoRepeat">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -574,6 +501,40 @@
               </property>
               <property name="clearButtonEnabled">
                <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="16" column="0" colspan="2">
+             <widget class="QCheckBox" name="checkBox_segmentaion_show">
+              <property name="text">
+               <string>Показать сегментацию</string>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="0" colspan="2">
+             <widget class="QSpinBox" name="spinBox_points">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+             </widget>
+            </item>
+            <item row="13" column="0" colspan="2">
+             <widget class="QCheckBox" name="checkBox_view_points">
+              <property name="text">
+               <string>Отобразить точки</string>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="0" colspan="2">
+             <widget class="QLabel" name="label_2">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Регулировать частоту записи точек</string>
               </property>
              </widget>
             </item>
@@ -593,10 +554,37 @@
               </property>
              </widget>
             </item>
-            <item row="17" column="0" colspan="2">
-             <widget class="QCheckBox" name="checkBox_segmentaion_show">
+            <item row="2" column="0" colspan="2">
+             <widget class="QPushButton" name="pushButton_stop_stream">
               <property name="text">
-               <string>Показать сегментацию</string>
+               <string>Выключить стрим</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="comboBox_speed_frame">
+              <item>
+               <property name="text">
+                <string>Гц</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>1 кадр за количество секунд</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="12" column="0" colspan="2">
+             <widget class="Line" name="line">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
               </property>
              </widget>
             </item>
@@ -613,37 +601,10 @@
               </property>
              </widget>
             </item>
-            <item row="11" column="0" colspan="2">
-             <widget class="QCheckBox" name="checkBox_enable_record">
-              <property name="text">
-               <string>Начать запись</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-              <property name="autoRepeat">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0" colspan="2">
+            <item row="17" column="0">
              <widget class="QCheckBox" name="checkBox_start_position">
               <property name="text">
                <string>Показать начало отсчета</string>
-              </property>
-             </widget>
-            </item>
-            <item row="16" column="0" colspan="2">
-             <widget class="QCheckBox" name="checkBox_rectangle_show">
-              <property name="text">
-               <string>Отобразить прямоугольник</string>
-              </property>
-             </widget>
-            </item>
-            <item row="13" column="0" colspan="2">
-             <widget class="QSpinBox" name="spinBox_points">
-              <property name="minimum">
-               <number>1</number>
               </property>
              </widget>
             </item>
@@ -659,13 +620,40 @@
             <rect>
              <x>10</x>
              <y>10</y>
-             <width>501</width>
-             <height>255</height>
+             <width>540</width>
+             <height>315</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_10">
-            <item row="9" column="0">
-             <widget class="QPushButton" name="pushButton_start_processing">
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_24">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Комментарий</string>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="2">
+             <widget class="QPushButton" name="pushButton_post_pause">
+              <property name="text">
+               <string>Пауза</string>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="1">
+             <widget class="QPushButton" name="pushButton_post_continue">
+              <property name="text">
+               <string>Продолжить</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLineEdit" name="lineEdit_postprocessing_offset">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -673,7 +661,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Начать обработку</string>
+               <string>0</string>
               </property>
              </widget>
             </item>
@@ -690,19 +678,16 @@
               </property>
              </widget>
             </item>
-            <item row="6" column="0">
-             <widget class="QLabel" name="label_21">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_22">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Путь к видеофайлу</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+               <string>Выберите устройство</string>
               </property>
              </widget>
             </item>
@@ -726,31 +711,24 @@
               </item>
              </widget>
             </item>
-            <item row="7" column="0">
-             <widget class="QLineEdit" name="lineEdit">
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_21">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_23">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Смещение начало отсчета по X (ВИМ)</string>
+               <string>Путь к видеофайлу</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
               </property>
              </widget>
             </item>
-            <item row="3" column="0">
-             <widget class="QLineEdit" name="lineEdit_postprocessing_offset">
+            <item row="9" column="0">
+             <widget class="QPushButton" name="pushButton_start_processing">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -758,38 +736,29 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>0</string>
+               <string>Начать обработку</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_22">
+            <item row="10" column="3">
+             <widget class="QPushButton" name="pushButton_post_stop">
+              <property name="text">
+               <string>Стоп</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLineEdit" name="lineEdit_postprocessing_comment">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="text">
-               <string>Выберите устройство</string>
-              </property>
              </widget>
             </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="label_24">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Комментарий</string>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="1">
-             <widget class="QLabel" name="label_time">
+            <item row="7" column="0">
+             <widget class="QLineEdit" name="lineEdit">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -814,13 +783,63 @@
               </property>
              </widget>
             </item>
-            <item row="5" column="0">
-             <widget class="QLineEdit" name="lineEdit_postprocessing_comment">
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_23">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Смещение начало отсчета по X (ВИМ)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1">
+             <widget class="QLabel" name="label_time">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="2">
+             <widget class="QPushButton" name="pushButton_post_next">
+              <property name="text">
+               <string>Кадр</string>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="0">
+             <widget class="QLabel" name="label_28">
+              <property name="text">
+               <string>Перемотка на +n кадров</string>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="1">
+             <widget class="QLineEdit" name="lineEdit_post_next">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="0">
+             <widget class="QLabel" name="label_29">
+              <property name="text">
+               <string>Управление</string>
               </property>
              </widget>
             </item>
@@ -836,25 +855,70 @@
             <rect>
              <x>9</x>
              <y>9</y>
-             <width>591</width>
-             <height>411</height>
+             <width>657</width>
+             <height>429</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_8">
             <property name="sizeConstraint">
              <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
             </property>
-            <item row="9" column="0">
-             <widget class="QLineEdit" name="lineEdit_min_area_figure_vim">
+            <item row="10" column="0">
+             <widget class="QComboBox" name="comboBox_method_find_contour_vim">
+              <item>
+               <property name="text">
+                <string>Площадь, размер, положение</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Максимальная площадь</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="19" column="1">
+             <widget class="QPushButton" name="pushButton_set_roi_coords">
               <property name="text">
-               <string>0</string>
-              </property>
-              <property name="placeholderText">
-               <string>500</string>
+               <string>Установить</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
+            <item row="19" column="3">
+             <widget class="QCheckBox" name="checkBox_visible_roi_rect">
+              <property name="text">
+               <string>Отобразить</string>
+              </property>
+             </widget>
+            </item>
+            <item row="19" column="4">
+             <widget class="QCheckBox" name="checkBox_enable_roi_rect">
+              <property name="text">
+               <string>Включить</string>
+              </property>
+             </widget>
+            </item>
+            <item row="19" column="2">
+             <widget class="QPushButton" name="pushButton_clear_roi_coords">
+              <property name="text">
+               <string>Очистить</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Выбор метода детектирования объекта</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
              <widget class="QLabel" name="label_10">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -867,7 +931,69 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="1">
+            <item row="8" column="0">
+             <widget class="QLineEdit" name="lineEdit_thresh_vim">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+              <property name="placeholderText">
+               <string>180</string>
+              </property>
+             </widget>
+            </item>
+            <item row="14" column="0">
+             <widget class="QComboBox" name="comboBox_points_mode_vim">
+              <item>
+               <property name="text">
+                <string>Контур</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Контур + внутренняя часть фигуры</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Настройки метода Валентина</string>
+              </property>
+             </widget>
+            </item>
+            <item row="18" column="4">
+             <widget class="QLineEdit" name="lineEdit_roi_y2">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="18" column="0">
+             <widget class="QLabel" name="label_25">
+              <property name="text">
+               <string>x1, y1, x2, y2</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1">
              <widget class="QLabel" name="label_9">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -880,21 +1006,115 @@
               </property>
              </widget>
             </item>
-            <item row="8" column="0">
+            <item row="11" column="0">
              <widget class="QLabel" name="label_12">
               <property name="text">
                <string>Минимальная площадь найденной фигуры</string>
               </property>
              </widget>
             </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="Line" name="line_6">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
             <item row="13" column="0">
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Режим отображения точек фигуры</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Метод нахождения контуров</string>
+              </property>
+             </widget>
+            </item>
+            <item row="17" column="0">
              <widget class="QLabel" name="label_26">
               <property name="text">
                <string>ROI</string>
               </property>
              </widget>
             </item>
+            <item row="18" column="3">
+             <widget class="QLineEdit" name="lineEdit_roi_x2">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="18" column="2">
+             <widget class="QLineEdit" name="lineEdit_roi_y1">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="15" column="0" colspan="2">
+             <widget class="Line" name="line_5">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="12" column="0">
+             <widget class="QLineEdit" name="lineEdit_min_area_figure_vim">
+              <property name="text">
+               <string>0</string>
+              </property>
+              <property name="placeholderText">
+               <string>500</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1">
+             <widget class="QLineEdit" name="lineEdit_maxval_vim">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+              <property name="placeholderText">
+               <string>255</string>
+              </property>
+             </widget>
+            </item>
+            <item row="18" column="1">
+             <widget class="QLineEdit" name="lineEdit_roi_x1">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="0">
+             <widget class="QPushButton" name="pushButton_start_position">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Сместить начало отсчета</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
              <widget class="QComboBox" name="comboBox_detect_method_vim">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -914,146 +1134,23 @@
               </item>
              </widget>
             </item>
-            <item row="12" column="0" colspan="2">
-             <widget class="Line" name="line_5">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="14" column="3">
-             <widget class="QLineEdit" name="lineEdit_roi_x2">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_8">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>Настройки метода Валентина</string>
-              </property>
-             </widget>
-            </item>
-            <item row="14" column="0">
-             <widget class="QLabel" name="label_25">
-              <property name="text">
-               <string>x1, y1, x2, y2</string>
-              </property>
-             </widget>
-            </item>
-            <item row="14" column="1">
-             <widget class="QLineEdit" name="lineEdit_roi_x1">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="1">
-             <widget class="QLineEdit" name="lineEdit_maxval_vim">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>0</string>
-              </property>
-              <property name="placeholderText">
-               <string>255</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0">
-             <widget class="QLineEdit" name="lineEdit_thresh_vim">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>0</string>
-              </property>
-              <property name="placeholderText">
-               <string>180</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
-             <widget class="QLabel" name="label_7">
+             <widget class="QLineEdit" name="lineEdit_offset_rt">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="text">
-               <string>Выбор метода детектирования объекта</string>
+              <property name="placeholderText">
+               <string>Смещение в пикселях</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
-            <item row="14" column="4">
-             <widget class="QLineEdit" name="lineEdit_roi_y2">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="11" column="0">
-             <widget class="QComboBox" name="comboBox_points_mode_vim">
-              <item>
-               <property name="text">
-                <string>Контур</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Контур + внутренняя часть фигуры</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item row="7" column="0">
-             <widget class="QComboBox" name="comboBox_method_find_contour_vim">
-              <item>
-               <property name="text">
-                <string>Площадь, размер, положение</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Максимальная площадь</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item row="14" column="2">
-             <widget class="QLineEdit" name="lineEdit_roi_y1">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0" colspan="2">
+            <item row="5" column="0" colspan="2">
              <widget class="Line" name="line_3">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -1066,45 +1163,10 @@
               </property>
              </widget>
             </item>
-            <item row="10" column="0">
-             <widget class="QLabel" name="label_13">
-              <property name="text">
-               <string>Режим отображения точек фигуры</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="0">
-             <widget class="QLabel" name="label_11">
-              <property name="text">
-               <string>Метод нахождения контуров</string>
-              </property>
-             </widget>
-            </item>
-            <item row="15" column="1">
-             <widget class="QPushButton" name="pushButton_set_roi_coords">
-              <property name="text">
-               <string>Установить</string>
-              </property>
-             </widget>
-            </item>
-            <item row="15" column="2">
-             <widget class="QPushButton" name="pushButton_clear_roi_coords">
-              <property name="text">
-               <string>Очистить</string>
-              </property>
-             </widget>
-            </item>
-            <item row="15" column="3">
-             <widget class="QCheckBox" name="checkBox_visible_roi_rect">
-              <property name="text">
-               <string>Отобразить</string>
-              </property>
-             </widget>
-            </item>
-            <item row="15" column="4">
-             <widget class="QCheckBox" name="checkBox_enable_roi_rect">
-              <property name="text">
-               <string>Включить</string>
+            <item row="16" column="0" colspan="2">
+             <widget class="Line" name="line_7">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
               </property>
              </widget>
             </item>
