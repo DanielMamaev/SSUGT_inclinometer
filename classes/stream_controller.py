@@ -218,8 +218,8 @@ class StreamController(QObject):
                     0: "MAX",
                     1: "VALEN"
                 }
-                method_vim = index_name_method[GlobalVariables.get_param_vim()["method"]]
-                method_laser = index_name_method[GlobalVariables.get_param_laser()["method"]]
+                method_vim = index_name_method[GlobalVariables.get_params_vim()["method"]]
+                method_laser = index_name_method[GlobalVariables.get_params_laser()["method"]]
 
                 self.file_saver.write_data(
                     [
