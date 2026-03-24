@@ -27,6 +27,7 @@ from classes.post_processing import start_processing
 class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
     signal_send_frame_graphics_view_vim = Signal(np.ndarray)
     signal_send_frame_graphics_view_laser = Signal(np.ndarray)
+    signal_postprocessing_frame = Signal(np.ndarray)
 
     signal_progressbar = Signal(int)
     signal_time_label = Signal(float)
@@ -149,7 +150,16 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         if offset != 0:
             param["offset"] = offset
         
-        t = threading.Thread(target=start_processing, args=(self.save_path, self.signal_progressbar, self.signal_time_label, param))
+        param["signal_send_frame_graphics_view_vim"] = self.signal_send_frame_graphics_view_vim
+        param["signal_send_frame_graphics_view_laser"] = self.signal_send_frame_graphics_view_laser
+        param["label_vim_xy"] = self.label_value
+        param["label_laser_xy"] = self.label_laser_xy
+        t = threading.Thread(target=start_processing, args=(
+            self.save_path,
+            self.signal_progressbar,
+            self.signal_time_label,
+            param
+        ))
         t.start()
     # ====== ======
         
@@ -211,6 +221,34 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
 
         self.pushButton_set_roi_coords.clicked.connect(self.set_roi_coords)
         self.pushButton_clear_roi_coords.clicked.connect(self.clear_roi_coords)
+
+        self.pushButton_post_continue.clicked.connect(lambda: self.set_post_control_flag("continue"))
+        self.pushButton_post_pause.clicked.connect(lambda: self.set_post_control_flag("pause"))
+        self.pushButton_post_stop.clicked.connect(lambda: self.set_post_control_flag("stop"))
+        self.pushButton_post_next.clicked.connect(lambda: self.set_post_control_flag("next"))
+    
+    def set_post_control_flag(self, flag_name):
+        params_control = GlobalVariables.get_defalt_params_control()
+        match flag_name:
+            case "continue": 
+                params_control["pause"] = False
+                params_control["stop"] = False
+                params_control["next"] = False
+            case "pause":
+                params_control["pause"] = True
+                params_control["stop"] = False
+                params_control["next"] = False
+            case "stop":
+                params_control["pause"] = False
+                params_control["stop"] = True
+                params_control["next"] = False
+            case "next":
+                params_control["pause"] = True
+                params_control["stop"] = False
+                params_control["next"] = True
+                params_control["n_shot"] = int(self.lineEdit_post_next.text())
+                
+        GlobalVariables.set_params_control(params_control)
     
     def add_comboBox(self):
         self.on_combobox_changed_vim(GlobalVariables.get_params_vim()["method"])
