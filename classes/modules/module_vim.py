@@ -143,16 +143,6 @@ class ModuleESP32:
     @is_streaming.setter
     def is_streaming(self, is_streaming):
         self._is_streaming = is_streaming
-    
-    def get_default_params_draw(self):
-        params_draw = {
-            "is_segmentation": False,
-            "is_draw_rectangle": False,
-            "is_draw_points": False,
-            "count_draw_points": 1,
-            "is_draw_start_position": False
-        }
-        return params_draw
 
     def set_source(self, source: str):
         self._source = source
@@ -169,7 +159,7 @@ class ModuleESP32:
         params_default = {
             "params_vim": GlobalVariables.get_default_params_vim(),
             "params_laser": GlobalVariables.get_default_params_laser(),
-            "params_draw": self.get_default_params_draw(),
+            "params_draw": GlobalVariables.get_default_params_draw(),
         }
 
         self.esp32_process = multiprocessing.Process(target=self.processing_vim, args=(
@@ -189,19 +179,20 @@ class ModuleESP32:
         self.esp32_process.terminate()
 
     def _prepare_send_data(self):
-        params_draw = self.get_default_params_draw()
+        params_draw = GlobalVariables.get_default_params_draw()
         params_vim = GlobalVariables.get_default_params_vim()
         params_laser = GlobalVariables.get_default_params_laser()
 
         while self._is_streaming:
             time.sleep(0.00001)
             # params draw
-            new_params_draw = self.get_default_params_draw()
+            new_params_draw = GlobalVariables.get_default_params_draw()
             new_params_draw["is_segmentation"] = self.is_segmentation
             new_params_draw["is_draw_rectangle"] = self.is_draw_rectangle
             new_params_draw["is_draw_points"] = self.is_draw_point
             new_params_draw["count_draw_points"] = self.count_draw_points
             new_params_draw["is_draw_start_position"] = self.is_draw_start_position
+            GlobalVariables.set_params_draw(new_params_draw)
             if params_draw != new_params_draw:
                 params_draw.update(new_params_draw)
                 self.module_parent_conn.send((params_draw, ProcessVIM.DRAW_OPTIONS))
