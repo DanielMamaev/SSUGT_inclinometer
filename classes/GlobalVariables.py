@@ -10,6 +10,8 @@ class GlobalVariables:
     _flag_time_point = False
     _postprocessing_mode = 0
     _roi_coords = ((0,0), (0,0))
+    _params_draw: dict = {}
+    _params_control: dict = {}
 
     @classmethod
     def set_indicator_value(cls, value):
@@ -106,3 +108,41 @@ class GlobalVariables:
     @classmethod
     def get_postprocessing_mode(cls) -> int:
         return cls._postprocessing_mode
+    
+    @classmethod
+    def get_params_draw(cls):
+        return copy.deepcopy(cls._params_draw)
+    
+    @classmethod
+    def get_default_params_draw(cls):
+        params_draw = {
+            "is_segmentation": False,
+            "is_draw_rectangle": False,
+            "is_draw_points": False,
+            "count_draw_points": 1,
+            "is_draw_start_position": False
+        }
+        return params_draw
+    
+    @classmethod
+    def set_params_draw(cls, value):
+        cls._params_draw = copy.deepcopy(value)
+
+
+    @classmethod
+    def get_params_control(cls):
+        return copy.deepcopy(cls._params_control)
+    
+    @classmethod
+    def set_params_control(cls, value):
+        cls._params_control = copy.deepcopy(value)
+    
+    @classmethod
+    def get_defalt_params_control(self):
+        params_control = {
+            "pause": False,
+            "stop": False,
+            "next": False,
+            "n_shot": 1
+        }
+        return params_control
