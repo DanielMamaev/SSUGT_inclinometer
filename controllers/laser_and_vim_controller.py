@@ -154,6 +154,7 @@ class UiVIMLaserController(QMainWindow, laser_and_vim.Ui_MainWindow, QObject):
         param["signal_send_frame_graphics_view_laser"] = self.signal_send_frame_graphics_view_laser
         param["label_vim_xy"] = self.label_value
         param["label_laser_xy"] = self.label_laser_xy
+        param["label_time"] = self.label_time
         t = threading.Thread(target=start_processing, args=(
             self.save_path,
             self.signal_progressbar,

@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import time
 from datetime import datetime
 
@@ -13,6 +13,30 @@ from scripts import get_new_points
 
 segmentation = SegmentationBase()
 
+
+def get_total_frames_guaranteed(video_path, param):
+    video = cv2.VideoCapture(video_path)
+    if not video.isOpened():
+        return None
+
+    count = 0
+    while True:
+        param["label_time"].setText(f"Считаем кадры {count}")
+        
+        params_control = GlobalVariables.get_defalt_params_control()
+        params_control.update(GlobalVariables.get_params_control())
+        if params_control["stop"]:
+            break
+
+        ok, _ = video.read()
+        if not ok:
+            break
+        count += 1
+
+    video.release()
+    return count
+
+
 def start_processing(file_path, signal_progressbar, signal_time_label, param: dict = {}):
 
     # Установка имени видеофайла
@@ -25,7 +49,18 @@ def start_processing(file_path, signal_progressbar, signal_time_label, param: di
     except:
         signal_progressbar.emit(400)
         return
+    
+    param["label_time"].setText("Wait...")
+    
     total_frames = video.get(cv2.CAP_PROP_FRAME_COUNT)
+    if total_frames <= 0.0:
+        video.release()
+        total_frames = get_total_frames_guaranteed(video_input_file_name, param)
+        video = cv2.VideoCapture(video_input_file_name)
+        if not video.isOpened():
+            signal_progressbar.emit(400)
+            return
+
     file_saver = FileSaver()
 
     # Проверка на успешное открытие видеофайла
